@@ -15,20 +15,8 @@
 
   // Tablet adjustments
   @media (max-width: 768px) {
-    border-radius: 0 0 20px 20px;
+    border-radius: 0;
     padding: 0 !important;
-  }
-
-  // Mobile adjustments
-  @media (max-width: 480px) {
-    border-radius: 0 0 15px 15px;
-    padding: 0 !important;
-  }
-
-  // Extra small devices
-  @media (max-width: 319px) {
-    border-radius: 0 0 10px 10px;
-    padding: 15px 20px 10px;
   }
 }
 
@@ -50,29 +38,15 @@
 
   // Tablet layout
   @media (max-width: 768px) {
-    border-radius: 20px 20px 0 0;
-
-    padding: 1.5rem;
+    height: 100vh;
+    border-radius: 0;
     justify-content: center;
-    gap: 2rem;
-  }
-
-  // Mobile layout
-  @media (max-width: 480px) {
-    border-radius: 20px 20px 0 0;
-    padding: 1rem;
-    gap: 1.5rem;
-  }
-
-  // Extra small devices
-  @media (max-width: 319px) {
-    border-radius: 0 0 10px 10px;
-    padding: 0.8rem;
-    gap: 1rem;
+    gap: 5%;
   }
 }
 
 .logo {
+  margin-bottom: 40%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,76 +66,52 @@
 
     // Tablet and mobile - stack vertically
     @media (max-width: 768px) {
-      flex-direction: column;
       gap: 0.5rem;
     }
 
     .logo-icon {
-      width: 60px;
-      height: 60px;
+      width: 75px;
+      height: 75px;
 
       // Large desktop
       @media (min-width: 1200px) {
         width: 110px;
         height: auto;
       }
-
-      @media (max-width: 768px) {
-        width: 45px;
-        height: 45px;
-      }
-
-      @media (max-width: 480px) {
-        width: 40px;
-        height: 40px;
-      }
-
-      @media (max-width: 319px) {
-        width: 35px;
-        height: 35px;
-      }
     }
 
     .logo-text {
       font-size: 5.25rem;
       font-weight: 800;
-      color: var(--color-secondary);
       letter-spacing: 2px;
       line-height: 1;
 
       // Large desktop
       @media (min-width: 1200px) {
+        color: var(--color-secondary);
         font-size: 6rem;
       }
 
       @media (max-width: 768px) {
+        color: var(--color-primary);
         font-size: 3rem;
       }
 
-      @media (max-width: 480px) {
-        font-size: 2.2rem;
-        letter-spacing: 1px;
-      }
-
-      @media (max-width: 319px) {
-        font-size: 1.8rem;
-        letter-spacing: 0.5px;
-      }
     }
   }
 
   .logo-subtitle {
     font-size: 1rem;
-    color: var(--color-secondary);
     font-weight: 400;
-    margin-top: -10px;
 
     // Large desktop
     @media (min-width: 1200px) {
+      color: var(--color-secondary);
       font-size: 1.1rem;
     }
 
     @media (max-width: 768px) {
+      color: var(--color-primary);
       font-size: 0.9rem;
       margin-top: -5px;
     }
@@ -176,12 +126,7 @@
     }
   }
 
-  @media (max-width: 1200px) {
-    flex-direction: column !important;
-  }
-
   @media (max-width: 768px) {
-    flex-direction: column !important;
     gap: 0.5rem;
   }
 }
