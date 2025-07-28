@@ -44,12 +44,18 @@ const routes: Routes = [
   },
 
   {
-    path: 'user',
+    path: 'user-form',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),
   },
 
-
+  {
+    path: 'user',
+    loadChildren: () =>
+      import('./pages/private/private.module').then(
+        (m) => m.PrivateModule
+      ),
+  },
 
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: '**', redirectTo: 'inicio' },

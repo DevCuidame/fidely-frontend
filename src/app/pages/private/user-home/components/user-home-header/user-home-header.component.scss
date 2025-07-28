@@ -1,0 +1,130 @@
+.dashboard-header {
+  background: var(--color-primary);
+  clip-path: ellipse(100% 70% at 50% 30%);
+  padding: 20px 20px 30px 20px;
+  color: var(--color-light);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 160px;
+  width: 100%;
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1;
+      
+      .user-avatar {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+        
+        .avatar-image {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+      
+      .user-greeting {
+        display: flex;
+        flex-direction: column;
+        
+        .greeting-hello {
+          margin: 0;
+          font-size: 0.875rem;
+          font-weight: 400;
+          color: var(--text-quaternary);
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+          opacity: 0.9;
+        }
+        
+        .greeting-name {
+          margin: 0;
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: var(--text-quaternary);
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+    
+    .header-right {
+      .notification-container {
+        position: relative;
+        cursor: pointer;
+        
+        .notification-icon {
+          font-size: 1.5rem;
+          color: var(--color-light);
+        }
+        
+        .notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: var(--color-tertiary);
+          color: var(--color-primary);
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.7rem;
+          font-weight: bold;
+          border: 2px solid var(--color-light);
+        }
+      }
+    }
+  }
+  
+  .header-message {
+    text-align: center;
+    
+    .custom-message {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--color-light);
+      opacity: 0.9;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
+// Responsive para diferentes tamaños móviles
+@media (max-width: 375px) {
+  .dashboard-header {
+    .header-content {
+      .header-left {
+        gap: 10px;
+        
+        .user-avatar .avatar-image {
+          width: 40px;
+          height: 40px;
+        }
+        
+        .user-greeting .greeting-text {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}

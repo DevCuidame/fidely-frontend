@@ -1,0 +1,27 @@
+<header class="dashboard-header">
+  <div class="header-content">
+    <!-- Sección Izquierda: Avatar y Saludo -->
+    <div class="header-left">
+      <div class="user-avatar" *ngIf="showUserImage" (click)="onUserImageClick()">
+        <img [src]="userData?.image || '/assets/images/avatar.svg'" [alt]="userData?.name" class="avatar-image">
+      </div>
+      <div class="user-greeting" *ngIf="showUserName">
+        <div class="greeting-hello">¡Hola,</div>
+        <h2 class="greeting-name">{{ userData?.name || 'Usuario' }}!</h2>
+      </div>
+    </div>
+    
+    <!-- Sección Derecha: Notificaciones -->
+    <div class="header-right" *ngIf="showNotifications">
+      <div class="notification-container" (click)="onNotificationClick()">
+        <fa-icon [icon]="faBell" class="notification-icon"></fa-icon>
+        <span class="notification-badge" *ngIf="hasNotifications()">{{ unreadNotifications }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sección Central: Mensaje Personalizado -->
+  <div class="header-message" *ngIf="customMessage">
+    <p class="custom-message">{{ customMessage }}</p>
+  </div>
+</header>

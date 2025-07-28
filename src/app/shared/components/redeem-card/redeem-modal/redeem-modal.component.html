@@ -1,0 +1,60 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Tu Premio</h2>
+      <button class="close-button" (click)="closeModal()">
+        <fa-icon [icon]="faTimes" class="close-icon"></fa-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="modal-content">
+      <div class="reward-card">
+        <!-- Información del premio -->
+        <div class="reward-info">
+          <h2 class="reward-title">{{ reward.title }}</h2>
+          <p class="reward-description">{{ reward.description }}</p>
+
+          <!-- Código de Redención -->
+          <div class="code-section">
+            <h3 class="code-title">Código de Redención</h3>
+            <div class="code-container" (click)="onCodeCopy()">
+              <span class="code-text">{{ reward.code }}</span>
+              <fa-icon [icon]="faCopy" class="copy-icon"></fa-icon>
+            </div>
+          </div>
+
+          <!-- Imagen del premio -->
+          <!-- <div class="reward-image">
+          <img [src]="reward.image" [alt]="reward.title" />
+        </div> -->
+
+          <div class="reward-details">
+            <div class="detail-item points">
+              <span class="detail-label">Puntos</span>
+              <span class="detail-value">10</span>
+            </div>
+
+            <div class="detail-item">
+              <span class="detail-label">Vigencia</span>
+              <span class="detail-value">{{ reward.expiryDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Válido por -->
+        <div class="valid-for-section">
+          <p class="valid-for-text">{{ reward.validFor }}</p>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="instructions">
+          <p>
+            Presenta este código en el establecimiento para redimir tu premio.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

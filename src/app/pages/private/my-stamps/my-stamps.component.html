@@ -1,0 +1,12 @@
+<div class="my-stamps-container">
+  <app-stamp-card
+    *ngFor="let sello of activeSellos(); trackBy: trackBySelloId"
+    [cardId]="sello.id.toString()"
+    [backgroundImage]="sello.imagen"
+    [totalStamps]="sello.objetivo"
+    [collectedStamps]="sello.progreso"
+    [title]="sello.nombre"
+    [isExpanded]="isCardExpanded(sello.id.toString())"
+    (expansionToggle)="onCardExpansionToggle($event)">
+  </app-stamp-card>
+</div>

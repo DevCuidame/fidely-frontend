@@ -1,0 +1,38 @@
+<div class="stamps-carousel">
+  <!-- Single Stamp Card Carousel -->
+  <div class="carousel-container" 
+       (touchstart)="onTouchStart($event)"
+       (touchmove)="onTouchMove($event)"
+       (touchend)="onTouchEnd($event)">
+    
+    <!-- Single Stamp Card -->
+    <div class="stamp-card-wrapper" 
+         [style.transform]="'translateX(' + getTranslateX() + 'px)'"
+         *ngIf="currentStamp()">
+      <div class="stamp-card">
+        <!-- Left Content -->
+        <div class="stamp-content">
+          <div class="stamp-message">
+            <h3>Estás cerca de la meta</h3>
+          </div>
+          <div class="stamp-progress">
+            <span class="progress-count">8/10 Sellos</span>
+          </div>
+        </div>
+        
+        <!-- Right Image -->
+        <div class="stamp-image">
+          <img [src]="currentStamp().imagen || 'assets/images/burger-stamp.svg'" 
+               [alt]="currentStamp().nombre || 'Sello'" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="totalSellos() === 0">
+    <ion-icon name="albums-outline" class="empty-icon"></ion-icon>
+    <h4>No hay sellos disponibles</h4>
+    <p>Comienza a coleccionar sellos completando actividades</p>
+  </div>
+</div>

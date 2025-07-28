@@ -1,0 +1,15 @@
+<div class="inicio-container">
+  <!-- Stamps Carousel -->
+  <app-stamps-carousel
+    [sellos]="sellos()"
+    [autoPlayInterval]="5000"
+    [itemsPerView]="1"
+  >
+  </app-stamps-carousel>
+
+  <!-- Allies Carousel -->
+  <app-allies-carousel [aliados]="aliados()"> </app-allies-carousel>
+
+  <!-- News Carousel -->
+  <app-news-carousel [novedades]="novedades()"> </app-news-carousel>
+</div>

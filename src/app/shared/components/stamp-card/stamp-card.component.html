@@ -1,0 +1,46 @@
+<div class="stamp-card-container">
+  <!-- Main Card (Image Background) -->
+  <div class="stamp-card" 
+       [style.background-image]="'url(' + backgroundImage + ')'" 
+       (click)="toggleExpansion()">
+    
+    <!-- Card Overlay -->
+    <div class="card-overlay"></div>
+    
+    <!-- Card Content -->
+    <div class="card-content">
+    </div>
+    
+    <!-- Counter (Bottom Right) -->
+    <div class="stamp-counter">
+      <span class="counter-text">Has conseguido {{ collectedStamps }} sellos de {{ totalStamps }} sellos</span>
+    </div>
+  </div>
+  
+  <!-- Expandable Stamps Section -->
+  <div class="stamps-section" [class.expanded]="expandedState">
+    <div class="stamps-container">
+      <!-- Top Row (5 stamps) -->
+      <div class="stamps-row top-row">
+        <div class="stamp-item" 
+             *ngFor="let stamp of topRowStamps" 
+             [class.collected]="stamp.collected">
+          <img [src]="stamp.collected ? 'assets/logo/fidely-logo.png' : 'assets/logo/fidely-logo.png'" 
+               [alt]="'Sello ' + stamp.id"
+               [class.grayscale]="!stamp.collected" />
+        </div>
+      </div>
+      
+      <!-- Bottom Row (5 stamps) -->
+      <div class="stamps-row bottom-row">
+        <div class="stamp-item" 
+             *ngFor="let stamp of bottomRowStamps" 
+             [class.collected]="stamp.collected">
+          <img [src]="stamp.collected ? 'assets/logo/fidely-logo.png' : 'assets/logo/fidely-logo.png'" 
+               [alt]="'Sello ' + stamp.id"
+               [class.grayscale]="!stamp.collected" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

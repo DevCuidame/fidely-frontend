@@ -183,8 +183,8 @@ export class UpdateProfileComponent implements OnInit {
     }
 
     // Cargar la imagen si existe
-    if (userData.path) {
-      this.imageLoaded = `${environment.url}${userData.path.replace(/\\/g, '/')}`;
+    if (userData.profile_image_url) {
+      this.imageLoaded = `${environment.url}${userData.profile_image_url.replace(/\\/g, '/')}`;
     }
     
     // Si hay un departamento, primero cargar las ciudades
