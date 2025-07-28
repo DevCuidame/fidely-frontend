@@ -1,0 +1,368 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to use other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@use "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@use "@ionic/angular/css/normalize.css";
+@use "@ionic/angular/css/structure.css";
+@use "@ionic/angular/css/typography.css";
+@use "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@use "@ionic/angular/css/padding.css";
+@use "@ionic/angular/css/float-elements.css";
+@use "@ionic/angular/css/text-alignment.css";
+@use "@ionic/angular/css/text-transformation.css";
+@use "@ionic/angular/css/flex-utils.css";
+@use "./theme/variables.scss";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @use "@ionic/angular/css/palettes/dark.always.css"; */
+/* @use "@ionic/angular/css/palettes/dark.class.css"; */
+@use "@ionic/angular/css/palettes/dark.system.css";
+
+// Import custom toast styles
+@use "./app/core/services/toast/toast.service.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+
+* {
+  font-family: "Mulish", sans-serif;
+}
+
+p {
+  margin: 0;
+}
+
+// Global styles for main header
+body {
+  padding: 0;
+  overflow-x: hidden;
+}
+
+html, body {
+  height: auto;
+  min-height: 100%;
+}
+
+// Ensure smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Hide scrollbars globally while maintaining scroll functionality
+* {
+  // For Webkit browsers (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  // For Firefox
+  scrollbar-width: none;
+  
+  // For Internet Explorer and Edge Legacy
+  -ms-overflow-style: none;
+}
+
+// Ensure body and html maintain scroll functionality
+body, html {
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE and Edge
+  
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari, Edge
+  }
+}
+
+// Custom Loading Controller Styles - Diseño Simple y Limpio
+ion-loading.custom-loading {
+  --background: rgba(255, 255, 255, 0.95);
+  --color: var(--color-secondary);
+  --spinner-color: var(--color-primary);
+  --backdrop-opacity: 0.3;
+  
+  .loading-wrapper {
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(141, 212, 170, 0.1);
+    backdrop-filter: blur(8px);
+    border: none;
+    min-width: 160px;
+    max-width: 280px;
+    padding: 24px 20px;
+  }
+  
+  .loading-content {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--color-secondary);
+    text-align: center;
+    margin-top: 12px;
+  }
+  
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+  }
+}
+
+// Custom Alert Controller Styles - Diseño Simple y Limpio
+ion-alert.custom-alert {
+  --background: rgba(255, 255, 255, 0.98);
+  --color: var(--color-secondary);
+  --backdrop-opacity: 0.25;
+  
+  .alert-wrapper {
+    border-radius: 24px;
+    box-shadow: 0 6px 30px rgba(141, 212, 170, 0.08);
+    backdrop-filter: blur(12px);
+    border: none;
+    overflow: hidden;
+    min-width: 320px;
+    max-width: 480px;
+  }
+  
+  .alert-head {
+    background: var(--color-tertiary);
+    color: var(--color-secondary);
+    padding: 28px 24px 16px;
+    text-align: center;
+    
+    .alert-title {
+      font-family: "Lato", sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 0;
+      color: var(--color-secondary);
+    }
+  }
+  
+  .alert-message {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #666;
+    padding: 16px 24px 28px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  
+  .alert-button-group {
+    border-top: 1px solid rgba(141, 212, 170, 0.1);
+    background: rgba(248, 250, 252, 0.8);
+    
+    .alert-button {
+      font-family: "Lato", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--color-secondary);
+      background: transparent;
+      border: none;
+      padding: 18px;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(141, 212, 170, 0.05);
+      }
+      
+      &.alert-button-role-cancel {
+        color: #999;
+        border-right: 1px solid rgba(141, 212, 170, 0.1);
+        
+        &:hover {
+          background: rgba(0, 0, 0, 0.02);
+        }
+      }
+      
+      &.alert-button-role-destructive {
+        color: #e74c3c;
+        
+        &:hover {
+          background: rgba(231, 76, 60, 0.05);
+        }
+      }
+    }
+  }
+}
+
+// Estilos globales para inputs de fecha
+input[type="date"] {
+  position: relative;
+  padding-right: 2.5rem;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.2rem;
+  color-scheme: light;
+  cursor: pointer;
+
+  // Ocultar el icono nativo del navegador
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0.75rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  // Personalización del calendario desplegable
+  &::-webkit-datetime-edit {
+    color: inherit;
+  }
+
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-datetime-edit-text {
+    color: rgba(0, 0, 0, 0.6);
+    padding: 0 0.25rem;
+  }
+
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field {
+    color: inherit;
+    background: transparent;
+    border: none;
+    padding: 0.125rem;
+    border-radius: 4px;
+    
+    &:focus {
+      background: rgba(141, 212, 170, 0.1);
+      outline: none;
+    }
+  }
+
+  // Tema oscuro
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ccc"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>');
+    
+    &::-webkit-datetime-edit-text {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+
+
+
+
+// Error Alert Variant - Diseño Suave
+ion-alert.error-alert {
+  .alert-head {
+    background: rgba(255, 245, 245, 0.9);
+    
+    .alert-title {
+      color: #d63384;
+    }
+  }
+  
+  .alert-wrapper {
+    border: 1px solid rgba(214, 51, 132, 0.1);
+  }
+  
+  .alert-button-group {
+    border-top: 1px solid rgba(214, 51, 132, 0.1);
+    
+    .alert-button:not(.alert-button-role-cancel):hover {
+      background: rgba(214, 51, 132, 0.05);
+      color: #d63384;
+    }
+  }
+}
+
+// Success Alert Variant - Diseño Suave
+ion-alert.success-alert {
+  .alert-head {
+    background: rgba(245, 255, 250, 0.9);
+    
+    .alert-title {
+      color: var(--color-quaternary);
+    }
+  }
+  
+  .alert-wrapper {
+    border: 1px solid rgba(63, 190, 124, 0.1);
+  }
+  
+  .alert-button-group {
+    border-top: 1px solid rgba(63, 190, 124, 0.1);
+    
+    .alert-button:not(.alert-button-role-cancel):hover {
+      background: rgba(63, 190, 124, 0.05);
+      color: var(--color-quaternary);
+    }
+  }
+}
+
+// Input Alert Variant - Diseño Suave
+ion-alert.input-alert {
+  .alert-wrapper {
+    max-width: 420px;
+  }
+  
+  .alert-input-wrapper {
+    padding: 0 24px 24px;
+    
+    .alert-input {
+      border: 1px solid rgba(141, 212, 170, 0.2);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-family: "Lato", sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--color-secondary);
+      background: rgba(255, 255, 255, 0.8);
+      transition: all 0.2s ease;
+      
+      &:focus {
+        border-color: var(--color-primary);
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(141, 212, 170, 0.08);
+        background: rgba(255, 255, 255, 1);
+      }
+      
+      &::placeholder {
+        color: #bbb;
+        font-weight: 300;
+      }
+    }
+  }
+}

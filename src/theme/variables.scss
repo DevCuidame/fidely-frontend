@@ -1,0 +1,35 @@
+:root {
+    // Main color palette
+    --color-primary: #F4650F;
+    --color-secondary: #0EA2A4;
+    --color-tertiary: #FABE16;
+    --color-quaternary: #3FBE7C;
+    --color-light: #FFFFFF;
+    --color-smooth_light: #F2F2F2;
+    
+    // Text colors
+    --text-primary: #0EA2A4;
+    --text-secondary: #F4650F;
+    --text-tertiary: #C1C0C4;
+    
+    // Background colors
+    --background-color: #F2F2F2;
+    --background-secondary: var(--color-primary);
+    --card-background: #FFFFFF;
+    
+    // Border colors
+    --border-color: #0EA2A4;
+    
+    // Status colors
+    --success-color: #28a745;
+    --success-background: #d4edda;
+    --warning-color: #ffc107;
+    --warning-background: #fff3cd;
+    --danger-color: #dc3545;
+    --danger-background: #f8d7da;
+    --info-color: #17a2b8;
+    --info-light: #5bc0de;
+    --info-background: #d1ecf1;
+
+  }
+

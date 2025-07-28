@@ -1,0 +1,251 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 10px 10px 10px;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  width: 100%;
+}
+
+.custom-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-input label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper ion-icon:first-child {
+  position: absolute;
+  left: 15px;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  pointer-events: none;
+}
+
+.custom-input input {
+  background: var(--color-tertiary);
+  border: 2px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 12px 45px;
+  width: 100%;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.custom-input input:focus {
+  border-color: var(--color-secondary);
+  background: var(--color-tertiary);
+  box-shadow: 0 0 0 4px rgba(142, 212, 170, 0.2);
+}
+
+.custom-input input::placeholder {
+  color: var(--color-primary);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+  color: var(--color-secondary);
+}
+
+.error-text {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.remember-me label {
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.divider {
+  text-align: center;
+  position: relative;
+  margin: 25px 0;
+}
+
+.divider span {
+  background: var(--color-tertiary);
+  padding: 0 15px;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-primary);
+}
+
+.social-login {
+  display: flex;
+  gap: 15px;
+}
+
+.social-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  background: var(--color-tertiary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.social-button:hover {
+  background: var(--color-primary);
+  color: var(--color-tertiary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(142, 212, 170, 0.3);
+}
+
+.social-button ion-icon {
+  font-size: 1.2rem;
+}
+
+.social-button.google {
+  color: var(--color-secondary);
+  border-color: var(--color-quaternary);
+}
+
+.social-button.google:hover {
+  background: var(--color-quaternary);
+  color: var(--color-tertiary);
+}
+
+.social-button.facebook {
+  color: var(--color-secondary);
+  border-color: var(--color-primary);
+}
+
+.social-button.facebook:hover {
+  background: var(--color-primary);
+  color: var(--color-tertiary);
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .auth-form {
+    padding: 20px 0;
+  }
+
+  .custom-input input {
+    padding: 14px 50px;
+    font-size: 1.05rem;
+  }
+
+  .input-wrapper ion-icon:first-child {
+    left: 18px;
+    font-size: 1.3rem;
+  }
+
+  .toggle-password {
+    right: 18px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .auth-form {
+    gap: 24px;
+  }
+
+  .custom-input label {
+    font-size: 1rem;
+  }
+
+  .social-button {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .social-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+}

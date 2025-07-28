@@ -1,0 +1,31 @@
+CONTEXTO DEL Componente:
+- Angular 19 standalone components
+- SPA para gestión médica
+- Sin frameworks UI, FontAwesome icons
+
+ESPECIFICACIONES TÉCNICAS:
+- Interfaces: ./interfaces/user.interface.ts
+- Estilos: ./theme/variables.scss
+- Estado: Angular Signals
+- Formularios: Reactive Forms
+
+COMPONENTE REQUERIDO:
+- SessionConfirmation
+- Propósito: Mostrar el estado de la cita
+- Permisos: isUser(user)
+- Datos: User[], UserFilters
+
+FUNCIONALIDADES ESPECÍFICAS:
+- CRUD completo de usuarios
+- Filtros por rol, estado, fecha registro
+- Paginación de 20 elementos
+- Exportar a Excel
+- Validaciones: email único, contraseña segura
+
+ESTRUCTURA ESPERADA:
+/admin/users/
+  ├── user-list.component.ts
+  ├── user-list.component.html
+  ├── user-list.component.scss
+  ├── user-form/
+  └── user-card/

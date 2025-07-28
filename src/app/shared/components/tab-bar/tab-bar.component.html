@@ -1,0 +1,83 @@
+<ion-footer *ngIf="isVisible">
+  <div class="tab-bar" [ngStyle]="{ 'background': background }">
+    @for(button of buttons; track button; let i = $index) {
+      <ng-container>
+        @if (button.visible) {
+          <div class="tab-button" (click)="button.route === '' ? toggleMenu() : navigate(button.route)">
+            <ion-icon [name]="button.icon"></ion-icon>
+            
+            <!-- Menú desplegable solo para el botón del menú -->
+            @if (button.route === '' && showMenu) {
+              <div class="menu-dropdown">
+                <div class="menu-arrow"></div>
+                <div class="menu-sections">
+                  <!-- Sección Principal -->
+                  @if (menuSections && menuSections['main'] && menuSections['main'].length > 0) {
+                    <div class="menu-section">
+                      <ul>
+                        @for(item of menuSections['main']; track item) {
+                          <li (click)="item.action ? item.action() : null">
+                            <ion-icon [name]="item.icon"></ion-icon>
+                            <span>{{ item.label }}</span>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                  
+                  <!-- Sección de Perfil -->
+                  @if (menuSections && menuSections['profile'] && menuSections['profile'].length > 0) {
+                    <div class="menu-divider"></div>
+                    <div class="menu-section">
+                      <ul>
+                        @for(item of menuSections['profile']; track item) {
+                          <li (click)="item.action ? item.action() : null">
+                            <ion-icon [name]="item.icon"></ion-icon>
+                            <span>{{ item.label }}</span>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                  
+                  <!-- Sección de Soporte -->
+                  @if (menuSections && menuSections['support'] && menuSections['support'].length > 0) {
+                    <div class="menu-divider"></div>
+                    <div class="menu-section">
+                      <ul>
+                        @for(item of menuSections['support']; track item) {
+                          <li (click)="item.action ? item.action() : null">
+                            <ion-icon [name]="item.icon"></ion-icon>
+                            <span>{{ item.label }}</span>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                  
+                  <!-- Sección de Peligro -->
+                  @if (menuSections && menuSections['danger'] && menuSections['danger'].length > 0) {
+                    <div class="menu-divider"></div>
+                    <div class="menu-section danger">
+                      <ul>
+                        @for(item of menuSections['danger']; track item) {
+                          <li class="danger" (click)="item.action ? item.action() : null">
+                            <ion-icon [name]="item.icon"></ion-icon>
+                            <span>{{ item.label }}</span>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="menu-backdrop" (click)="hideMenu()"></div>
+            }
+          </div>
+        } @else {
+          <div class="tab-button empty"></div>
+        }
+      </ng-container>
+    }
+  </div>
+</ion-footer>

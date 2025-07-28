@@ -1,0 +1,49 @@
+<!-- Diseño responsive unificado -->
+<div class="dashboard-layout">
+  <!-- Overlay para cerrar sidebar en móvil -->
+  <div
+    class="sidebar-overlay"
+    [class.active]="sidebarOpen"
+    (click)="toggleSidebar()"
+  ></div>
+
+  <!-- Sidebar - drawer en móvil, fijo en desktop -->
+  <app-sidebar
+    class="sidebar-container"
+    [class.active]="sidebarOpen"
+    [user]="user"
+    (logoutRequested)="logout()"
+  ></app-sidebar>
+
+  <!-- Contenido principal -->
+  <div class="main-container">
+    <!-- Dashboard main content -->
+    <div class="dashboard-content dashboard-main">
+      <div class="main-header">
+        <app-header-private
+          [userName]="user?.first_name"
+          [background]="'#fff'"
+          [border]="'20px'"
+          [boxshadow]="'0 15px 8px rgba(0, 0, 0, 0.1);'"
+          [icon]="true"
+          [showMenuButton]="true"
+          [pageTitle]="currentPageTitle"
+          (menuButtonClick)="toggleSidebar()"
+        ></app-header-private>
+      </div>
+      
+      <!-- Área donde se renderizan los componentes hijos -->
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab bar solo en móvil -->
+  <app-tab-bar
+    class="mobile-tab-bar"
+    [isVisible]="true"
+    [user]="user"
+    [background]="'var(--color-tertiary)'"
+  ></app-tab-bar>
+</div>

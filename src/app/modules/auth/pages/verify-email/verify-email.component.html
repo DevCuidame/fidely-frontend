@@ -1,0 +1,46 @@
+<div class="verify-email-page">
+  <div class="verify-email-container">
+    
+    <!-- Estado de carga -->
+    <div *ngIf="verificationStatus === 'loading'" class="loading-state">
+      <div class="spinner"></div>
+      <h2>Verificando tu correo electrónico</h2>
+      <p>Estamos procesando tu solicitud...</p>
+    </div>
+
+    <!-- Estado de éxito -->
+    <div *ngIf="verificationStatus === 'success'" class="success-state">
+      <div class="icon-container success">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>¡Correo verificado!</h2>
+      <p>Tu correo electrónico ha sido verificado correctamente.</p>
+      <p>Ya puedes iniciar sesión en tu cuenta.</p>
+      <button class="btn btn-primary" (click)="goToLogin()">
+        Iniciar sesión
+      </button>
+    </div>
+
+    <!-- Estado de error -->
+    <div *ngIf="verificationStatus === 'error'" class="error-state">
+      <div class="icon-container error">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Error de verificación</h2>
+      <p>Lo sentimos, no pudimos verificar tu correo electrónico.</p>
+      <div class="button-group">
+        <button class="btn btn-primary" (click)="verifyEmail()">
+          Intentar nuevamente
+        </button>
+        <button class="btn btn-text" (click)="goToLogin()">
+          Volver al inicio de sesión
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

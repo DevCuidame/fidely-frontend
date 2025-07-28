@@ -1,0 +1,256 @@
+
+.verify-email-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--background-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.verify-email-container {
+  background: var(--card-background);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 48px 32px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.verify-email-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--color-quaternary));
+}
+
+.loading-state,
+.success-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.icon-container {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.icon-container.success {
+  background: var(--success-background);
+  color: var(--success-color);
+}
+
+.icon-container.error {
+  background: var(--danger-background);
+  color: var(--danger-color);
+}
+
+.icon-container svg {
+  width: 40px;
+  height: 40px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--background-secondary);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 160px;
+  margin: 8px;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--color-tertiary);
+  box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--color-primary-rgb), 0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+  background: var(--primary-color);
+  color: var(--color-tertiary);
+  transform: translateY(-2px);
+}
+
+.btn-text {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  font-weight: 500;
+}
+
+.btn-text:hover {
+  color: var(--text-primary);
+  background: var(--background-secondary);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+  width: 100%;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-state,
+.error-state {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.icon-container.success {
+  animation: fadeInUp 0.6s ease-out, pulse 2s infinite 1s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .verify-email-page {
+    padding: 16px;
+  }
+  
+  .verify-email-container {
+    padding: 32px 24px;
+    border-radius: 12px;
+  }
+  
+  h2 {
+    font-size: 24px;
+  }
+  
+  p {
+    font-size: 15px;
+  }
+  
+  .icon-container {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .icon-container svg {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    font-size: 15px;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .verify-email-container {
+    padding: 24px 20px;
+  }
+  
+  h2 {
+    font-size: 22px;
+  }
+  
+  p {
+    font-size: 14px;
+  }
+  
+  .icon-container {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .icon-container svg {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+}

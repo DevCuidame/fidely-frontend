@@ -1,0 +1,27 @@
+<header class="header" [class.header--scrolled]="isScrolled">
+  <div class="header__container">
+    <div class="header__logo">
+      <img src="assets/logo/logo.png" alt="Esencia y Cuerpo" class="header__logo-img">
+    </div>
+    
+    <!-- Botón hamburguesa para móviles -->
+    <button class="header__hamburger" 
+            (click)="toggleMobileMenu()"
+            [class.active]="isMobileMenuOpen"
+            aria-label="Menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <nav class="header__nav" [class.open]="isMobileMenuOpen">
+      <div class="header__buttons">
+      </div>
+    </nav>
+    
+    <!-- Overlay para cerrar el menú al hacer clic fuera -->
+    <div class="header__overlay" 
+         *ngIf="isMobileMenuOpen" 
+         (click)="closeMobileMenu()"></div>
+  </div>
+</header>

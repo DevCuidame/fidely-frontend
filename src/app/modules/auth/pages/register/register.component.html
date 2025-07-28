@@ -1,0 +1,295 @@
+<div class="info">
+  <p>
+    Gracias por adquirir nuestros servicios. A continuación puedes registrar los
+    datos de la cuenta.
+  </p>
+</div>
+
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="register()"
+  class="animate-slide-up auth-form"
+>
+  <!-- Image Upload -->
+  <div class="image-upload-container">
+    <div class="image-circle" (click)="selectImage()">
+      <img
+        *ngIf="selectedImage"
+        [src]="registerForm.get('imagebs64')?.value"
+        alt="User Image"
+      />
+      <div *ngIf="!selectedImage" class="upload-placeholder">
+        <ion-icon name="person-outline"></ion-icon>
+      </div>
+      <div class="small-circle">
+        <ion-icon class="camera-icon" name="camera"></ion-icon>
+      </div>
+    </div>
+    <input
+      type="file"
+      id="imageInput"
+      (change)="onImageSelected($event)"
+      hidden
+      accept="image/*"
+    />
+    <p class="upload-text">Haz clic para subir tu foto</p>
+    <p class="error-text" *ngIf="getErrorMessage('imagebs64')">
+      {{ getErrorMessage("imagebs64") }}
+    </p>
+  </div>
+
+  <!-- Personal Information Section -->
+  <div class="form-section">
+    <h3 class="section-title">Información Personal</h3>
+    
+    <div class="form-row">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="first_name">Nombres</label>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline"></ion-icon>
+            <input id="first_name" type="text" formControlName="first_name" placeholder="Juan Carlos" required />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('first_name')">
+          {{ getErrorMessage("first_name") }}
+        </p>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="last_name">Apellidos</label>
+          <div class="input-wrapper">
+            <ion-icon name="person-outline"></ion-icon>
+            <input id="last_name" type="text" formControlName="last_name" placeholder="Pérez García" required />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('last_name')">
+          {{ getErrorMessage("last_name") }}
+        </p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="identification_type">Tipo de Identificación</label>
+          <div class="input-wrapper">
+            <ion-icon name="card-outline"></ion-icon>
+            <select id="identification_type" formControlName="identification_type">
+              <option value="CC">Cédula</option>
+              <option value="TI">Tarjeta de Identidad</option>
+              <option value="PASSPORT">Pasaporte</option>
+              <option value="OTHER">Otro</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="identification_number">Número de Identificación</label>
+          <div class="input-wrapper">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <input 
+              id="identification_number" 
+              [type]="registerForm.get('identification_type')?.value === 'PASSPORT' ? 'text' : 'number'" 
+              formControlName="identification_number" 
+              [placeholder]="registerForm.get('identification_type')?.value === 'PASSPORT' ? 'ABC123456' : '123456789'" 
+              required 
+            />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('identification_number')">
+          {{ getErrorMessage("identification_number") }}
+        </p>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="gender">Género</label>
+          <div class="input-wrapper">
+            <ion-icon name="transgender-outline"></ion-icon>
+            <select id="gender" formControlName="gender">
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="Other">Otro</option>
+            </select>
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('gender')">
+          {{ getErrorMessage("gender") }}
+        </p>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="birth_date">Fecha de nacimiento</label>
+          <div class="input-wrapper">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <input id="birth_date" type="date" formControlName="birth_date" required />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('birth_date')">
+          {{ getErrorMessage("birth_date") }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Information Section -->
+  <div class="form-section">
+    <h3 class="section-title">Información de Contacto</h3>
+
+    <div class="form-group full-width">
+      <div class="custom-input">
+        <label for="address">Dirección</label>
+        <div class="input-wrapper">
+          <ion-icon name="location-outline"></ion-icon>
+          <input id="address" type="text" formControlName="address" placeholder="Calle 123 #45-67" required />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-top: 10px;">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="department">Departamento</label>
+          <div class="input-wrapper">
+            <ion-icon name="map-outline"></ion-icon>
+            <select id="department" formControlName="department">
+              <option *ngFor="let department of departments" [value]="department.id">
+                {{ department.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="city_id">Ciudad</label>
+          <div class="input-wrapper">
+            <ion-icon name="business-outline"></ion-icon>
+            <select id="city_id" formControlName="city_id">
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="phone">Teléfono</label>
+          <div class="input-wrapper">
+            <ion-icon name="call-outline"></ion-icon>
+            <input id="phone" type="number" formControlName="phone" placeholder="3001234567" required />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('phone')">
+          {{ getErrorMessage("phone") }}
+        </p>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="email">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <ion-icon name="mail-outline"></ion-icon>
+            <input id="email" type="email" formControlName="email" placeholder="correo@ejemplo.com" required />
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('email')">
+          {{ getErrorMessage("email") }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security Section -->
+  <div class="form-section">
+    <h3 class="section-title">Seguridad</h3>
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="password">Contraseña</label>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <input
+              id="password"
+              [type]="passwordVisible ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Mínimo 8 caracteres"
+              required
+            />
+            <ion-icon 
+              [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+            ></ion-icon>
+          </div>
+        </div>
+        <p class="error-text" *ngIf="getErrorMessage('password')">
+          {{ getErrorMessage("password") }}
+        </p>
+      </div>
+
+      <div class="form-group half-width">
+        <div class="custom-input">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <div class="input-wrapper">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <input
+              id="confirmPassword"
+              [type]="confirmPasswordVisible ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Repite tu contraseña"
+              required
+            />
+            <ion-icon 
+              [name]="confirmPasswordVisible ? 'eye-off-outline' : 'eye-outline'"
+              class="toggle-password"
+              (click)="toggleConfirmPasswordVisibility()"
+            ></ion-icon>
+          </div>
+        </div>
+        <p class="error-text" *ngIf="registerForm.get('confirmPassword')?.hasError('mismatch')">
+          Las contraseñas no coinciden.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms and Conditions -->
+  <div class="custom-checkbox">
+    <input
+      id="privacy_policy"
+      type="checkbox"
+      formControlName="privacy_policy"
+      required
+    />
+    <label for="privacy_policy" class="checkbox-label">
+      Acepto las
+      <a href="/privacy-policy" target="_blank">políticas de privacidad</a> y el
+      tratamiento de datos personales de acuerdo con la normativa vigente.
+    </label>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="button-container">
+    <app-custom-button
+      label="Crear Cuenta"
+      type="submit"
+      [disabled]="registerForm.invalid"
+      [textColor]="'var(--color-tertiary)'"
+      [background]="buttonBackground"
+    ></app-custom-button>
+  </div>
+</form>

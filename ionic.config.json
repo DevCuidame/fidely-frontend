@@ -1,0 +1,7 @@
+{
+  "name": "Fidely",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
