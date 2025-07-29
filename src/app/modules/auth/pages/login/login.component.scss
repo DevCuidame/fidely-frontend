@@ -45,13 +45,13 @@
   position: absolute;
   left: 15px;
   font-size: 1.2rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   pointer-events: none;
 }
 
 .custom-input input {
-  background: var(--color-tertiary);
-  border: 2px solid var(--color-primary);
+  background: var(--color-smooth_light);
+  border: 2px solid var(--color-secondary);
   border-radius: 12px;
   padding: 12px 45px;
   width: 100%;
@@ -62,19 +62,19 @@
 
 .custom-input input:focus {
   border-color: var(--color-secondary);
-  background: var(--color-tertiary);
+  background: var(--color-secondary-light);
   box-shadow: 0 0 0 4px rgba(142, 212, 170, 0.2);
 }
 
 .custom-input input::placeholder {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .toggle-password {
   position: absolute;
   right: 15px;
   font-size: 1.2rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   cursor: pointer;
   transition: color 0.3s ease;
 }

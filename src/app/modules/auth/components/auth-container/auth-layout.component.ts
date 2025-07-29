@@ -13,22 +13,22 @@ import { TabBarComponent } from 'src/app/shared/components/tab-bar/tab-bar.compo
       <div class="auth-container">
         <!-- Desktop Left Side -->
         <div class="desktop-left-panel">
-          <div class="brand-section">
-            <ion-img class="desktop-logo" src="assets/logo/logo.png"></ion-img>
-            <h1 class="brand-title">Bienvenido</h1>
-            <p class="brand-subtitle">Masajes terapéuticos y estéticos.</p>
-          </div>
-        </div>
-
-        <!-- Mobile/Tablet Logo -->
-        <div class="mobile-logo-container">
-          <ion-img class="logo" src="assets/logo/logo.png"></ion-img>
         </div>
 
         <!-- Auth Card -->
         <div class="auth-card-wrapper">
           <div class="card">
             <div class="card-header">
+
+              <div class="brand-section">
+                <ion-img class="desktop-logo" src="assets/logo/logo_fidely.png"></ion-img>  
+              </div>
+              
+              <!-- Mobile/Tablet Logo -->
+              <div class="mobile-logo-container">
+                <ion-img class="logo" src="assets/logo/fidely-logo.png"></ion-img>
+              </div>
+
               <h2 class="card-title">
                 @if (currentRoute.includes('/login')) {
                   Iniciar Sesión

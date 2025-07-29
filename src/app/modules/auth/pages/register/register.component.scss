@@ -52,18 +52,18 @@ input[type="number"] {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: var(--color-tertiary);
+  background-color: var(--color-smooth_light);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 3px solid var(--color-primary);
+  border: 3px solid var(--color-secondary);
 }
 
 .image-circle:hover {
   transform: scale(1.05);
-  border-color: var(--color-secondary);
+  border-color: var(--color-quaternary);
   box-shadow: 0 5px 20px rgba(142, 212, 170, 0.3);
 }
 
@@ -84,7 +84,7 @@ input[type="number"] {
 
 .upload-placeholder ion-icon {
   font-size: 50px;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .small-circle {
@@ -94,7 +94,7 @@ input[type="number"] {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -104,20 +104,20 @@ input[type="number"] {
 
 .camera-icon {
   font-size: 18px;
-  color: var(--color-tertiary);
+  color: var(--color-smooth_light);
 }
 
 .upload-text {
   margin-top: 10px;
   font-size: 0.9rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 /* Form Sections */
 .form-section {
   margin-top: 10px;
   padding-top: 20px;
-  border-top: 1px solid var(--color-primary);
+  border-top: 1px solid var(--color-secondary);
 }
 
 .form-section:first-of-type {
@@ -176,15 +176,15 @@ input[type="number"] {
   position: absolute;
   left: 15px;
   font-size: 1.1rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   pointer-events: none;
   z-index: 1;
 }
 
 .custom-input input,
 .custom-input select {
-  background: var(--color-tertiary);
-  border: 2px solid var(--color-primary);
+  background: var(--color-smooth_light);
+  border: 2px solid var(--color-secondary);
   border-radius: 12px;
   padding: 12px 15px 12px 45px;
   width: 100%;
@@ -206,15 +206,16 @@ input[type="number"] {
 .custom-input input:focus,
 .custom-input select:focus {
   border-color: var(--color-secondary);
-  background-color: var(--color-tertiary);
+  background-color: var(--color-smooth_light);
   box-shadow: 0 0 0 4px rgba(142, 212, 170, 0.2);
 }
 
 .toggle-password {
+  padding: 5px;
   position: absolute;
-  right: 15px;
   font-size: 1.1rem;
-  color: var(--color-primary);
+  background-color: var(--color-smooth_light);
+  color: var(--color-secondary);
   cursor: pointer;
   transition: color 0.3s ease;
   z-index: 1;
@@ -244,7 +245,7 @@ input[type="number"] {
   min-width: 20px;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--color-secondary);
   border-radius: 4px;
   position: relative;
   cursor: pointer;
@@ -253,7 +254,7 @@ input[type="number"] {
 }
 
 .custom-checkbox input[type="checkbox"]:checked {
-  background: var(--color-primary);
+  background: var(--color-secondary);
 }
 
 .custom-checkbox input[type="checkbox"]::after {
@@ -363,7 +364,7 @@ input[type="number"] {
   }
 
   .toggle-password {
-    right: 18px;
+    right: 10px;
     font-size: 1.2rem;
   }
 }
@@ -386,7 +387,7 @@ input[type="number"] {
 
   .custom-input input:hover,
   .custom-input select:hover {
-    border-color: var(--color-primary-shade);
+    border-color: var(--color-secondary);
   }
 
   .checkbox-label {
