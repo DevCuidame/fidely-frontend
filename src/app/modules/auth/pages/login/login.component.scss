@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 30px 10px 10px 10px;
+  padding: 30px 20px 10px 20px; // Agregado padding lateral para móvil
   animation: slideUp 0.5s ease-out;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 @keyframes slideUp {
@@ -207,10 +209,57 @@
   color: var(--color-tertiary);
 }
 
+/* Mobile First - Estilos específicos para móvil */
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 20px 24px 10px 24px; // Más padding lateral en móviles pequeños
+    gap: 24px; // Más espacio entre elementos
+    max-width: 400px; // Limitar ancho máximo
+  }
+  
+  .custom-input input {
+    padding: 14px 45px;
+    font-size: 0.95rem;
+    border-radius: 14px; // Bordes más redondeados
+  }
+  
+  .form-options {
+    margin: 15px 0;
+    justify-content: center; // Centrar el enlace de "olvidaste contraseña"
+  }
+  
+  .forgot-password {
+    font-size: 0.85rem;
+  }
+  
+  .button-container {
+    margin-top: 24px;
+  }
+  
+  .social-login {
+    gap: 12px;
+  }
+  
+  .social-button {
+    padding: 14px 8px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet Styles */
+@media (min-width: 481px) and (max-width: 767px) {
+  .auth-form {
+    padding: 25px 32px 15px 32px;
+    gap: 22px;
+    max-width: 500px;
+  }
+}
+
 /* Tablet Styles */
 @media (min-width: 768px) {
   .auth-form {
-    padding: 20px 0;
+    padding: 20px 40px;
+    max-width: 600px;
   }
 
   .custom-input input {
@@ -233,6 +282,7 @@
 @media (min-width: 1024px) {
   .auth-form {
     gap: 24px;
+    max-width: 700px;
   }
 
   .custom-input label {

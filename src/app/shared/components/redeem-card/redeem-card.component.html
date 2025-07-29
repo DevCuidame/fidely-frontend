@@ -1,0 +1,40 @@
+<div class="redeem-card-container">
+  <!-- Single Redeem Card -->
+  <div class="redeem-card" 
+       [class.goal-reached]="isGoalReached"
+       [class.goal-not-reached]="!isGoalReached"
+       (click)="onCardClick()">
+    
+    <!-- Left Content -->
+    <div class="redeem-content">
+      <div class="redeem-message">
+        <h3>{{ currentReward.title }}</h3>
+      </div>
+      <div class="redeem-action">
+        <span class="action-text">{{ currentReward.description }}</span>
+      </div>
+    </div>
+    
+    <!-- Right Image -->
+    <div class="redeem-image">
+      <img [src]="currentReward.backgroundImage || currentReward.image" 
+           [alt]="currentReward.title" />
+    </div>
+  </div>
+
+  <!-- Goal not reached state -->
+  <div class="not-ready-state" *ngIf="!isGoalReached">
+    <div class="overlay-message">
+      <fa-icon [icon]="faLock" class="lock-icon"></fa-icon>
+      <p>Completa más sellos para desbloquear</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+  <app-redeem-modal 
+    [reward]="currentReward" 
+    (close)="onModalClose()">
+  </app-redeem-modal>
+}

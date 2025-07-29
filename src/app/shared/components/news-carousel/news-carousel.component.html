@@ -1,0 +1,46 @@
+<div class="news-carousel">
+  <h2 class="news-title">Novedades</h2>
+  
+  <!-- Carousel Container -->
+  <div class="carousel-container" #carouselContainer>
+    
+    <!-- News Cards -->
+    <div class="news-wrapper" *ngIf="totalNovedades() > 0">
+      <div class="news-card" 
+           *ngFor="let novedad of novedades; trackBy: trackByNovedadId"
+           (click)="onNovedadClick(novedad)"
+           [style.background-image]="'url(' + novedad.imagenFondo + ')'">
+        
+        <!-- Background Overlay -->
+        <div class="card-overlay"></div>
+        
+        <!-- Icon in bottom left corner -->
+        <div class="news-icon">
+          <img [src]="novedad.icono" [alt]="novedad.titulo" />
+        </div>
+        
+        <!-- Text content on the right side -->
+        <div class="news-content">
+          <h3 class="news-title-text">{{ novedad.titulo }}</h3>
+          <p class="news-subtitle">{{ novedad.subtitulo }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dots Navigation -->
+  <div class="dots-container" *ngIf="totalNovedades() > 1">
+    <span class="dot" 
+          *ngFor="let novedad of novedades; let i = index; trackBy: trackByNovedadId"
+          [class.active]="i === currentIndex()"
+          (click)="goToSlide(i)">
+    </span>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="totalNovedades() === 0">
+    <ion-icon name="newspaper-outline" class="empty-icon"></ion-icon>
+    <h4>No hay novedades disponibles</h4>
+    <p>Próximamente tendremos más novedades para ti</p>
+  </div>
+</div>

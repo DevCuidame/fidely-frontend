@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -23,14 +23,14 @@ import { identificationOptions } from 'src/app/core/constants/indentifications';
           <div class="logo">
             <div class="logo-header">
               <img
-                src="assets/logo/fidely-logo.png"
+                [src]="logoImage"
                 alt="Fidely Logo"
                 class="logo-icon"
               />
             </div>
             <div
               class="logo-header"
-              style="position: relative; top: -10px; flex-direction: column;"
+              style="flex-direction: column;"
             >
               <span class="logo-text">FIDELY</span>
               <span class="logo-subtitle">Tu lealtad tiene recompensa</span>
@@ -87,13 +87,35 @@ import { identificationOptions } from 'src/app/core/constants/indentifications';
   `,
   styleUrls: ['./document-form.component.scss'],
 })
-export class DocumentFormComponent {
+export class DocumentFormComponent implements OnInit, OnDestroy {
   documentTypeControl = new FormControl('', [Validators.required]);
   documentNumberControl = new FormControl('', [Validators.required]);
 
   documentTypeOptions = identificationOptions;
+  logoImage = 'assets/logo/fidely-logo.png';
+  isMobile = false;
 
   constructor() {}
+
+  ngOnInit() {
+    this.checkScreenSize();
+  }
+
+  ngOnDestroy() {
+    // Cleanup si es necesario
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+    this.logoImage = this.isMobile 
+      ? 'assets/logo/fidely-logo_orange.png' 
+      : 'assets/logo/fidely-logo.png';
+  }
 
   onSubmit() {
     if (this.documentTypeControl.valid && this.documentNumberControl.valid) {

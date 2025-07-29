@@ -1,0 +1,224 @@
+.redeem-card-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+}
+
+.redeem-card {
+  background: var(--color-light);
+  border-radius: 16px;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 120px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &.goal-reached {
+    box-shadow: 0 4px 12px rgba(var(--color-primary-rgb), 0.2);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(var(--color-primary-rgb), 0.3);
+    }
+  }
+  
+  &.goal-not-reached {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    .redeem-content {
+      .redeem-message h3 {
+        color: var(--text-secondary);
+      }
+      
+      .redeem-action .action-text {
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+
+.redeem-content {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+  background: var(--color-light);
+
+  .redeem-message {
+    h3 {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      line-height: 1.3;
+    }
+  }
+
+  .redeem-action {
+    .action-text {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+  }
+}
+
+.redeem-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  z-index: 3;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 16px 16px 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%);
+    filter: drop-shadow(-8px 0px 12px var(--color-light));
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 20px;
+    height: 100%;
+    transform: skewY(-10deg);
+    transform-origin: left;
+    z-index: 3;
+  }
+}
+
+.not-ready-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  z-index: 10;
+  
+  .overlay-message {
+    text-align: center;
+    
+    .lock-icon {
+      font-size: 2rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .redeem-card-container {
+    padding: 0.5rem;
+    max-width: 100%;
+  }
+
+  .redeem-card {
+    min-height: 100px;
+  }
+
+  .redeem-content {
+    padding: 1rem;
+    
+    .redeem-message h3 {
+      font-size: 1rem;
+    }
+
+    .redeem-action .action-text {
+      font-size: 1.2rem;
+    }
+  }
+
+  .redeem-image {
+    width: 55%;
+    
+    img {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%);
+      filter: drop-shadow(-6px 0px 10px var(--color-light));
+    }
+    
+    &::before {
+      left: -8px;
+      width: 16px;
+      transform: skewY(-12deg);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .redeem-card {
+    min-height: 90px;
+  }
+
+  .redeem-content {
+    padding: 0.75rem;
+    
+    .redeem-message h3 {
+      font-size: 0.9rem;
+    }
+
+    .redeem-action .action-text {
+      font-size: 1.1rem;
+    }
+  }
+
+  .redeem-image {
+    width: 50%;
+    
+    img {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 30% 100%);
+      filter: drop-shadow(-5px 0px 8px var(--color-light));
+    }
+    
+    &::before {
+      left: -6px;
+      width: 12px;
+      transform: skewY(-15deg);
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.redeem-card {
+  animation: slideIn 0.3s ease-out;
+}

@@ -1,0 +1,222 @@
+.stamp-card-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.stamp-card {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  transition: all 0.3s ease;
+}
+
+.stamp-card:hover .card-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  padding: 2rem;
+}
+
+
+
+.stamp-counter {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.counter-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  white-space: nowrap;
+}
+
+.stamps-section {
+  max-height: 0;
+  overflow: hidden;
+  background: #ffffff;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.expanded {
+    max-height: 300px;
+  }
+}
+
+.stamps-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.stamps-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  
+  &.top-row {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.stamp-item {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    
+    &.grayscale {
+      filter: grayscale(100%) opacity(0.4);
+    }
+  }
+  
+  &.collected {
+    img {
+      filter: none;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .stamp-card-container {
+    max-width: 100%;
+    border-radius: 16px;
+  }
+  
+  .stamp-card {
+    height: 180px;
+  }
+  
+
+  
+  .stamp-counter {
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .counter-text {
+    font-size: 0.75rem;
+  }
+  
+  .stamps-container {
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+  
+  .stamps-row {
+    gap: 0.75rem;
+  }
+  
+  .stamp-item {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stamp-card {
+    height: 160px;
+  }
+  
+
+  
+  .stamps-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .stamps-row {
+    gap: 0.5rem;
+  }
+  
+  .stamp-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  }
+  
+  .counter-text {
+    font-size: 0.7rem;
+  }
+}
+
+// Animation for expansion
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stamps-section.expanded .stamps-container {
+  animation: slideDown 0.4s ease-out;
+}

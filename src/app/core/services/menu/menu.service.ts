@@ -425,7 +425,7 @@ export class MenuService {
 
   // Métodos auxiliares para verificar roles
   private isAdmin(user: User): boolean {
-    return user.isAdmin === true || user.role === 'Admin' || user.role === 'admin';
+    return user.role === 'Admin' || user.role === 'admin';
   }
 
   private isModerator(user: User): boolean {

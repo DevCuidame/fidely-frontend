@@ -1,0 +1,29 @@
+<div class="user-home">
+  <!-- Header Component -->
+  <app-user-home-header
+    [showUserImage]="showUserImage()"
+    [showUserName]="showUserName()"
+    [showNotifications]="showNotifications()"
+    [customTitle]="customTitle()"
+    [customMessage]="customMessage()"
+    [userData]="userData()"
+    [unreadNotifications]="unreadNotifications()"
+    (userImageClick)="onUserImageClick()"
+    (notificationClick)="onNotificationClick()">
+  </app-user-home-header>
+  
+  <!-- Área de Contenido Central -->
+  <main class="dashboard-content">
+    <div class="content-container">
+      <div class="tab-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Tab Bar Component -->
+  <app-user-home-tab-bar
+    [activeTab]="activeTab()"
+    (tabSelected)="selectTab($event)">
+  </app-user-home-tab-bar>
+</div>
