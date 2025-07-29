@@ -30,7 +30,7 @@ import { LoadingService } from 'src/app/core/services/loading.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class ResetPasswordComponent {
-  public buttonBackground: string = 'var(--color-secondary)';
+  public buttonBackground: string = 'var(--color-tertiary)';
   resetPasswordForm: FormGroup;
   isSubmitting: boolean = false;
 

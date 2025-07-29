@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
   registerForm: FormGroup;
-  public buttonBackground: string = 'var(--color-secondary)';
+  public buttonBackground: string = 'var(--color-tertiary)';
   public selectedImage: string | ArrayBuffer | null = null;
   public pubname: any;
   public departments: any[] = [];

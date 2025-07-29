@@ -34,7 +34,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   public loginForm: FormGroup;
   public passwordVisible: boolean = false;
-  public buttonBackground: string = 'var(--color-secondary)';
+  public buttonBackground: string = 'var(--color-tertiary)';
 
   @Output() forgotPassword = new EventEmitter<void>();
 
