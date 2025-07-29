@@ -26,3 +26,56 @@ export interface BusinessRegistryData {
   updated_at?: Date;
   deleted_at?: Date;
 }
+
+export enum BusinessStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  SUSPENDED = 'suspended',
+  INACTIVE = 'inactive'
+}
+
+export interface IBusinessStats {
+  total_transactions: number;
+  total_points_awarded: number;
+  total_rewards_delivered: number;
+  average_rating: number;
+  active_customers: number;
+  monthly_transactions: number;
+}
+
+export interface IBusinessResponse {
+  id: number;
+  business_name: string;
+  business_type?: string;
+  email?: string;
+  phone?: string;
+  address_line1: string;
+  city_id?: number;
+  status: BusinessStatus;
+  created_at: Date;
+  // Agregar campos de imágenes
+  logo_url?: string;
+  banner_url?: string;
+  gallery_images?: string[];
+  owner: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  business_configuration?: {
+    points_per_peso: number;
+    minimum_purchase_amount: number;
+    maximum_points_per_transaction: number;
+  };
+  stats?: IBusinessStats;
+}
+
+// Interfaz extendida para stamps-carousel que incluye información de puntos
+export interface IBusinessWithPoints extends IBusinessResponse {
+  total_points: number;
+  available_points: number;
+  lifetime_points: number;
+  redeemed_points: number;
+}

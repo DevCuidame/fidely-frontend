@@ -6,6 +6,13 @@
   animation: slideUp 0.5s ease-out;
   max-width: 100%;
   margin: 0 auto;
+  min-height: fit-content;
+  
+  // Espacio adicional para el teclado móvil
+  @media (max-width: 767px) {
+    padding-bottom: calc(10px + env(keyboard-inset-height, 0px));
+    gap: 15px;
+  }
 }
 
 @keyframes slideUp {
@@ -212,15 +219,26 @@
 /* Mobile First - Estilos específicos para móvil */
 @media (max-width: 480px) {
   .auth-form {
-    padding: 20px 24px 10px 24px; // Más padding lateral en móviles pequeños
-    gap: 24px; // Más espacio entre elementos
+    padding: 20px 16px 10px 16px;
+    gap: 18px;
     max-width: 400px; // Limitar ancho máximo
   }
   
   .custom-input input {
+    font-size: 16px; /* Prevents zoom on iOS */
     padding: 14px 45px;
-    font-size: 0.95rem;
+    min-height: 48px; /* Minimum touch target size */
     border-radius: 14px; // Bordes más redondeados
+  }
+  
+  .input-wrapper ion-icon:first-child {
+    left: 12px;
+    font-size: 1.1rem;
+  }
+
+  .toggle-password {
+    right: 12px;
+    font-size: 1.1rem;
   }
   
   .form-options {
@@ -236,6 +254,12 @@
     margin-top: 24px;
   }
   
+  .submit-button {
+    padding: 14px;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+  
   .social-login {
     gap: 12px;
   }
@@ -243,6 +267,23 @@
   .social-button {
     padding: 14px 8px;
     font-size: 0.9rem;
+    min-height: 48px;
+  }
+
+  // Mejoras para el teclado móvil
+  .custom-input {
+    margin-bottom: 5px;
+  }
+
+  // Asegurar que los inputs sean visibles cuando aparece el teclado
+  .custom-input input:focus {
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  // Espacio adicional para el último elemento
+  .auth-form > *:last-child {
+    margin-bottom: calc(20px + env(keyboard-inset-height, 0px));
   }
 }
 

@@ -7,18 +7,28 @@
     
     <!-- Left Content -->
     <div class="redeem-content">
+      <!-- Business Info -->
+      <div class="business-info">
+        <div class="business-logo" *ngIf="currentReward?.businessLogo">
+          <img [src]="currentReward!.businessLogo" [alt]="currentReward!.businessName" />
+        </div>
+        <div class="business-name">
+          <span>{{ currentReward?.businessName || 'Negocio' }}</span>
+        </div>
+      </div>
+      
       <div class="redeem-message">
-        <h3>{{ currentReward.title }}</h3>
+        <h3>{{ currentReward!.availableRewards?.[0]?.name || 'Premio disponible' }}</h3>
       </div>
       <div class="redeem-action">
-        <span class="action-text">{{ currentReward.description }}</span>
+        <span class="action-text">Redime tu premio</span>
       </div>
     </div>
     
     <!-- Right Image -->
     <div class="redeem-image">
-      <img [src]="currentReward.backgroundImage || currentReward.image" 
-           [alt]="currentReward.title" />
+      <img [src]="currentReward!.availableRewards?.[0]?.imageUrl || 'assets/images/hamb.png'" 
+           [alt]="currentReward!.availableRewards?.[0]?.name || 'Premio'" />
     </div>
   </div>
 
@@ -34,7 +44,7 @@
 <!-- Modal -->
 @if (showModal()) {
   <app-redeem-modal 
-    [reward]="currentReward" 
+    [reward]="currentReward!" 
     (close)="onModalClose()">
   </app-redeem-modal>
 }

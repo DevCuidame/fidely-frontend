@@ -191,6 +191,56 @@
 
 .reward-info {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1.5rem;
+  
+  .business-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    
+    .business-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    
+    .business-details {
+      text-align: left;
+      
+      .business-name {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2c3e50;
+        line-height: 1.2;
+      }
+      
+      .business-subtitle {
+        margin: 0.25rem 0 0 0;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        font-weight: 500;
+      }
+    }
+  }
   
   .reward-title {
     margin: 0 0 1rem 0;
@@ -337,14 +387,12 @@
      }
    }
    
-   .reward-info {
-     .reward-title {
-       font-size: 1.4rem;
-     }
-     
-     .reward-details {
-       gap: 1.5rem;
-     }
+   .reward-title {
+     font-size: 1.4rem;
+   }
+   
+   .reward-details {
+     gap: 1.5rem;
    }
   
   .code-section {

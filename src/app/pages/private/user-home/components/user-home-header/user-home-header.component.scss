@@ -9,8 +9,15 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  height: 160px;
+  height: calc(160px + env(safe-area-inset-top));
   width: 100%;
+  padding-top: calc(20px + env(safe-area-inset-top));
+  
+  // Soporte para dispositivos con notch/barra de notificaciones
+  @supports (padding: max(0px)) {
+    padding-top: max(20px, env(safe-area-inset-top));
+    height: max(160px, calc(160px + env(safe-area-inset-top)));
+  }
   
   .header-content {
     display: flex;
@@ -125,6 +132,33 @@
           font-size: 1.2rem;
         }
       }
+    }
+  }
+}
+
+// Ajustes específicos para dispositivos con safe-area
+@media screen and (max-width: 768px) {
+  .dashboard-header {
+    // Asegurar que el contenido no se superponga con la barra de notificaciones
+    min-height: calc(160px + env(safe-area-inset-top));
+    
+    .header-content {
+      // Agregar padding adicional en la parte superior si es necesario
+      padding-top: max(0px, calc(env(safe-area-inset-top) - 20px));
+    }
+  }
+}
+
+// Soporte para dispositivos en landscape con safe-area
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .dashboard-header {
+    height: calc(120px + env(safe-area-inset-top));
+    padding: 15px 20px 25px 20px;
+    padding-top: calc(15px + env(safe-area-inset-top));
+    
+    @supports (padding: max(0px)) {
+      padding-top: max(15px, env(safe-area-inset-top));
+      height: max(120px, calc(120px + env(safe-area-inset-top)));
     }
   }
 }

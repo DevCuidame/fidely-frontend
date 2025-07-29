@@ -1,6 +1,14 @@
 <div class="my-stamps-container">
+  <h2 class="stamps-title">Mis Sellos</h2>
+  
+  <!-- Empty state -->
+  <div *ngIf="!loading() && !error() && stampCards().length === 0" class="empty-state">
+    <p>No tienes puntos acumulados aún.</p>
+  </div>
+  
+  <!-- Stamp cards -->
   <app-stamp-card
-    *ngFor="let sello of activeSellos(); trackBy: trackBySelloId"
+    *ngFor="let sello of stampCards(); trackBy: trackBySelloId"
     [cardId]="sello.id.toString()"
     [backgroundImage]="sello.imagen"
     [totalStamps]="sello.objetivo"

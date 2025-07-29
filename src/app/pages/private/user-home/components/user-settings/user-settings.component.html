@@ -1,0 +1,36 @@
+<div class="settings-overlay" *ngIf="isVisible" (click)="onClose()">
+  <div class="settings-menu" (click)="$event.stopPropagation()">
+    <!-- Header del menú -->
+    <div class="settings-header">
+      <h3 class="settings-title">Ajustes</h3>
+      <button class="close-button" (click)="onClose()">
+        <fa-icon [icon]="faTimes" class="close-icon"></fa-icon>
+      </button>
+    </div>
+
+    <!-- Información del usuario -->
+    <div class="user-info">
+      <div class="user-avatar">
+        <img [src]="userProfileImage()" 
+             [alt]="userData?.first_name || 'Usuario'" 
+             class="avatar-image">
+      </div>
+      <div class="user-details">
+        <h4 class="user-name">{{ userData?.first_name }} {{ userData?.last_name }}</h4>
+        <p class="user-email">{{ userData?.email }}</p>
+      </div>
+    </div>
+
+    <!-- Opciones del menú -->
+    <div class="settings-options">
+      <button class="settings-option delete-account-option" (click)="goToDeleteAccount()">
+        <fa-icon [icon]="faTrash" class="option-icon"></fa-icon>
+        <span class="option-text">Eliminar Cuenta</span>
+      </button>
+      <button class="settings-option logout-option" (click)="onLogout()">
+        <fa-icon [icon]="faSignOutAlt" class="option-icon"></fa-icon>
+        <span class="option-text">Cerrar Sesión</span>
+      </button>
+    </div>
+  </div>
+</div>

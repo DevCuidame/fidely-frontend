@@ -80,7 +80,7 @@ export class LoginComponent {
             if (success) {
               // Verificar si el usuario es Admin para redirigirlo a schedule-panel
               this.authService.getUserData().subscribe(user => {
-                const targetRoute = user && user.role === 'admin' ? '/home/admin/payments' : '/home';
+                const targetRoute = user && user.role === 'admin' ? '/home/admin/' : '/home';
                 
                 // Usar múltiples estrategias de navegación
                 this.ngZone.run(() => {

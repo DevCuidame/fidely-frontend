@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
-import { RedeemReward } from '../redeem-card.component';
+import { IMilestoneReward, IMilestoneRewardResponse } from 'src/app/core/interfaces/milestone-rewards.interface';
 
 @Component({
   selector: 'app-redeem-modal',
@@ -12,7 +12,7 @@ import { RedeemReward } from '../redeem-card.component';
   styleUrls: ['./redeem-modal.component.scss']
 })
 export class RedeemModalComponent {
-  @Input() reward!: RedeemReward;
+  @Input() reward!: IMilestoneRewardResponse;
   @Output() close = new EventEmitter<void>();
   
   // Font Awesome icons
@@ -25,7 +25,7 @@ export class RedeemModalComponent {
 
   async onCodeCopy() {
     try {
-      await navigator.clipboard.writeText(this.reward.code);
+      await navigator.clipboard.writeText(this.reward.rewardCode);
       // Aquí podrías mostrar un toast de confirmación
       console.log('Código copiado al portapapeles');
     } catch (err) {

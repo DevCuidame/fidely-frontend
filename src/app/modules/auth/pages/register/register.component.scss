@@ -13,6 +13,13 @@
   gap: 20px;
   padding: 20px 10px 30px;
   animation: slideUp 0.5s ease-out;
+  min-height: fit-content;
+  
+  // Espacio adicional para el teclado móvil
+  @media (max-width: 767px) {
+    padding-bottom: calc(30px + env(keyboard-inset-height, 0px));
+    gap: 15px;
+  }
 }
 
 @keyframes slideUp {
@@ -213,6 +220,7 @@ input[type="number"] {
 .toggle-password {
   padding: 5px;
   position: absolute;
+  right: 15px;
   font-size: 1.1rem;
   background-color: var(--color-smooth_light);
   color: var(--color-secondary);
@@ -288,6 +296,19 @@ input[type="number"] {
   text-decoration: underline;
 }
 
+.privacy-link {
+  color: var(--color-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.privacy-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
 /* Button Container */
 .button-container {
   margin-top: 25px;
@@ -309,6 +330,50 @@ input[type="number"] {
 
   .section-title {
     font-size: 1rem;
+  }
+
+  .custom-input input,
+  .custom-input select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 14px 15px 14px 45px;
+    min-height: 48px; /* Minimum touch target size */
+  }
+
+  .image-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .small-circle {
+    width: 25px;
+    height: 25px;
+    bottom: 5px;
+    right: 5px;
+  }
+
+  .camera-icon {
+    font-size: 12px;
+  }
+
+  // Mejoras para el teclado móvil
+  .custom-input {
+    margin-bottom: 5px;
+  }
+
+  .form-section {
+    margin-bottom: 15px;
+  }
+
+  // Asegurar que los inputs sean visibles cuando aparece el teclado
+  .custom-input input:focus,
+  .custom-input select:focus {
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  // Espacio adicional para el último elemento
+  .auth-form > *:last-child {
+    margin-bottom: calc(20px + env(keyboard-inset-height, 0px));
   }
 }
 

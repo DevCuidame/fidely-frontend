@@ -20,12 +20,14 @@ import {
   LoadingController,
   NavController,
 } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { CustomButtonComponent } from 'src/app/shared/components/custom-button/custom-button.component';
 import { LocationService } from '../../services/location.service';
+import { PrivacyPolicyModalComponent } from 'src/app/shared/components/privacy-policy-modal/privacy-policy-modal.component';
 
 @Component({
   selector: 'app-register',
@@ -36,6 +38,7 @@ import { LocationService } from '../../services/location.service';
     ReactiveFormsModule,
     IonicModule,
     CustomButtonComponent,
+    PrivacyPolicyModalComponent,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
@@ -44,6 +47,7 @@ export class RegisterComponent implements OnInit {
   @Output() registerSuccess = new EventEmitter<void>();
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
+  showPrivacyModal: boolean = false;
   registerForm: FormGroup;
   public buttonBackground: string = 'var(--color-tertiary)';
   public selectedImage: string | ArrayBuffer | null = null;
@@ -73,7 +77,8 @@ export class RegisterComponent implements OnInit {
     private alertCtrl: AlertController,
     private locationService: LocationService,
     private navCtrl: NavController,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private router: Router
   ) {
     this.registerForm = this.fb.group(
       {
@@ -217,6 +222,15 @@ export class RegisterComponent implements OnInit {
 
   goToLogin() {
     this.navCtrl.navigateForward('/auth/login');
+  }
+
+  goToPrivacyPolicy() {
+    // Show privacy policy modal while preserving the current form state
+    this.showPrivacyModal = true;
+  }
+
+  closePrivacyModal() {
+    this.showPrivacyModal = false;
   }
 
   togglePasswordVisibility() {

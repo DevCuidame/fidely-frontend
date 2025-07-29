@@ -12,7 +12,21 @@
     flex: 1;
     overflow-y: auto;
     padding: 20px;
-    margin-top: 160px;
+    margin-top: calc(160px + env(safe-area-inset-top));
+    
+    // Soporte para dispositivos con notch/barra de notificaciones
+    @supports (margin: max(0px)) {
+      margin-top: max(160px, calc(160px + env(safe-area-inset-top)));
+    }
+    
+    // Ajuste para landscape en dispositivos móviles
+    @media screen and (orientation: landscape) and (max-height: 500px) {
+      margin-top: calc(120px + env(safe-area-inset-top));
+      
+      @supports (margin: max(0px)) {
+        margin-top: max(120px, calc(120px + env(safe-area-inset-top)));
+      }
+    }
     
     .content-container {
       .tab-content {

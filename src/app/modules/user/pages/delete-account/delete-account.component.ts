@@ -103,23 +103,23 @@ import { of } from 'rxjs';
           <div class="reason-section">
             <h3>¿Por qué eliminas tu cuenta? (Opcional)</h3>
             <ion-radio-group formControlName="reason">
-              <ion-item lines="none" class="reason-item">
+              <ion-item lines="none" class="reason-item" button="true" (click)="selectReason('no_longer_needed')">
                 <ion-radio slot="start" value="no_longer_needed"></ion-radio>
                 <ion-label>Ya no necesito el servicio</ion-label>
               </ion-item>
-              <ion-item lines="none" class="reason-item">
+              <ion-item lines="none" class="reason-item" button="true" (click)="selectReason('privacy_concerns')">
                 <ion-radio slot="start" value="privacy_concerns"></ion-radio>
                 <ion-label>Preocupaciones de privacidad</ion-label>
               </ion-item>
-              <ion-item lines="none" class="reason-item">
+              <ion-item lines="none" class="reason-item" button="true" (click)="selectReason('technical_issues')">
                 <ion-radio slot="start" value="technical_issues"></ion-radio>
                 <ion-label>Problemas técnicos</ion-label>
               </ion-item>
-              <ion-item lines="none" class="reason-item">
+              <ion-item lines="none" class="reason-item" button="true" (click)="selectReason('customer_service')">
                 <ion-radio slot="start" value="customer_service"></ion-radio>
                 <ion-label>Servicio al cliente</ion-label>
               </ion-item>
-              <ion-item lines="none" class="reason-item">
+              <ion-item lines="none" class="reason-item" button="true" (click)="selectReason('other')">
                 <ion-radio slot="start" value="other"></ion-radio>
                 <ion-label>Otro motivo</ion-label>
               </ion-item>
@@ -379,6 +379,10 @@ export class DeleteAccountComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/home']);
+  }
+
+  selectReason(value: string) {
+    this.deleteForm.patchValue({ reason: value });
   }
 
   async contactWhatsapp() {

@@ -2,11 +2,13 @@ import { Component, Input, Output, EventEmitter, computed } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { CommonUtils } from 'src/app/shared/utils/common.utils';
+import { UserSettingsComponent } from '../user-settings/user-settings.component';
 
 @Component({
   selector: 'app-user-home-header',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, UserSettingsComponent],
   templateUrl: './user-home-header.component.html',
   styleUrls: ['./user-home-header.component.scss']
 })
@@ -26,22 +28,51 @@ export class UserHomeHeaderComponent {
   // Output events
   @Output() userImageClick = new EventEmitter<void>();
   @Output() notificationClick = new EventEmitter<void>();
+  @Output() logout = new EventEmitter<void>();
+
+  // Settings state
+  showSettings = false;
 
   // Computed properties
   displayTitle = computed(() => {
     if (this.customTitle) return this.customTitle;
-    const name = this.userData?.name || 'Usuario';
-    return `¡Hola, ${name}!`;
+    const firstName = this.userData?.first_name || 'Usuario';
+    return `¡Hola, ${firstName}!`;
+  });
+
+  // Computed property for user's full name
+  userFullName = computed(() => {
+    const firstName = this.userData?.first_name || '';
+    const lastName = this.userData?.last_name || '';
+    return firstName && lastName ? `${firstName} ${lastName}` : firstName || 'Usuario';
+  });
+
+  // Computed property for user's profile image
+  userProfileImage = computed(() => {
+    return CommonUtils.formatProfileImageUrl(
+      this.userData?.profile_image_url,
+      '/assets/images/avatar.jpeg'
+    );
   });
 
   hasNotifications = computed(() => this.unreadNotifications > 0);
 
   // Event handlers
   onUserImageClick() {
+    this.showSettings = true;
     this.userImageClick.emit();
   }
 
   onNotificationClick() {
     this.notificationClick.emit();
+  }
+
+  onSettingsClose() {
+    this.showSettings = false;
+  }
+
+  onLogout() {
+    this.showSettings = false;
+    this.logout.emit();
   }
 }

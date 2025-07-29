@@ -73,9 +73,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   private loadCurrentUser() {
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+    this.currentUser = this.authService.currentUser();
   }
 
   // Custom validator to check if passwords match

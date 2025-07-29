@@ -2,11 +2,17 @@ ion-content {
   --background: var(--color-light);
 }
 
+.auth-content {
+  --padding-bottom: 0;
+  --padding-top: 0;
+}
+
 .auth-container {
   display: flex;
   min-height: 100vh;
   width: 100%;
   background: var(--color-light);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 // Desktop Left Panel - Panel naranja sólido
@@ -40,6 +46,11 @@ ion-content {
 
 .brand-section {
   padding: 25px 50px;
+  
+  // Ocultar en dispositivos móviles
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
 
 .brand-title {
@@ -90,14 +101,13 @@ ion-content {
   position: relative;
   width: 100%;
   color: var(--color-secondary);
-  max-height: 100vh;
-  min-height: 100%;
-  overflow: hidden;
+  min-height: calc(100vh - env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   box-shadow: none;
   padding: 20px;
   border: none;
+  overflow: visible;
 }
 
 .card-header {
@@ -126,10 +136,13 @@ ion-content {
 
 .card-content {
   flex: 1;
-  overflow-y: auto;
   padding: 20px 0;
   background: transparent;
-
+  overflow: visible;
+  
+  // Espacio adicional para el teclado móvil
+  padding-bottom: calc(20px + env(keyboard-inset-height, 0px));
+  
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -177,7 +190,7 @@ ion-content {
   a {
     text-decoration: none;
     font-weight: 700;
-    color: var(--color-quaternary);
+    color: var(--color-primary);
     transition: all 0.3s ease;
     padding: 2px 6px;
     border-radius: 4px;
@@ -197,8 +210,78 @@ ion-content {
   display: block;
 }
 
+// Mobile Styles
+@media (max-width: 767px) {
+  .auth-container {
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh; // Dynamic viewport height for mobile
+  }
+
+  .card {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 15px;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    
+    // Centrado vertical perfecto
+    .card-header,
+    .card-content,
+    .card-footer {
+      width: 100%;
+    }
+    
+    .card-content {
+      flex: 0 0 auto; // No expandir automáticamente
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .card-content {
+    padding: 15px 0;
+    // Espacio adicional para el teclado en móviles
+    padding-bottom: calc(15px + env(keyboard-inset-height, 100px));
+  }
+
+  .mobile-logo-container {
+    margin-bottom: 15px;
+
+    .logo {
+      max-width: 80px;
+    }
+  }
+
+  .card-header {
+    padding: 10px 0;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .card-footer {
+    padding: 15px 0;
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 // Tablet Styles
-@media (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
 
   .auth-container {
     flex-direction: column;

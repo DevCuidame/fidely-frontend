@@ -32,27 +32,14 @@ export class UserService {
    * Carga el usuario desde el almacenamiento
    */
   private loadUserFromStorage(): void {
-    // Primero intentar localStorage para tener datos instantáneamente
-    try {
-      const userJson = localStorage.getItem('user');
-      if (userJson) {
-        const userData = JSON.parse(userJson);
-        if (userData && userData.id) {
-          this.userSubject.next(userData);
-        }
-      }
-    } catch (e) {
-      console.warn('Error al cargar usuario desde localStorage:', e);
-    }
-
-    // Luego intentar con StorageService (más confiable, pero asíncrono)
+    // Usar solo StorageService para consistencia
     this.storageService.getItem('user').subscribe(
-      userData => {
+      (userData) => {
         if (userData && userData.id) {
           this.userSubject.next(userData);
         }
       },
-      error => {
+      (error) => {
         console.warn('Error al cargar usuario desde StorageService:', error);
       }
     );
@@ -79,20 +66,14 @@ export class UserService {
     // Actualizar el estado en memoria primero (para respuesta inmediata)
     this.userSubject.next(normalizedUser);
 
-    // Intentar guardar en StorageService (más robusto)
+    // Guardar en StorageService
     this.storageService.setItem('user', normalizedUser).subscribe(
-      () => {},
-      error => {
+      () => {
+        console.log('Usuario guardado exitosamente en storage');
+      },
+      (error) => {
         console.warn('Error al guardar usuario en StorageService:', error);
-        
-        // Fallback a localStorage
-        try {
-          // Eliminar campos grandes para evitar QuotaExceededError
-          const { imagebs64, ...userWithoutImage } = normalizedUser;
-          localStorage.setItem('user', JSON.stringify(userWithoutImage));
-        } catch (e) {
-          console.error('No se pudo guardar usuario en ningún almacenamiento:', e);
-        }
+        // El usuario ya está actualizado en memoria, continuar sin fallback
       }
     );
   }
@@ -147,7 +128,11 @@ export class UserService {
           const userData = response.data;
 
           // Normalizar datos
-          if (userData.location && Array.isArray(userData.location) && userData.location.length > 0) {
+          if (
+            userData.location &&
+            Array.isArray(userData.location) &&
+            userData.location.length > 0
+          ) {
             userData.location = userData.location[0];
           }
 
@@ -158,28 +143,35 @@ export class UserService {
           this.userSubject.next(userDataWithoutLargeFields);
 
           // Guardar en almacenamiento
-          return this.storageService.setItem('user', userDataWithoutLargeFields).pipe(
-            map(() => userData), // Devolver datos completos al llamador
-            catchError(error => {
-              console.warn('Error al guardar usuario en StorageService:', error);
-              
-              // Intentar localStorage como fallback
-              try {
-                localStorage.setItem('user', JSON.stringify(userDataWithoutLargeFields));
-              } catch (e) {
-                console.error('No se pudo guardar usuario en ningún almacenamiento');
-              }
-              
-              return of(userData); // Aún así, devolver datos al llamador
-            })
-          );
+          return this.storageService
+            .setItem('user', userDataWithoutLargeFields)
+            .pipe(
+              map(() => userData), // Devolver datos completos al llamador
+              catchError((error) => {
+                console.warn(
+                  'Error al guardar usuario en StorageService:',
+                  error
+                );
+
+                // El usuario ya está actualizado en memoria, continuar sin fallback
+                 console.error(
+                   'No se pudo guardar usuario en storage, pero continúa en memoria'
+                 );
+
+                return of(userData); // Aún así, devolver datos al llamador
+              })
+            );
         }
-        
-        return throwError(() => new Error('No se pudo obtener datos del usuario'));
+
+        return throwError(
+          () => new Error('No se pudo obtener datos del usuario')
+        );
       }),
       catchError((error) => {
         console.error('Error refreshing user data:', error);
-        return throwError(() => new Error(error.message || 'Error refreshing user data'));
+        return throwError(
+          () => new Error(error.message || 'Error refreshing user data')
+        );
       })
     );
   }
@@ -211,17 +203,15 @@ export class UserService {
 
     // Actualizar en memoria
     this.userSubject.next(updatedUser);
-    
+
     // Guardar en almacenamiento
     this.storageService.setItem('user', updatedUser).subscribe(
-      () => {},
+      () => {
+        console.log('Usuario con datos de salud guardado exitosamente');
+      },
       error => {
         console.warn('Error al guardar usuario con datos de salud:', error);
-        
-        // Intentar con localStorage
-        try {
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-        } catch (e) {}
+        // El usuario ya está actualizado en memoria, continuar sin fallback
       }
     );
   }
@@ -260,19 +250,14 @@ export class UserService {
           // Guardar en almacenamiento
           return this.storageService.setItem('user', updatedUser).pipe(
             map(() => response),
-            catchError(error => {
+            catchError((error) => {
               console.warn('Error al guardar usuario actualizado:', error);
-              
-              // Intentar con localStorage
-              try {
-                localStorage.setItem('user', JSON.stringify(updatedUser));
-              } catch (e) {}
-              
+              // El usuario ya está actualizado en memoria, continuar sin fallback
               return of(response);
             })
           );
         }
-        
+
         return of(response);
       }),
       catchError((error) => {
@@ -290,10 +275,12 @@ export class UserService {
   clearUser() {
     this.userSubject.next(null);
     this.storageService.removeItem('user').subscribe(
-      () => {},
+      () => {
+        console.log('Usuario eliminado exitosamente del storage');
+      },
       error => {
         console.warn('Error al eliminar usuario del almacenamiento:', error);
-        localStorage.removeItem('user');
+        // El usuario ya está limpio en memoria, continuar sin fallback
       }
     );
   }

@@ -1,7 +1,7 @@
 /* ===== DELETE ACCOUNT COMPONENT STYLES ===== */
 
 ion-content{
-  --background: linear-gradient(135deg, var(--color-light) 0%, var(--color-smooth_light) 100%);
+  --background: var(--background-color);
   
   // Hide scrollbar
   scrollbar-width: none; /* Firefox */
@@ -13,7 +13,6 @@ ion-content{
 }
 
 .delete-account-container {
-  padding: 20px;
   margin: 0 auto;
   min-height: 100vh;
   border-radius: 20px;
@@ -36,9 +35,9 @@ ion-content{
   text-align: center;
   margin-bottom: 32px;
   padding: 24px 20px;
-  background: linear-gradient(135deg, rgba(var(--ion-color-danger-rgb), 0.1) 0%, rgba(var(--ion-color-warning-rgb), 0.05) 100%);
+  background: var(--danger-background);
   border-radius: 16px;
-  border: 1px solid rgba(var(--ion-color-danger-rgb), 0.2);
+  border: 1px solid var(--danger-color);
 
   /* ===== MEJORA PARA DESKTOP ===== */
   @media (min-width: 768px) {
@@ -48,20 +47,20 @@ ion-content{
 
   .warning-icon {
     font-size: 4rem;
-    color: var(--ion-color-danger);
+    color: var(--danger-color);
     margin-bottom: 16px;
     animation: pulse 2s infinite;
   }
 
   h2 {
-    color: var(--ion-color-danger);
+    color: var(--danger-color);
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0 0 12px 0;
   }
 
   .warning-text {
-    color: var(--ion-color-danger-shade);
+    color: var(--danger-color);
     font-size: 1rem;
     line-height: 1.6;
     margin: 0;
@@ -75,7 +74,7 @@ ion-content{
 
     strong {
       font-weight: 700;
-      color: var(--ion-color-danger);
+      color: var(--danger-color);
     }
   }
 }
@@ -88,8 +87,8 @@ ion-content{
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(var(--color-dark-rgb), 0.1);
-  border-left: 4px solid var(--ion-color-warning);
+  box-shadow: 0 4px 12px rgba(14, 162, 164, 0.1);
+  border-left: 4px solid var(--warning-color);
   
   /* ===== MEJORA PARA DESKTOP ===== */
   @media (min-width: 768px) {
@@ -99,7 +98,7 @@ ion-content{
   }
 
   .info-icon {
-    color: var(--ion-color-warning);
+    color: var(--warning-color);
     font-size: 2rem;
     margin-top: 4px;
     flex-shrink: 0;
@@ -110,7 +109,7 @@ ion-content{
 
     h3 {
       margin: 0 0 12px 0;
-      color: var(--color-dark);
+      color: var(--text-primary);
       font-size: 1.2rem;
       font-weight: 600;
     }
@@ -134,7 +133,7 @@ ion-content{
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(var(--color-dark-rgb), 0.08);
+  box-shadow: 0 4px 12px rgba(14, 162, 164, 0.08);
   
   /* ===== MEJORA PARA DESKTOP ===== */
   @media (min-width: 768px) {
@@ -147,7 +146,7 @@ ion-content{
   margin-bottom: 32px;
 
   h3 {
-    color: var(--color-dark);
+    color: var(--text-primary);
     font-size: 1.3rem;
     font-weight: 600;
     margin: 0 0 8px 0;
@@ -175,7 +174,7 @@ ion-content{
     font-size: 0.95rem;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--color-dark);
+    color: var(--text-primary);
 
     ion-icon {
       font-size: 1.1rem;
@@ -187,7 +186,7 @@ ion-content{
     width: 100%;
     border: 2px solid var(--border-color);
     border-radius: 12px;
-    color: var(--color-dark);
+    color: var(--text-primary);
     background: var(--color-light);
     padding: 14px 16px;
     font-size: 1rem;
@@ -220,7 +219,7 @@ ion-content{
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(--ion-color-danger);
+    color: var(--danger-color);
     font-size: 0.85rem;
     font-weight: 500;
     margin-top: 6px;
@@ -236,19 +235,30 @@ ion-content{
   margin-bottom: 32px;
 
   h3 {
-    color: var(--color-dark);
+    color: var(--text-primary);
     font-size: 1.2rem;
     font-weight: 600;
     margin: 0 0 16px 0;
   }
 
+  ion-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    @media (min-width: 768px) {
+      gap: 12px;
+    }
+  }
+
   .reason-item {
     --background: transparent;
-    --color: var(--color-dark);
+    --color: var(--text-primary);
     margin-bottom: 8px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     transition: all 0.2s ease;
+    cursor: pointer;
     
     /* ===== MEJORA PARA DESKTOP ===== */
     @media (min-width: 768px) {
@@ -257,20 +267,48 @@ ion-content{
 
     &:hover {
       background: var(--color-smooth_light);
+      border-color: var(--color-secondary);
+    }
+
+    &.item-radio-checked {
+      background: var(--color-smooth_light);
+      border-color: var(--color-secondary);
+      
+      ion-label {
+        color: var(--color-secondary);
+        font-weight: 600;
+      }
     }
 
     ion-radio {
       --color: var(--color-secondary);
       --color-checked: var(--color-secondary);
+      --border-radius: 50%;
+      --inner-border-radius: 50%;
+      --border-width: 2px;
+      --border-style: solid;
+      --border-color: var(--border-color);
+      --checkmark-color: var(--color-light);
+      margin-right: 12px;
+      
+      /* Mejorar el tamaño del radio button */
+      width: 20px;
+      height: 20px;
+      
+      &.radio-checked {
+        --border-color: var(--color-secondary);
+      }
     }
 
     ion-label {
       font-weight: 500;
-      padding: 8px 0;
+      padding: 12px 8px;
+      flex: 1;
+      cursor: pointer;
       
       /* ===== MEJORA PARA DESKTOP ===== */
       @media (min-width: 768px) {
-        padding: 12px 0;
+        padding: 16px 12px;
       }
     }
   }
@@ -356,7 +394,7 @@ ion-content{
   &:hover:not(:disabled) {
     background: var(--color-smooth_light);
     border-color: var(--color-primary);
-    color: var(--color-dark);
+    color: var(--text-primary);
     transform: translateY(-1px);
   }
 
@@ -375,7 +413,7 @@ ion-content{
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--ion-color-danger) 0%, var(--color-secondary) 100%);
+  background: var(--danger-color);
   color: var(--color-light);
   border: none;
   border-radius: 12px;
@@ -385,7 +423,7 @@ ion-content{
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 180px;
-  box-shadow: 0 4px 12px rgba(var(--ion-color-danger-rgb), 0.3);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
   
   /* ===== MEJORA PARA DESKTOP ===== */
   @media (min-width: 768px) {
@@ -395,14 +433,14 @@ ion-content{
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--ion-color-danger-rgb), 0.4);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
-    box-shadow: 0 2px 8px rgba(var(--ion-color-danger-rgb), 0.2);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
   }
 
   ion-icon {
@@ -418,8 +456,8 @@ ion-content{
 
 /* ===== SUPPORT SECTION ===== */
 .support-section {
-  background: linear-gradient(135deg, rgba(var(--ion-color-secondary-rgb), 0.05) 0%, rgba(var(--ion-color-primary-rgb), 0.05) 100%);
-  border: 1px solid rgba(var(--ion-color-secondary-rgb), 0.2);
+  background: var(--color-smooth_light);
+  border: 1px solid var(--color-secondary);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -430,7 +468,7 @@ ion-content{
   }
 
   h3 {
-    color: var(--color-dark);
+    color: var(--text-primary);
     font-size: 1.2rem;
     font-weight: 600;
     margin: 0 0 8px 0;
@@ -484,7 +522,7 @@ ion-content{
     }
 
     &:hover {
-      background: var(--color-dark);
+      background: var(--text-primary);
       transform: translateY(-1px);
     }
 
@@ -547,7 +585,7 @@ ion-content{
     padding: 20px 20px 10px 20px;
     
     .alert-title {
-      color: var(--ion-color-danger);
+      color: var(--danger-color);
       font-weight: 700;
       font-size: 1.2rem;
     }
@@ -555,7 +593,7 @@ ion-content{
 
   .alert-message {
     padding: 0 20px;
-    color: var(--color-dark);
+    color: var(--text-primary);
     line-height: 1.5;
   }
 
@@ -565,13 +603,13 @@ ion-content{
 
     .cancel-button {
       background: var(--color-smooth_light);
-      color: var(--color-dark);
+      color: var(--text-primary);
       border-radius: 8px;
       font-weight: 600;
     }
 
     .delete-button {
-      background: var(--ion-color-danger);
+      background: var(--danger-color);
       color: var(--color-light);
       border-radius: 8px;
       font-weight: 600;
@@ -581,8 +619,9 @@ ion-content{
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-  .delete-account-container {
-    padding: 16px;
+
+    .delete-account-container {
+    padding: 0 0 15rem 0 ;
   }
 
   .header-section {

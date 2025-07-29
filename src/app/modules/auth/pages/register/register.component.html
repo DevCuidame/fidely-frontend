@@ -277,7 +277,7 @@
     />
     <label for="privacy_policy" class="checkbox-label">
       Acepto las
-      <a href="/privacy-policy" target="_blank">políticas de privacidad</a> y el
+      <a (click)="goToPrivacyPolicy()" class="privacy-link">políticas de privacidad</a> y el
       tratamiento de datos personales de acuerdo con la normativa vigente.
     </label>
   </div>
@@ -293,3 +293,9 @@
     ></app-custom-button>
   </div>
 </form>
+
+<!-- Privacy Policy Modal -->
+<app-privacy-policy-modal 
+  *ngIf="showPrivacyModal" 
+  (close)="closePrivacyModal()">
+</app-privacy-policy-modal>

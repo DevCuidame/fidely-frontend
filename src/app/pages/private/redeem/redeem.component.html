@@ -1,7 +1,31 @@
 <div class="redimir-container">
-  <!-- Redeem Card -->
-  <app-redeem-card 
-    [reward]="redeemReward()"
-    [isGoalReached]="isGoalReached()">
+  <h2 class="redeem-title">Redimir</h2>
+
+  <!-- Loading state -->
+  @if (loading()) {
+  <div class="loading-container">
+    <p>Cargando premios...</p>
+  </div>
+  }
+
+  <!-- Content -->
+  @else {
+  <!-- Lista de premios disponibles -->
+  @if (availableRewards().length > 0) {
+  <div class="rewards-list">
+    @for (milestoneReward of availableRewards(); track milestoneReward.id) {
+    @for (reward of milestoneReward.availableRewards || []; track reward.id) {
+    <app-redeem-card
+      [reward]="getRewardForCard(milestoneReward, reward)"
+      [isGoalReached]="true"
+    >
+    </app-redeem-card>
+    } }
+  </div>
+
+  } @else {
+  <!-- No hay premios disponibles -->
+  <app-redeem-card [reward]="getEmptyReward()" [isGoalReached]="false">
   </app-redeem-card>
+  } }
 </div>

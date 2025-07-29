@@ -3,11 +3,11 @@
     <!-- Sección Izquierda: Avatar y Saludo -->
     <div class="header-left">
       <div class="user-avatar" *ngIf="showUserImage" (click)="onUserImageClick()">
-        <img [src]="userData?.image || '/assets/images/avatar.svg'" [alt]="userData?.name" class="avatar-image">
+        <img [src]="userProfileImage()" [alt]="userFullName()" class="avatar-image">
       </div>
       <div class="user-greeting" *ngIf="showUserName">
         <div class="greeting-hello">¡Hola,</div>
-        <h2 class="greeting-name">{{ userData?.name || 'Usuario' }}!</h2>
+        <h2 class="greeting-name">{{ userData?.first_name || 'Usuario' }}!</h2>
       </div>
     </div>
     
@@ -25,3 +25,11 @@
     <p class="custom-message">{{ customMessage }}</p>
   </div>
 </header>
+
+<!-- Componente de Ajustes -->
+<app-user-settings 
+  [isVisible]="showSettings"
+  [userData]="userData"
+  (close)="onSettingsClose()"
+  (logout)="onLogout()">
+</app-user-settings>

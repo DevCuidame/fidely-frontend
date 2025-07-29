@@ -1,18 +1,7 @@
-import { Component, Input, OnInit, OnDestroy, computed, signal } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, computed, signal, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-
-export interface Sello {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  imagen: string;
-  activo: boolean;
-  progreso: number;
-  objetivo: number;
-  fecha: Date;
-}
-
+import { IUserBusinessPointsBalance } from 'src/app/core/interfaces/user-business-points.interface';
 @Component({
   selector: 'app-stamps-carousel',
   standalone: true,
@@ -20,11 +9,15 @@ export interface Sello {
   templateUrl: './stamps-carousel.component.html',
   styleUrls: ['./stamps-carousel.component.scss']
 })
-export class StampsCarouselComponent implements OnInit, OnDestroy {
-  @Input() sellos: Sello[] = [];
+export class StampsCarouselComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() stamps: IUserBusinessPointsBalance[] = [];
   @Input() autoPlayInterval = 5000;
   @Input() itemsPerView = 1; // Solo mostrar una tarjeta
 
+  // Convert stamps to signal for reactive computed properties
+  private stampsSignal = signal<IUserBusinessPointsBalance[]>([]);
+
+  constructor(private elementRef: ElementRef) {}
   currentIndex = signal(0);
   private autoPlayTimer: any = null;
   private touchStartX = 0;
@@ -33,28 +26,80 @@ export class StampsCarouselComponent implements OnInit, OnDestroy {
 
   // Computed properties
   currentStamp = computed(() => {
-    return this.sellos[this.currentIndex()] || null;
+    const index = this.currentIndex();
+    const stamps = this.stampsSignal();
+    const stamp = stamps[index];
+    return stamp;
   });
 
-  totalSellos = computed(() => {
-    return this.sellos.length;
+  totalStamps = computed(() => {
+    const length = this.stampsSignal().length;
+    return length;
   });
 
   dotsArray = computed(() => {
-    return new Array(this.totalSellos());
+    return new Array(this.totalStamps());
   });
 
-  activeSellosCount = computed(() => {
-    return this.sellos.filter(s => s.activo).length;
-  });
+  // Method to get progress message based on points
+  getProgressMessage(): string {
+    const stamp = this.currentStamp();
+    if (!stamp) return 'Sin sellos';
+    
+    const progress = stamp.availablePoints / 10;
+    
+    if (progress >= 1) {
+      return '¡Has completado la meta!';
+    }    else if (progress >= 0.8) {
+      return '¡Casi lo logras!';
+    } else if (progress >= 0.5) {
+      return 'Estás cerca de la meta';
+    } else {
+      return 'Sigue coleccionando';
+    }
+  }
 
   // Getter for translateX to use in template
   getTranslateX() {
     return this.translateX();
   }
 
+  // Method to restart animations when stamp changes
+  private restartAnimations() {
+    const stampCard = this.elementRef.nativeElement.querySelector('.stamp-card');
+    if (stampCard) {
+      // Add fade-out class
+      stampCard.classList.remove('fade-in');
+      stampCard.classList.add('fade-out');
+      
+      // After transition completes, switch to fade-in
+      setTimeout(() => {
+        stampCard.classList.remove('fade-out');
+        stampCard.classList.add('fade-in');
+      }, 150); // Half of the transition duration
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['stamps']) {
+      // Sync stampsSignal with new input data
+      this.stampsSignal.set(this.stamps);
+      
+      // Reset current index when stamps change
+      this.currentIndex.set(0);
+      
+      // Restart autoplay if there's more than one stamp
+      if (this.stampsSignal().length > 1) {
+        this.startAutoPlay();
+      }
+    }
+  }
+
   ngOnInit() {
-    if (this.sellos.length > 1) {
+    // Initialize stampsSignal with input data
+    this.stampsSignal.set(this.stamps);
+    
+    if (this.stampsSignal().length > 1) {
       this.startAutoPlay();
     }
   }
@@ -85,19 +130,20 @@ export class StampsCarouselComponent implements OnInit, OnDestroy {
   }
 
   resumeAutoPlay() {
-    if (this.sellos.length > 1) {
+    if (this.stampsSignal().length > 1) {
       this.startAutoPlay();
     }
   }
 
   // Navigation methods
   nextStamp() {
-    if (this.currentIndex() < this.sellos.length - 1) {
+    if (this.currentIndex() < this.stampsSignal().length - 1) {
       this.currentIndex.update(current => current + 1);
     } else {
       // Loop back to beginning
       this.currentIndex.set(0);
     }
+    this.restartAnimations();
   }
 
   previousStamp() {
@@ -105,12 +151,14 @@ export class StampsCarouselComponent implements OnInit, OnDestroy {
       this.currentIndex.update(current => current - 1);
     } else {
       // Loop to end
-      this.currentIndex.set(this.sellos.length - 1);
+      this.currentIndex.set(this.stampsSignal().length - 1);
     }
+    this.restartAnimations();
   }
 
   goToStamp(index: number) {
     this.currentIndex.set(index);
+    this.restartAnimations();
   }
 
   // Touch events for swipe functionality
@@ -144,9 +192,5 @@ export class StampsCarouselComponent implements OnInit, OnDestroy {
     }
     
     this.resumeAutoPlay();
-  }
-
-  trackBySello(index: number, sello: Sello): number {
-    return sello.id;
   }
 }

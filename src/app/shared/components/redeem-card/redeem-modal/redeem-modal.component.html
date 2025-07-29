@@ -13,14 +13,25 @@
       <div class="reward-card">
         <!-- Información del premio -->
         <div class="reward-info">
-          <h2 class="reward-title">{{ reward.title }}</h2>
-          <p class="reward-description">{{ reward.description }}</p>
+          <!-- Business Info -->
+          <div class="business-header">
+            <div class="business-logo" *ngIf="reward.businessLogo">
+              <img [src]="reward.businessLogo" [alt]="reward.businessName" />
+            </div>
+            <div class="business-details">
+              <h3 class="business-name">{{ reward.businessName || 'Negocio' }}</h3>
+              <p class="business-subtitle">Te ofrece este premio</p>
+            </div>
+          </div>
+          
+          <h2 class="reward-title">¡Reclama tu recompensa!</h2>
+          <p class="reward-description">{{ reward.availableRewards?.[0]?.name || 'Premio disponible' }}</p>
 
           <!-- Código de Redención -->
           <div class="code-section">
             <h3 class="code-title">Código de Redención</h3>
             <div class="code-container" (click)="onCodeCopy()">
-              <span class="code-text">{{ reward.code }}</span>
+              <span class="code-text">{{ reward.rewardCode }}</span>
               <fa-icon [icon]="faCopy" class="copy-icon"></fa-icon>
             </div>
           </div>
@@ -38,14 +49,14 @@
 
             <div class="detail-item">
               <span class="detail-label">Vigencia</span>
-              <span class="detail-value">{{ reward.expiryDate }}</span>
+              <span class="detail-value">{{ reward.expiresAt }}</span>
             </div>
           </div>
         </div>
 
         <!-- Válido por -->
         <div class="valid-for-section">
-          <p class="valid-for-text">{{ reward.validFor }}</p>
+          <p class="valid-for-text">{{ reward.availableRewards?.[0]?.description || 'Descripción del premio' }}</p>
         </div>
 
         <!-- Instrucciones -->

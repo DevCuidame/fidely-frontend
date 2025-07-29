@@ -2,7 +2,8 @@ import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStamp } from '@fortawesome/free-solid-svg-icons';
-import { DashboardService } from '../user-home/home.service';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { UserPointsService } from '../../../core/services/user-points.service';
 import { StampCardComponent } from '../../../shared/components/stamp-card/stamp-card.component';
 
 @Component({
@@ -16,43 +17,33 @@ export class MyStampsComponent implements OnInit {
   // Font Awesome icons
   faStamp = faStamp;
   
-  // Inject dashboard service
-  private dashboardService = inject(DashboardService);
+  // Inject services
+  private authService = inject(AuthService);
+  private userPointsService = inject(UserPointsService);
   
   // Service signals
-  sellos = this.dashboardService.sellos;
-  activeSellos = this.dashboardService.activeSellos;
-  userData = this.dashboardService.userData;
+  userData = computed(() => this.authService.currentUser());
+  businessBalances = computed(() => this.userPointsService.businessBalances());
+  loading = computed(() => this.userPointsService.loading());
+  error = computed(() => this.userPointsService.error());
   
   // Accordion state - track which card is expanded
   expandedCardId = signal<string | null>(null);
   
-  // Computed properties for stamp data
-  collectedStampsCount = computed(() => {
-    // Use progress from first active sello instead of total user sellos
-    const activeSellos = this.activeSellos();
-    if (activeSellos.length > 0) {
-      return activeSellos[0].progreso || 0;
-    }
-    return this.userData().sellos || 0;
-  });
+  // Computed properties for stamp data using real user points
+  totalAvailablePoints = computed(() => this.userPointsService.totalAvailablePoints());
+  hasPoints = computed(() => this.userPointsService.hasPoints());
   
-  totalStampsCount = computed(() => {
-    // Calculate total stamps needed from active sellos
-    const activeSellos = this.activeSellos();
-    if (activeSellos.length > 0) {
-      // Use the first active sello's objective as total, or default to 10
-      return activeSellos[0].objetivo || 10;
-    }
-    return 10; // Default total
-  });
-  
-  backgroundImageUrl = computed(() => {
-    const activeSellos = this.activeSellos();
-    if (activeSellos.length > 0) {
-      return activeSellos[0].imagen || 'assets/images/hamb.png';
-    }
-    return 'assets/images/hamb.png'; // Default image
+  // Transform business balances to stamp card format
+  stampCards = computed(() => {
+    const balances = this.businessBalances();
+    return balances.map(balance => ({
+      id: balance.businessId,
+      nombre: balance.businessName || 'Negocio',
+      progreso: balance.availablePoints,
+      objetivo: 10, // Default objective if not set
+      imagen: balance.promotionalImage || 'assets/images/default-business.png'
+    }));
   });
   
   // Handle card expansion toggle
@@ -76,6 +67,7 @@ export class MyStampsComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.dashboardService.loadUserData();
+    // Cargar los puntos del usuario al inicializar el componente
+    this.userPointsService.loadUserPoints();
   }
 }

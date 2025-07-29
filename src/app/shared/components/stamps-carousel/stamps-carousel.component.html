@@ -9,30 +9,32 @@
     <div class="stamp-card-wrapper" 
          [style.transform]="'translateX(' + getTranslateX() + 'px)'"
          *ngIf="currentStamp()">
-      <div class="stamp-card">
-        <!-- Left Content -->
+      <div class="stamp-card fade-in">
+         <!-- Left Content -->
         <div class="stamp-content">
           <div class="stamp-message">
-            <h3>Estás cerca de la meta</h3>
+            <h3>{{ getProgressMessage() }}</h3>
           </div>
           <div class="stamp-progress">
-            <span class="progress-count">8/10 Sellos</span>
+            <span class="progress-count">{{ currentStamp().availablePoints }}/10 Sellos</span>
           </div>
         </div>
         
         <!-- Right Image -->
         <div class="stamp-image">
-          <img [src]="currentStamp().imagen || 'assets/images/burger-stamp.svg'" 
-               [alt]="currentStamp().nombre || 'Sello'" />
+          <img [src]="currentStamp().promotionalImage || 'assets/images/hamb.png'" 
+               [alt]="currentStamp().businessName || 'Negocio'" 
+               class="business-logo">
         </div>
       </div>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="totalSellos() === 0">
+  <div class="empty-state" *ngIf="totalStamps() === 0">
     <ion-icon name="albums-outline" class="empty-icon"></ion-icon>
     <h4>No hay sellos disponibles</h4>
     <p>Comienza a coleccionar sellos completando actividades</p>
   </div>
+
 </div>

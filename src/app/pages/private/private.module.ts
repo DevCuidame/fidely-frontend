@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: '',
     component: UserHomeComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -31,17 +31,17 @@ const routes: Routes = [
       {
         path: 'inicio',
         component: HomeComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'my-stamps',
         component: MyStampsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'redeem',
         component: RedeemComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'profile',
@@ -56,7 +56,7 @@ const routes: Routes = [
       {
         path: 'delete-account',
         component: DeleteAccountComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
       },
     ],
   },

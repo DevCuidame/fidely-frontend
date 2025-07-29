@@ -3,17 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { RedeemModalComponent } from './redeem-modal/redeem-modal.component';
+import {  IMilestoneRewardResponse } from 'src/app/core/interfaces/milestone-rewards.interface';
 
-export interface RedeemReward {
-  id: string;
-  title: string;
-  description: string;
-  code: string;
-  image: string;
-  validFor: string;
-  expiryDate: string;
-  backgroundImage?: string;
-}
 
 @Component({
   selector: 'app-redeem-card',
@@ -23,20 +14,9 @@ export interface RedeemReward {
   styleUrls: ['./redeem-card.component.scss']
 })
 export class RedeemCardComponent implements OnInit {
-  @Input() reward: RedeemReward | null = null;
+  @Input() reward: IMilestoneRewardResponse | null = null;
   @Input() isGoalReached: boolean = false;
 
-  // Default reward data
-  defaultReward: RedeemReward = {
-    id: '1',
-    title: 'Llegaste a la meta',
-    description: 'Redime tu premio',
-    code: 'QWERTYU12345',
-    image: 'assets/images/hamb.jpg',
-    validFor: '1 combo de hamburguesa, papas y bebida',
-    expiryDate: '2025-Dic-12',
-    backgroundImage: 'assets/images/hamb.jpg'
-  };
 
   showModal = signal(false);
   
@@ -46,9 +26,7 @@ export class RedeemCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    if (!this.reward) {
-      this.reward = this.defaultReward;
-    }
+   
   }
 
   onCardClick() {
@@ -62,6 +40,6 @@ export class RedeemCardComponent implements OnInit {
   }
 
   get currentReward() {
-    return this.reward || this.defaultReward;
+    return this.reward;
   }
 }

@@ -160,21 +160,8 @@ export class TabBarComponent implements OnInit, OnChanges {
         (error) => {
           console.error('Error al cerrar sesión:', error);
           
-          try {
-            // Limpiar localStorage como fallback por si el storage service falló
-            localStorage.removeItem('token');
-            localStorage.removeItem('refresh-token');
-            localStorage.removeItem('user');
-            localStorage.removeItem('beneficiaries');
-            localStorage.removeItem('activeBeneficiary');
-            
-            // Todavía redirigir al login
-            this.router.navigate(['/auth/login'], { replaceUrl: true });
-          } catch (e) {
-            console.error('Error limpiando almacenamiento:', e);
-            // En caso de error total, recargar la página
-            window.location.href = '/auth/login';
-          }
+          // El authService ya maneja la limpieza, solo redirigir
+          this.router.navigate(['/auth/login'], { replaceUrl: true });
         }
       );
   }

@@ -1,15 +1,19 @@
 <div class="inicio-container">
   <!-- Stamps Carousel -->
   <app-stamps-carousel
-    [sellos]="sellos()"
-    [autoPlayInterval]="5000"
+    [stamps]="stampsData()"
+    [autoPlayInterval]="7000"
     [itemsPerView]="1"
   >
   </app-stamps-carousel>
 
   <!-- Allies Carousel -->
-  <app-allies-carousel [aliados]="aliados()"> </app-allies-carousel>
+  <app-allies-carousel [allies]="allies()"> </app-allies-carousel>
 
   <!-- News Carousel -->
-  <app-news-carousel [novedades]="novedades()"> </app-news-carousel>
+  <app-news-carousel 
+    [novedades]="novedades()" 
+    [autoPlay]="true" 
+    [autoPlayInterval]="5000">
+  </app-news-carousel>
 </div>

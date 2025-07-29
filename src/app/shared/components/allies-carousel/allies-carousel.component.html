@@ -4,28 +4,28 @@
   <div class="carousel-container">
     
     <!-- Allies Cards -->
-    <div class="allies-wrapper" *ngIf="totalAliados() > 0">
+    <div class="allies-wrapper" *ngIf="activeAliados().length > 0">
       <div class="ally-card" 
-           *ngFor="let aliado of aliados; trackBy: trackByAliadoId"
-           (click)="onAliadoClick(aliado)">
+           *ngFor="let allie of activeAliados(); trackBy: trackByAliadoId"
+           (click)="onAliadoClick(allie)">
         
         <!-- Ally Image -->
         <div class="ally-image">
-          <img [src]="aliado.imagen || 'assets/images/default-ally.svg'" 
-               [alt]="aliado.nombre" />
+          <img [src]="allie.banner_url || 'assets/images/default-ally.svg'" 
+               [alt]="allie.business_name" />
         </div>
         
         <!-- Ally Info -->
         <div class="ally-info">
-          <h3 class="ally-name">{{ aliado.nombre }}</h3>
-          <p class="ally-description">{{ aliado.descripcion }}</p>
+          <h3 class="ally-name">{{ allie.business_name }}</h3>
+          <p class="ally-description">{{ allie.business_type }}</p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="totalAliados() === 0">
+  <div class="empty-state" *ngIf="activeAliados().length === 0">
     <ion-icon name="business-outline" class="empty-icon"></ion-icon>
     <h4>No hay aliados disponibles</h4>
     <p>Próximamente tendremos más aliados para ti</p>

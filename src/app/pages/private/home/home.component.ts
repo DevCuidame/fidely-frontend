@@ -2,10 +2,12 @@ import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHome, faStamp, faGift, faBell } from '@fortawesome/free-solid-svg-icons';
-import { DashboardService } from '../user-home/home.service';
 import { StampsCarouselComponent } from '../../../shared/components/stamps-carousel/stamps-carousel.component';
-import { Aliado, AlliesCarouselComponent } from 'src/app/shared/components/allies-carousel/allies-carousel.component';
+import { AlliesCarouselComponent } from 'src/app/shared/components/allies-carousel/allies-carousel.component';
 import { Novedad, NewsCarouselComponent } from 'src/app/shared/components/news-carousel/news-carousel.component';
+import { BusinessService } from '../../../core/services/business.service';
+import { UserPointsService } from '../../../core/services/user-points.service';
+import { BusinessRegistryData, IBusinessResponse } from '../../../core/interfaces/business-registry.interface';
 
 @Component({
   selector: 'app-home',
@@ -21,50 +23,37 @@ export class HomeComponent implements OnInit {
   faStamp = faStamp;
   faGift = faGift;
 
-    aliados = signal<Aliado[]>([
-    {
-      id: 1,
-      nombre: 'McDonald\'s',
-      descripcion: 'Comida rápida',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    },
-    {
-      id: 2,
-      nombre: 'Café Montecruz',
-      descripcion: 'Cafés y Postres',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    },
-    {
-      id: 3,
-      nombre: 'Farmacia Cruz Verde',
-      descripcion: 'Salud y Bienestar',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    },
-    {
-      id: 4,
-      nombre: 'Supermercado Éxito',
-      descripcion: 'Mercado y Hogar',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    },
-    {
-      id: 5,
-      nombre: 'Cine Colombia',
-      descripcion: 'Entretenimiento',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    },
-    {
-      id: 6,
-      nombre: 'Librería Nacional',
-      descripcion: 'Libros y Cultura',
-      imagen: 'assets/images/hamb.png',
-      activo: true
-    }
-  ]);
+  // Inject services
+  private businessService = inject(BusinessService);
+  private userPointsService = inject(UserPointsService);
+
+  // Computed signal que usa directamente BusinessRegistryData
+  allies = computed<IBusinessResponse[]>(() => {
+    const businesses = this.businessService.approvedBusinesses();
+    console.log('HomeComponent - allies computed:', businesses);
+    return businesses;
+  });
+
+  // Computed signals para el estado de los servicios
+  isLoadingBusinesses = computed(() => this.businessService.loading());
+  businessesError = computed(() => this.businessService.error());
+  
+  // Computed signals para puntos/sellos del usuario
+  userPoints = computed(() => this.userPointsService.userPoints());
+  globalBalance = computed(() => this.userPointsService.globalBalance());
+  businessBalances = computed(() => this.userPointsService.businessBalances());
+  totalAvailablePoints = computed(() => this.userPointsService.totalAvailablePoints());
+  isLoadingPoints = computed(() => this.userPointsService.loading());
+  pointsError = computed(() => this.userPointsService.error());
+  
+  // Computed signal para verificar si el usuario tiene sellos/puntos
+  hasStamps = computed(() => this.userPointsService.hasPoints());
+  
+  // Computed signal que usa directamente los business balances sin mapear
+  stampsData = computed(() => {
+    const data = this.businessBalances();
+    return data;
+  });
   
   novedades = signal<Novedad[]>([
     {
@@ -93,18 +82,9 @@ export class HomeComponent implements OnInit {
     }
   ]);
   
-  // Inject dashboard service
-  private dashboardService = inject(DashboardService);
-  
-  // Service signals
-  userData = this.dashboardService.userData;
-  sellos = this.dashboardService.sellos;
-  recompensas = this.dashboardService.recompensas;
-  activeSellos = this.dashboardService.activeSellos;
-  availableRecompensas = this.dashboardService.availableRecompensas;
-  recentActivity = this.dashboardService.recentActivity;
-  
   ngOnInit() {
-    this.dashboardService.loadUserData();
+    console.log('HomeComponent - ngOnInit called');
+    this.businessService.loadApprovedBusinesses();
+    this.userPointsService.loadUserPoints();
   }
 }

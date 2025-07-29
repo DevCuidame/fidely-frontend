@@ -1,5 +1,5 @@
 // src/app/core/services/auth.service.ts
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, signal, computed, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, of, from } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -12,14 +12,17 @@ const apiUrl = environment.url;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private authState = new BehaviorSubject<boolean>(this.hasToken());
+  // Signals para el estado de autenticación
+  private _isAuthenticated = signal<boolean>(false);
+  private _currentUser = signal<User | null>(null);
+  
+  // Computed signals públicos
+  public isAuthenticated = computed(() => this._isAuthenticated());
+  public currentUser = computed(() => this._currentUser());
+  
 
-  private currentUserSubject: BehaviorSubject<User | null>;
-  public currentUser$: Observable<User | null>;
-
-  // Evitamos la dependencia circular usando Injector para servicios relacionados con beneficiarios
+  
   private navController: NavController | null = null;
-  private beneficiaryServiceInjected = false;
 
   constructor(
     private http: HttpClient,
@@ -27,25 +30,21 @@ export class AuthService {
     private injector: Injector,
     private storage: StorageService
   ) {
+    // Inicializar signals
+    this._isAuthenticated.set(this.hasToken());
+    this._currentUser.set(null);
     this.checkAuthState();
-
-    this.authState.next(this.hasToken());
-    this.currentUserSubject = new BehaviorSubject<User | null>(
-      this.getUserFromStorage()
-    );
-    this.currentUser$ = this.currentUserSubject.asObservable();
-
     this.loadUserFromStorage();
   }
 
   private checkAuthState(): void {
     this.storage.getItem('token').subscribe(
       (token) => {
-        this.authState.next(!!token);
+        this._isAuthenticated.set(!!token);
       },
       (error) => {
         console.error('Error checking auth state:', error);
-        this.authState.next(false);
+        this._isAuthenticated.set(false);
       }
     );
   }
@@ -54,7 +53,7 @@ export class AuthService {
     this.storage.getItem('user').subscribe(
       (userData) => {
         if (userData) {
-          this.currentUserSubject.next(userData as User);
+          this._currentUser.set(userData as User);
           this.userService.setUser(userData as User);
         }
       },
@@ -70,7 +69,7 @@ export class AuthService {
    */
   isAuthenticated$(): Observable<boolean> {
     // Primero verificar estado actual
-    if (this.authState.value === true) {
+    if (this._isAuthenticated() === true) {
       return of(true);
     }
 
@@ -80,24 +79,17 @@ export class AuthService {
         const isAuth = !!token;
 
         // Si encontramos un token, actualizar el estado
-        if (isAuth && this.authState.value !== true) {
-          this.authState.next(true);
+        if (isAuth && this._isAuthenticated() !== true) {
+          this._isAuthenticated.set(true);
         }
 
         return isAuth;
       }),
       catchError((error) => {
         console.warn('Error verificando token en storage:', error);
-
-        // Verificar en localStorage como fallback
-        try {
-          const tokenInLocalStorage = !!localStorage.getItem('token');
-          if (tokenInLocalStorage) {
-            this.authState.next(true);
-            return of(true);
-          }
-        } catch (e) {}
-
+        
+        // Si hay error en storage, asumir no autenticado
+        this._isAuthenticated.set(false);
         return of(false);
       })
     );
@@ -143,11 +135,7 @@ export class AuthService {
     return this.storage.setItem('token', response.data.access_token).pipe(
       catchError((error) => {
         console.warn('Error al guardar token:', error);
-        try {
-          localStorage.setItem('token', response.data.access_token);
-        } catch (e) {
-          console.error('No se pudo guardar token en ningún almacenamiento');
-        }
+        console.error('No se pudo guardar token en storage');
         return of(null);
       }),
       // Guardar refresh_token
@@ -157,12 +145,7 @@ export class AuthService {
           .pipe(
             catchError((error) => {
               console.warn('Error al guardar refresh token:', error);
-              try {
-                localStorage.setItem(
-                  'refresh-token',
-                  response.data.refresh_token
-                );
-              } catch (e) {}
+              console.error('No se pudo guardar refresh token en storage');
               return of(null);
             })
           );
@@ -175,8 +158,8 @@ export class AuthService {
 
     // Actualizar estado en memoria inmediatamente
     this.userService.setUser(userData as User);
-    this.currentUserSubject.next(userData as User);
-    this.authState.next(true);
+    this._currentUser.set(userData as User);
+    this._isAuthenticated.set(true);
 
     // Guardar en almacenamiento
     return this.storage.setItem('user', userData).pipe(
@@ -242,27 +225,18 @@ export class AuthService {
    */
   logout(): Observable<void> {
     // Primero limpiamos estado en memoria para respuesta inmediata
-    this.authState.next(false);
+    this._isAuthenticated.set(false);
+    this._currentUser.set(null);
     this.userService.clearUser();
-    this.currentUserSubject.next(null);
 
     // Luego intentamos limpiar almacenamiento
     return this.storage.clear().pipe(
       catchError((error) => {
         console.warn('Error al limpiar almacenamiento durante logout:', error);
-
-        // Intentar limpiar localStorage como fallback
-        try {
-          localStorage.clear();
-          localStorage.removeItem('token');
-          localStorage.removeItem('refresh-token');
-          localStorage.removeItem('user');
-          localStorage.removeItem('beneficiaries');
-          localStorage.removeItem('activeBeneficiary');
-        } catch (e) {
-          console.error('Error limpiando localStorage:', e);
-        }
-
+        
+        // El estado ya está limpio en memoria, continuar sin fallback
+        console.error('No se pudo limpiar storage completamente, pero el estado está limpio');
+        
         // Devolver completado aún con error
         return of(undefined);
       }),
@@ -287,13 +261,10 @@ export class AuthService {
     );
   }
 
-  isAuthenticated(): boolean {
-    return this.authState.value;
-  }
+
 
   isAdmin(): boolean {
-    const user = this.getUserData();
-    return this.currentUserValue?.role === 'admin';
+    return this._currentUser()?.role === 'admin';
   }
 
   /**
@@ -336,25 +307,39 @@ export class AuthService {
   }
 
   refreshUserData(): void {
-    const user = this.getUserData();
+    this.getUserData().subscribe({
+      next: (user) => {
+        if (user) {
+          const normalizedUser = Array.isArray(user) ? user[0] : user;
 
-    if (user) {
-      const normalizedUser = Array.isArray(user) ? user[0] : user;
+          if (
+            normalizedUser.location &&
+            Array.isArray(normalizedUser.location) &&
+            normalizedUser.location.length > 0
+          ) {
+            normalizedUser.location = normalizedUser.location[0];
+          }
 
-      if (
-        normalizedUser.location &&
-        Array.isArray(normalizedUser.location) &&
-        normalizedUser.location.length > 0
-      ) {
-        normalizedUser.location = normalizedUser.location[0];
+          // Actualizar el signal del AuthService
+          this._currentUser.set(normalizedUser);
+          // También actualizar el UserService
+          this.userService.setUser(normalizedUser);
+        }
+      },
+      error: (error) => {
+        console.error('Error refreshing user data:', error);
       }
-
-      this.userService.setUser(normalizedUser);
-    }
+    });
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('token');
+    // Usar signals para verificación inicial
+    // El estado real se maneja de forma reactiva en checkAuthState()
+    try {
+      return this._isAuthenticated();
+    } catch {
+      return false;
+    }
   }
 
   // Método para obtener NavController de forma perezosa
@@ -366,12 +351,20 @@ export class AuthService {
   }
 
   public get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
+    return this._currentUser();
   }
 
   setUser(user: User): void {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+    this.storage.setItem('user', user).subscribe({
+      next: () => {
+        this._currentUser.set(user);
+      },
+      error: (error) => {
+        console.warn('Error saving user to storage:', error);
+        // Fallback: actualizar solo en memoria
+        this._currentUser.set(user);
+      }
+    });
   }
 
   getUser(): User | null {
@@ -379,25 +372,19 @@ export class AuthService {
   }
 
   private getUserFromStorage(): User | null {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        return JSON.parse(userStr);
-      } catch (e) {
-        localStorage.removeItem('user');
-      }
-    }
-    return null;
+    // Este método se mantiene para compatibilidad, pero el estado real
+    // se maneja de forma reactiva en loadUserFromStorage()
+    return this._currentUser();
   }
 
   // Enviar código para verificar el correo
   sendVerifyCode(email: string): Observable<any> {
-    return this.http.post(`${environment.url}api/v1/email/resend`, { email });
+    return this.http.post(`${environment.url}api/email/resend`, { email });
   }
 
   // Verificar el correo con el código
   verifyEmail(code: string): Observable<any> {
-    return this.http.post(`${environment.url}api/v1/email/verify`, { code });
+    return this.http.post(`${environment.url}api/email/verify`, { code });
   }
 
   /**

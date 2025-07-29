@@ -1,104 +1,276 @@
 :host {
-  --bgColorMenu: var(--color-primary);
-  --duration: 0.6s;
-  --timeOut: 0.1s;
+  --tab-bar-height: 70px;
+  --tab-bar-padding: 8px;
+  --tab-item-size: 54px;
+  --tab-icon-size: 24px;
+  --active-indicator-size: 32px;
+  --border-radius: 24px;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --active-shadow: rgba(0, 0, 0, 0.15);
+  --ripple-color: rgba(255, 255, 255, 0.3);
+  --transition-duration: 0.3s;
+  --bounce-timing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --smooth-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Theme colors
+  --tab-bg: var(--color-primary);
+  --tab-active-bg: var(--background-color);
+  --tab-icon-color: rgba(255, 255, 255, 0.7);
+  --tab-active-icon: var(--color-secondary);
+  --tab-indicator: var(--color-secondary);
 }
 
-.menu {
-  margin: 0;
-  display: flex;
-  width: 32.05em;
-  font-size: 1.5em;
-  padding: 0 2.85em;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--bgColorMenu);
+.tab-bar {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 2em 2em 0 0;
-  z-index: 1000;
-}
-
-.menu__item {
-  all: unset;
-  flex-grow: 1;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  height: var(--tab-bar-height);
+  background: var(--tab-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: var(--tab-bar-padding) 16px;
   display: flex;
-  cursor: pointer;
-  position: relative;
-  border-radius: 50%;
   align-items: center;
-  will-change: transform;
-  justify-content: center;
-  padding: 0.55em 0 0.85em;
-  transition: transform var(--duration) ease-in-out;
-}
-
-.menu__item::before {
-  content: "";
-  z-index: -1;
-  width: 4.2em;
-  height: 4.2em;
-  border-radius: 50%;
-  position: absolute;
-  transform: scale(0);
-  transition: background-color var(--duration), transform var(--duration);
-}
-
-.menu__item.active {
-  transform: translate3d(0, -0.8em, 0);
-}
-
-.menu__item.active::before {
-  transform: scale(1);
-  background-color: var(--bgColorItem);
-}
-
-.icon {
-  width: 2.6em;
-  height: 2.6em;
-  color: white;
-  font-size: 1.5em;
-  align-items: flex-start;
-  display: flex;
-  justify-content: center;
-  z-index: 1001;
-}
-
-.menu__item.active .icon {
-  color: var(--color-secondary);
-}
-
-@keyframes strok {
-  100% {
-    stroke-dashoffset: 400;
+  justify-content: space-around;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px var(--shadow-color);
+  
+  // Safe area support for modern phones
+  padding-bottom: calc(var(--tab-bar-padding) + env(safe-area-inset-bottom));
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      transparent 100%);
   }
 }
 
-.menu__border {
-  left: 0;
-  bottom: 57%;
-  width: 10.9em;
-  height: 2.4em;
-  position: absolute;
-  clip-path: url(#menu);
-  will-change: transform;
-  background-color: var(--background-color);
-  transition: transform var(--duration);
-  transform: translate3d(0, 0, 0) rotate(180deg);
-  z-index: 4;
+.tab-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tab-item-size);
+  height: var(--tab-item-size);
+  border-radius: var(--border-radius);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--smooth-timing);
+  overflow: hidden;
+  
+  // Touch optimization
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  
+  // Minimum touch target size (44px recommended)
+  min-width: 44px;
+  min-height: 44px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--active-indicator-size);
+    height: var(--active-indicator-size);
+    background: var(--tab-active-bg);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all var(--transition-duration) var(--bounce-timing);
+    z-index: 1;
+  }
+  
+  // Ripple effect container
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--ripple-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  // Hover state (for desktop)
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.05);
+      
+      .tab-icon {
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+  }
+  
+  // Active press state
+  &:active {
+    transform: scale(0.95);
+    
+    &::after {
+      width: var(--tab-item-size);
+      height: var(--tab-item-size);
+      opacity: 1;
+      animation: ripple-out 0.6s ease-out;
+    }
+  }
+  
+  // Active tab state
+  &.active {
+    &::before {
+      transform: translate(-50%, -50%) scale(1);
+      box-shadow: 0 4px 12px var(--active-shadow);
+    }
+    
+    .tab-icon {
+      color: var(--tab-active-icon);
+      transform: scale(1.1);
+      z-index: 3;
+    }
+    
+    // Subtle bounce animation on activation
+    animation: tab-activate 0.4s var(--bounce-timing);
+  }
+  
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: 2px solid var(--tab-active-icon);
+    outline-offset: 2px;
+  }
 }
 
-.svg-container {
-  width: 0;
-  height: 0;
+.tab-icon {
+  width: var(--tab-icon-size);
+  height: var(--tab-icon-size);
+  color: var(--tab-icon-color);
+  transition: all var(--transition-duration) var(--smooth-timing);
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // Icon shadow for better visibility
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
-@media screen and (max-width: 50em) {
-  .menu {
-    font-size: 0.8em;
+// Animations
+@keyframes ripple-out {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+  }
+  100% {
+    width: calc(var(--tab-item-size) * 2);
+    height: calc(var(--tab-item-size) * 2);
+    opacity: 0;
+  }
+}
+
+@keyframes tab-activate {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Responsive design
+@media screen and (max-width: 480px) {
+  :host {
+    --tab-bar-height: 65px;
+    --tab-item-size: 48px;
+    --tab-icon-size: 22px;
+    --active-indicator-size: 28px;
+  }
+  
+  .tab-bar {
+    padding: 6px 12px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  :host {
+    --tab-bar-height: 60px;
+    --tab-item-size: 44px;
+    --tab-icon-size: 20px;
+    --active-indicator-size: 26px;
+  }
+  
+  .tab-bar {
+    padding: 4px 8px;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :host {
+    --tab-icon-color: white;
+    --tab-active-icon: var(--color-primary);
+  }
+  
+  .tab-bar {
+    border-top: 2px solid white;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    --transition-duration: 0.1s;
+    --bounce-timing: ease;
+  }
+  
+  .tab-item {
+    &.active {
+      animation: none;
+    }
+    
+    &:active::after {
+      animation: none;
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  :host {
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --active-shadow: rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Landscape orientation adjustments
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  :host {
+    --tab-bar-height: 55px;
+    --tab-item-size: 40px;
+    --tab-icon-size: 18px;
+  }
+  
+  .tab-bar {
+    padding: 4px 16px;
   }
 }

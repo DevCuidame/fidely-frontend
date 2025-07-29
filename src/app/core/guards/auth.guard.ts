@@ -34,13 +34,6 @@ export class AuthGuard implements CanActivate {
         }),
         map((isAuthenticated) => {
           if (!isAuthenticated) {
-
-            // Intentar limpiar tokens para evitar problemas
-            try {
-              localStorage.removeItem('token');
-              localStorage.removeItem('refresh-token');
-            } catch (e) {}
-
             // Usar router.createUrlTree en lugar de navegar directamente
             return this.router.createUrlTree(['/auth/login']);
           }
@@ -48,10 +41,7 @@ export class AuthGuard implements CanActivate {
         }),
         catchError((error) => {
           console.error('Error en AuthGuard:', error);
-          try {
-            localStorage.removeItem('token');
-            localStorage.removeItem('refresh-token');
-          } catch (e) {}
+          // El AuthService ya maneja la limpieza de tokens
           return of(this.router.createUrlTree(['/auth/login']));
         })
       );
