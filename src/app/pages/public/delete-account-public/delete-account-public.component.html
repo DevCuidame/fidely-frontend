@@ -1,0 +1,253 @@
+<div class="delete-account-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <fa-icon [icon]="faExclamationTriangle" class="warning-icon"></fa-icon>
+    <h2>Eliminar Cuenta</h2>
+    <p class="warning-text">
+      Esta acción es <strong>permanente</strong> y no se puede deshacer.
+      Todos tus datos serán eliminados del sistema.
+    </p>
+  </div>
+
+  <!-- Information Card -->
+  <div class="info-card">
+    <fa-icon [icon]="faInfoCircle" class="info-icon"></fa-icon>
+    <div class="info-content">
+      <h3>¿Qué sucederá al eliminar tu cuenta?</h3>
+      <ul>
+        <li>Se eliminarán todos tus datos personales</li>
+        <li>Se borrarán tus contactos de emergencia</li>
+        <li>Perderás acceso a todos los servicios</li>
+        <li>No podrás recuperar la información</li>
+        <li>Se cancelarán las suscripciones activas</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Confirmation Form -->
+  <form
+    [formGroup]="deleteForm"
+    (ngSubmit)="confirmDeletion()"
+    class="deletion-form"
+  >
+    <div class="form-section">
+      <h3>Confirma tu identidad</h3>
+      <p>Para continuar, ingresa tu email y contraseña:</p>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">
+          <fa-icon [icon]="faEnvelope"></fa-icon>
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Ingresa tu email"
+          [class.error]="emailError"
+        />
+        <small *ngIf="emailError" class="error-message">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+          {{ emailError }}
+        </small>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">
+          <fa-icon [icon]="faLock"></fa-icon>
+          Contraseña
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña"
+            [class.error]="passwordError"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+          >
+            <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+        <small *ngIf="passwordError" class="error-message">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+          {{ passwordError }}
+        </small>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword">
+          <fa-icon [icon]="faLock"></fa-icon>
+          Confirmar Contraseña
+        </label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            placeholder="Confirma tu contraseña"
+            [class.error]="confirmPasswordError"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleConfirmPasswordVisibility()"
+          >
+            <fa-icon [icon]="showConfirmPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+        <small *ngIf="confirmPasswordError" class="error-message">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+          {{ confirmPasswordError }}
+        </small>
+      </div>
+
+      <!-- Confirmation Field -->
+      <div class="form-group">
+        <label for="confirmation">
+          <fa-icon [icon]="faCheckCircle"></fa-icon>
+          Confirmación
+        </label>
+        <input
+          type="text"
+          id="confirmation"
+          formControlName="confirmation"
+          placeholder='Escribe "ELIMINAR" para confirmar'
+          [class.error]="confirmationError"
+        />
+        <small *ngIf="confirmationError" class="error-message">
+          <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+          {{ confirmationError }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Reason Selection -->
+    <div class="reason-section">
+      <h3>¿Por qué eliminas tu cuenta? (Opcional)</h3>
+      <div class="reason-options">
+        <div class="reason-item" (click)="selectReason('no_longer_needed')">
+          <input
+            type="radio"
+            name="reason"
+            value="no_longer_needed"
+            formControlName="reason"
+          />
+          <label>Ya no necesito el servicio</label>
+        </div>
+        <div class="reason-item" (click)="selectReason('privacy_concerns')">
+          <input
+            type="radio"
+            name="reason"
+            value="privacy_concerns"
+            formControlName="reason"
+          />
+          <label>Preocupaciones de privacidad</label>
+        </div>
+        <div class="reason-item" (click)="selectReason('technical_issues')">
+          <input
+            type="radio"
+            name="reason"
+            value="technical_issues"
+            formControlName="reason"
+          />
+          <label>Problemas técnicos</label>
+        </div>
+        <div class="reason-item" (click)="selectReason('customer_service')">
+          <input
+            type="radio"
+            name="reason"
+            value="customer_service"
+            formControlName="reason"
+          />
+          <label>Servicio al cliente</label>
+        </div>
+        <div class="reason-item" (click)="selectReason('other')">
+          <input
+            type="radio"
+            name="reason"
+            value="other"
+            formControlName="reason"
+          />
+          <label>Otro motivo</label>
+        </div>
+      </div>
+
+      <div
+        *ngIf="deleteForm.get('reason')?.value === 'other'"
+        class="other-reason"
+      >
+        <textarea
+          formControlName="otherReason"
+          placeholder="Por favor, cuéntanos más detalles..."
+          rows="3"
+        >
+        </textarea>
+      </div>
+    </div>
+
+    <!-- General Error Message -->
+    <div *ngIf="generalError" class="general-error">
+      <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+      {{ generalError }}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="buttons-container">
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="goBack()"
+        [disabled]="isDeleting"
+      >
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        class="delete-button"
+        [disabled]="!deleteForm.valid || isDeleting"
+      >
+        <fa-icon [icon]="faTrash" *ngIf="!isDeleting"></fa-icon>
+        <div *ngIf="isDeleting" class="spinner"></div>
+        <span *ngIf="!isDeleting">Eliminar Cuenta</span>
+        <span *ngIf="isDeleting">Eliminando...</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Contact Support -->
+  <div class="support-section">
+    <h3>¿Tienes dudas?</h3>
+    <p>
+      Si tienes problemas con la app, contáctanos antes de eliminar tu
+      cuenta.
+    </p>
+    <div class="support-buttons">
+      <button
+        type="button"
+        class="support-button whatsapp"
+        (click)="contactWhatsapp()"
+      >
+        <fa-icon [icon]="faEnvelope"></fa-icon>
+        WhatsApp
+      </button>
+      <button
+        type="button"
+        class="support-button email"
+        (click)="contactEmail()"
+      >
+        <fa-icon [icon]="faEnvelope"></fa-icon>
+        Email
+      </button>
+    </div>
+  </div>
+</div>

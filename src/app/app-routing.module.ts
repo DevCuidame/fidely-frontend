@@ -51,6 +51,14 @@ const routes: Routes = [
   },
 
   {
+    path: 'delete-account',
+    loadComponent: () =>
+      import(
+        './pages/public/delete-account-public/delete-account-public.component'
+      ).then((m) => m.DeleteAccountPublicComponent),
+  },
+
+  {
     path: 'user-form',
     loadChildren: () =>
       import('./modules/user/user.module').then((m) => m.UserModule),

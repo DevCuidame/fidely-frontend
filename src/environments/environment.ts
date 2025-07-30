@@ -5,8 +5,8 @@
 export const environment = {
   url: 'http://localhost:4000/',
   wsUrl: 'ws://localhost:4000/ws',
-  // url: 'https://esenciaycuerpo.cuidame.tech/',
-  // wsUrl: 'wss://esenciaycuerpo.cuidame.tech/ws',
+  // url: 'https://fidely.cuidame.tech/',
+  // wsUrl: 'wss://fidely.cuidame.tech/ws',
   production: false,
 };
 
