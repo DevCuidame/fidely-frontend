@@ -277,10 +277,11 @@ export class UserService {
     this.storageService.removeItem('user').subscribe(
       () => {
         console.log('Usuario eliminado exitosamente del storage');
+        window.location.href = '/auth/login';
       },
       error => {
         console.warn('Error al eliminar usuario del almacenamiento:', error);
-        // El usuario ya está limpio en memoria, continuar sin fallback
+        window.location.href = '/auth/login';
       }
     );
   }
