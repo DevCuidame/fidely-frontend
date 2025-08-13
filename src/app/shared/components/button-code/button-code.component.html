@@ -1,0 +1,54 @@
+<div class="button-code-container">
+  <!-- Botón principal -->
+  <button 
+    *ngIf="!showInput()"
+    class="main-button"
+    (click)="onButtonClick()"
+    [ngStyle]="{
+      'background-color': buttonColor,
+      'color': textColor,
+      'font-size': fontSize,
+      'padding': padding,
+      'border-radius': borderRadius
+    }"
+  >
+    {{ label }}
+  </button>
+
+  <!-- Sección de input que aparece al hacer click -->
+  <div *ngIf="showInput()" class="input-section">
+    <div class="input-container">
+      <input
+        type="text"
+        class="code-input"
+        [placeholder]="placeholder"
+        [(ngModel)]="codeValue"
+        (keydown)="onInputKeydown($event)"
+        #codeInput
+        autofocus
+      />
+      <div class="action-buttons">
+        <button 
+          class="submit-button"
+          (click)="onSubmitCode()"
+          [disabled]="!codeValue().trim()"
+          [ngStyle]="{
+            'background-color': inputColor,
+            'border-radius': borderRadius
+          }"
+        >
+          Confirmar
+        </button>
+        <button 
+          class="cancel-button"
+          (click)="onCancel()"
+          [ngStyle]="{
+            'border-radius': borderRadius
+          }"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

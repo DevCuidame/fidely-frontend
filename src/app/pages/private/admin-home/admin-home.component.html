@@ -1,0 +1,80 @@
+<div class="admin-home">
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Hero Section para Coffee Shop -->
+    <div class="coffee-hero">
+      <app-hero-section
+        backgroundImage="assets/images/coffee-shop-bg.jpg"
+        title="Coffee Shop"
+        subtitle="Best coffee in town"
+      >
+      </app-hero-section>
+      <!-- Badge de descuento -->
+      <div class="discount-badge">
+        <span class="discount-percentage">25%</span>
+        <span class="discount-text">Discount</span>
+      </div>
+    </div>
+
+    <!-- Client Search Section -->
+    <div class="search-section">
+      <h2 class="section-title">BUSCAR CLIENTE</h2>
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Introduce el No. de id cliente"
+          aria-label="Buscar cliente"
+        />
+        <button class="search-button">BUSCAR</button>
+      </div>
+    </div>
+
+    <!-- Sección del cliente -->
+    <div class="customer-section">
+      <!-- Progreso de sellos simple -->
+      <div class="stamps-grid">
+        <app-stamp-card
+          *ngFor="let card of stampCards(); trackBy: trackByCardId"
+          [cardId]="card.id"
+          [backgroundImage]="card.imagen"
+          [totalStamps]="card.objetivo"
+          [collectedStamps]="card.progreso"
+          [title]="card.nombre"
+          [isExpanded]="isCardExpanded(card.id)"
+          (expansionToggle)="onCardExpansionToggle($event)"
+        >
+        </app-stamp-card>
+      </div>
+
+      <!-- Botones de acción usando button-code -->
+      <div class="action-buttons">
+        <app-button-code
+          label="¡SELLAR TARJETA DE VISITA!"
+          placeholder="Ingrese código de cliente"
+          buttonColor="#ff6620"
+          textColor="white"
+          inputColor="#ff6620"
+          fontSize="0.875rem"
+          padding="1.5rem 2rem"
+          borderRadius="12px"
+          (onCodeSubmit)="onStampCard($event)"
+        >
+        </app-button-code>
+
+        <app-button-code
+          label="¡ENTREGAR PREMIO!"
+          placeholder="Ingrese código de premio"
+          buttonColor="#20c997"
+          textColor="white"
+          inputColor="#20c997"
+          fontSize="0.875rem"
+          padding="1.5rem 2rem"
+          borderRadius="12px"
+          (onCodeSubmit)="onDeliverReward($event)"
+        >
+        </app-button-code>
+      </div>
+    </div>
+  </main>
+</div>
