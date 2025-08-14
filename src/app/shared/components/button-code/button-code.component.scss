@@ -1,0 +1,153 @@
+.button-code-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 140px;
+}
+
+.main-button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.05);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.input-section {
+  width: 100%;
+  animation: slideIn 0.3s ease-out;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #f0f0f0;
+}
+
+.code-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    border-color: #ff6620;
+    box-shadow: 0 0 0 3px rgba(255, 102, 32, 0.1);
+  }
+  
+  &::placeholder {
+    color: #999;
+    font-style: italic;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.submit-button, .cancel-button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.submit-button {
+  color: white;
+  
+  &:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    transform: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+  
+  &:not(:disabled):hover {
+    filter: brightness(1.1);
+  }
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  
+  &:hover {
+    background-color: #e9ecef;
+    color: #495057;
+  }
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .input-container {
+    padding: 0.75rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .submit-button, .cancel-button {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-button {
+    font-size: 0.75rem !important;
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .code-input {
+    font-size: 0.875rem;
+  }
+}
