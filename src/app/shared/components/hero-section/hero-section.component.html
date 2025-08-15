@@ -1,0 +1,9 @@
+<div class="hero-container">
+  <div class="hero-image" [style.background-image]="backgroundImage ? 'url(' + backgroundImage + ')' : ''">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title" *ngIf="title">{{title}}</h1>
+      <p class="hero-subtitle" *ngIf="subtitle">{{subtitle}}</p>
+    </div>
+  </div>
+</div>
