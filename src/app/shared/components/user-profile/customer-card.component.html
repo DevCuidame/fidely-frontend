@@ -1,0 +1,73 @@
+<div class="customer-card">
+  <div class="customer-avatar">
+    <img [src]="userInfo.profile_image_url || 'assets/images/avatar.jpeg'" 
+         [alt]="userInfo.name + ' avatar'"
+         class="avatar" />
+  </div>
+  
+  <div class="customer-info">
+    <h3 class="customer-name">{{ userInfo.name }}</h3>
+    <!-- <p class="customer-status">Cliente frecuente</p> -->
+  </div>
+  
+  <div class="stamps-container">
+    <div class="stamp" 
+         *ngFor="let stamp of stamps()" 
+         [class.collected]="stamp.collected">
+      <img [src]="'assets/logo/fidely-logo.png'" 
+           [alt]="'Sello ' + stamp.id" 
+           [class.grayscale]="!stamp.collected" />
+    </div>
+  </div>
+  
+  <!-- Stamp Counter -->
+  <div class="stamp-counter">
+    <span class="counter-text">{{ userInfo.totalStamps }}/10 sellos</span>
+  </div>
+  
+  <!-- Prize Info -->
+    <div class="prize-info">
+      @if (userInfo.totalStamps! < 10) {
+        <p class="info-text">Debe de completar 10 sellos para reclamar un premio</p>
+      } @else {
+        <p class="info-text success">¡Premio disponible!</p>
+      }
+    </div>
+</div>
+
+<!-- Botones de acción -->
+<div class="action-buttons">
+  <app-button-code
+    label="¡SELLAR TARJETA DE VISITA!"
+    placeholder="Ingrese código de cliente"
+    buttonColor="var(--color-primary)"
+    textColor="white"
+    inputColor="var(--color-primary)"
+    fontSize="0.875rem"
+    padding="1.5rem 2rem"
+    borderRadius="12px"
+    [disabled]="isStampButtonDisabled()"
+    (onCodeSubmit)="onStampCard($event)"
+  >
+  </app-button-code>
+
+  <button
+    class="deliver-reward-button"
+    [disabled]="!isPrizeAvailable()"
+    (click)="onDeliverReward()"
+    [ngStyle]="{
+      'background-color': isPrizeAvailable() ? 'var(--color-secondary)' : '#cccccc',
+      'color': 'white',
+      'font-size': '0.875rem',
+      'padding': '1.5rem 2rem',
+      'border-radius': '12px',
+      'border': 'none',
+      'cursor': isPrizeAvailable() ? 'pointer' : 'not-allowed',
+      'width': '100%',
+      'font-weight': 'bold',
+      'transition': 'all 0.3s ease'
+    }"
+  >
+    ¡ENTREGAR PREMIO!
+  </button>
+</div>

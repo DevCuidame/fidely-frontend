@@ -5,5 +5,20 @@
       <h1 class="hero-title" *ngIf="title">{{title}}</h1>
       <p class="hero-subtitle" *ngIf="subtitle">{{subtitle}}</p>
     </div>
+    
+    <!-- Logo en esquina inferior derecha -->
+    <div class="hero-logo" *ngIf="logoUrl && !isLoading">
+      <img 
+        [src]="logoUrl" 
+        [alt]="title + ' logo'"
+        loading="lazy"
+        class="logo-image"
+      />
+    </div>
+    
+    <!-- Estado de carga del logo -->
+    <div class="hero-logo-loading" *ngIf="isLoading">
+      <div class="loading-placeholder"></div>
+    </div>
   </div>
 </div>

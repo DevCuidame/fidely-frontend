@@ -1,52 +1,100 @@
 <div class="button-code-container">
   <!-- Botón principal -->
-  <button 
-    *ngIf="!showInput()"
+  <button
     class="main-button"
+    [class.disabled]="disabled"
+    [disabled]="disabled"
     (click)="onButtonClick()"
     [ngStyle]="{
       'background-color': buttonColor,
-      'color': textColor,
+      color: textColor,
       'font-size': fontSize,
-      'padding': padding,
+      padding: padding,
       'border-radius': borderRadius
     }"
   >
     {{ label }}
   </button>
 
-  <!-- Sección de input que aparece al hacer click -->
-  <div *ngIf="showInput()" class="input-section">
-    <div class="input-container">
-      <input
-        type="text"
-        class="code-input"
-        [placeholder]="placeholder"
-        [(ngModel)]="codeValue"
-        (keydown)="onInputKeydown($event)"
-        #codeInput
-        autofocus
-      />
-      <div class="action-buttons">
-        <button 
-          class="submit-button"
-          (click)="onSubmitCode()"
-          [disabled]="!codeValue().trim()"
-          [ngStyle]="{
-            'background-color': inputColor,
-            'border-radius': borderRadius
-          }"
-        >
-          Confirmar
+  <!-- Modal overlay -->
+  <div *ngIf="showInput()" class="modal-overlay" (click)="onCancel()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <!-- Header del modal -->
+      <div class="modal-header">
+        <h3 class="modal-title">{{ simpleMode ? 'Ingrese Código' : 'Sellar Visita' }}</h3>
+        <button class="close-button" (click)="onCancel()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Contenido del modal -->
+      <div class="modal-body">
+        <!-- Modo simple: solo código -->
+        <div *ngIf="simpleMode" class="form-group">
+          <label for="simpleCode" class="form-label">Código</label>
+          <input
+            type="text"
+            id="simpleCode"
+            class="form-input"
+            [placeholder]="placeholder"
+            [(ngModel)]="simpleCode"
+            (keydown)="onInputKeydown($event)"
+            autofocus
+          />
+        </div>
+        
+        <!-- Modo completo: formulario de sellado -->
+        <div *ngIf="!simpleMode">
+          <div class="form-group">
+            <label for="purchaseAmount" class="form-label">Valor de la compra (COP)</label>
+            <input
+              type="number"
+              id="purchaseAmount"
+              class="form-input"
+              placeholder="Ej: 15000"
+              [(ngModel)]="purchaseAmount"
+              min="1"
+              autofocus
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Descripción</label>
+            <input
+              type="text"
+              id="description"
+              class="form-input"
+              placeholder="Ej: Compra de Café Americano"
+              [(ngModel)]="description"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="invoiceNumber" class="form-label">Número de factura</label>
+            <input
+              type="text"
+              id="invoiceNumber"
+              class="form-input"
+              placeholder="Ej: FAC-2024-001"
+              [(ngModel)]="invoiceNumber"
+            />
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer del modal -->
+      <div class="modal-footer">
+        <button class="cancel-btn" (click)="onCancel()">
+          Cancelar
         </button>
         <button 
-          class="cancel-button"
-          (click)="onCancel()"
-          [ngStyle]="{
-            'border-radius': borderRadius
-          }"
+          class="submit-btn"
+          (click)="onSubmitCode()"
+          [disabled]="!isFormValid()"
         >
-          Cancelar
+          {{ simpleMode ? 'Enviar' : 'Sellar Visita' }}
         </button>
       </div>
     </div>

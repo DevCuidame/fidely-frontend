@@ -73,3 +73,78 @@
     font-size: 0.9rem;
   }
 }
+
+.hero-logo {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 3;
+  
+  @media (max-width: 480px) {
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.logo-image {
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.hero-logo-loading {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 3;
+  
+  @media (max-width: 480px) {
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+.loading-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

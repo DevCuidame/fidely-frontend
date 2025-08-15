@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminRoutingModule } from './admin-routing.module';
+import { BusinessRoutingModule } from './business-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -13,8 +13,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule,
+    BusinessRoutingModule,
     SharedModule
   ]
 })
-export class AdminModule { }
+export class BusinessModule { }

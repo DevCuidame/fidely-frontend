@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from 'src/app/core/guards/auth.guard';
-import { AdminLayoutComponent } from './layouts/admin-layout.component';
-import { AdminHomeComponent } from 'src/app/pages/private/admin-home/admin-home.component';
+import { BusinessGuard } from 'src/app/core/guards/business.guard';
+import { BusinessLayoutComponent } from './layouts/business-layout.component';
+import { BusinessHomeComponent } from 'src/app/pages/private/admin-home/business-home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminLayoutComponent,
-    //canActivate: [AuthGuard],
+    component: BusinessLayoutComponent,
+    canActivate: [BusinessGuard],
     children: [
       {
         path: '',
@@ -17,7 +17,7 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        component: AdminHomeComponent
+        component: BusinessHomeComponent
       },
       // Aquí puedes agregar más rutas para el admin
       // {
@@ -40,4 +40,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule { }
+export class BusinessRoutingModule { }

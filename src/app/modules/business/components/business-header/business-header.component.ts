@@ -3,30 +3,30 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-header',
+  selector: 'app-business-header',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './admin-header.component.html',
-  styleUrls: ['./admin-header.component.scss']
+  templateUrl: './business-header.component.html',
+  styleUrls: ['./business-header.component.scss']
 })
-export class AdminHeaderComponent {
+export class BusinessHeaderComponent {
 
   constructor(private router: Router) {}
 
   // Navigation methods for header links
   navigateToHome(): void {
-    this.router.navigate(['/admin/home']);
+    this.router.navigate(['/business/home']);
   }
   
   navigateToPromos(): void {
-    this.router.navigate(['/admin/promos']);
+    this.router.navigate(['/business/promos']); 
   }
   
   navigateToClients(): void {
-    this.router.navigate(['/admin/clients']);
+    this.router.navigate(['/business/clients']);
   }
   
   navigateToRewards(): void {
-    this.router.navigate(['/admin/rewards']);
+    this.router.navigate(['/business/rewards']);
   }
 }

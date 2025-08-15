@@ -1,25 +1,38 @@
-<header class="dashboard-header">
+<header
+  class="dashboard-header"
+  [ngStyle]="{ 'padding-top': statusBarHeight + 'px' }"
+>
   <div class="header-content">
     <!-- Sección Izquierda: Avatar y Saludo -->
     <div class="header-left">
-      <div class="user-avatar" *ngIf="showUserImage" (click)="onUserImageClick()">
-        <img [src]="userProfileImage()" [alt]="userFullName()" class="avatar-image">
+      <div
+        class="user-avatar"
+        *ngIf="showUserImage"
+        (click)="onUserImageClick()"
+      >
+        <img
+          [src]="userProfileImage()"
+          [alt]="userFullName()"
+          class="avatar-image"
+        />
       </div>
       <div class="user-greeting" *ngIf="showUserName">
         <div class="greeting-hello">¡Hola,</div>
-        <h2 class="greeting-name">{{ userData?.first_name || 'Usuario' }}!</h2>
+        <h2 class="greeting-name">{{ userData?.first_name || "Usuario" }}!</h2>
       </div>
     </div>
-    
+
     <!-- Sección Derecha: Notificaciones -->
     <div class="header-right" *ngIf="showNotifications">
       <div class="notification-container" (click)="onNotificationClick()">
         <fa-icon [icon]="faBell" class="notification-icon"></fa-icon>
-        <span class="notification-badge" *ngIf="hasNotifications()">{{ unreadNotifications }}</span>
+        <span class="notification-badge" *ngIf="hasNotifications()">{{
+          unreadNotifications
+        }}</span>
       </div>
     </div>
   </div>
-  
+
   <!-- Sección Central: Mensaje Personalizado -->
   <div class="header-message" *ngIf="customMessage">
     <p class="custom-message">{{ customMessage }}</p>
@@ -27,9 +40,10 @@
 </header>
 
 <!-- Componente de Ajustes -->
-<app-user-settings 
+<app-user-settings
   [isVisible]="showSettings"
   [userData]="userData"
   (close)="onSettingsClose()"
-  (logout)="onLogout()">
+  (logout)="onLogout()"
+>
 </app-user-settings>

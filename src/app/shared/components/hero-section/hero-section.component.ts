@@ -12,6 +12,8 @@ export class HeroSectionComponent {
   @Input() backgroundImage: string = '';
   @Input() title: string = '';
   @Input() subtitle: string = '';
+  @Input() logoUrl: string = '';
+  @Input() isLoading: boolean = false;
   
   constructor() {}
 }

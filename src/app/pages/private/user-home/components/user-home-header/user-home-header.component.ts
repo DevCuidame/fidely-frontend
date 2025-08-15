@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, computed } from '@angular/core';
+import { Component, Input, Output, EventEmitter, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ import { UserSettingsComponent } from '../user-settings/user-settings.component'
   templateUrl: './user-home-header.component.html',
   styleUrls: ['./user-home-header.component.scss']
 })
-export class UserHomeHeaderComponent {
+export class UserHomeHeaderComponent implements OnInit{
   // Font Awesome icons
   faBell = faBell;
 
@@ -32,6 +32,7 @@ export class UserHomeHeaderComponent {
 
   // Settings state
   showSettings = false;
+  statusBarHeight = 0;
 
   // Computed properties
   displayTitle = computed(() => {
@@ -56,6 +57,15 @@ export class UserHomeHeaderComponent {
   });
 
   hasNotifications = computed(() => this.unreadNotifications > 0);
+
+  ngOnInit(): void {
+  if (window.visualViewport) {
+      const fullHeight = screen.height;
+      const visualHeight = window.visualViewport.height;
+      this.statusBarHeight = fullHeight - visualHeight;
+    }
+  }
+
 
   // Event handlers
   onUserImageClick() {

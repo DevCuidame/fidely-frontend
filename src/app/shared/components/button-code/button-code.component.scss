@@ -1,153 +1,226 @@
 .button-code-container {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  min-width: 140px;
+  position: relative;
 }
 
 .main-button {
-  height: 100%;
-  width: 100%;
   border: none;
   cursor: pointer;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  white-space: nowrap;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.05);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.input-section {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   width: 100%;
-  animation: slideIn 0.3s ease-out;
+  max-width: 300px;
+  
+  &:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  &:active:not(.disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
 }
 
-.input-container {
+// Modal styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  background: white;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
   padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 2px solid #f0f0f0;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.code-input {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: var(--card-background);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
   border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
+  color: var(--text-tertiary);
   transition: all 0.2s ease;
   
+  &:hover {
+    background: var(--color-smooth_light);
+    color: var(--text-primary);
+  }
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--background-color);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  
   &:focus {
-    border-color: #ff6620;
+    outline: none;
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(255, 102, 32, 0.1);
   }
   
   &::placeholder {
-    color: #999;
-    font-style: italic;
+    color: var(--text-tertiary);
   }
 }
 
-.action-buttons {
+.modal-footer {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--color-smooth_light);
+  border-radius: 0 0 16px 16px;
 }
 
-.submit-button, .cancel-button {
+.cancel-btn {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: none;
-  font-weight: 600;
+  padding: 0.875rem 1.5rem;
+  border: 2px solid var(--border-color);
+  background: var(--background-color);
+  color: var(--text-primary);
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  border-radius: 8px;
+  transition: all 0.3s ease;
   font-size: 0.875rem;
   
   &:hover {
-    transform: translateY(-1px);
-  }
-  
-  &:active {
-    transform: translateY(0);
+    background: var(--color-smooth_light);
+    border-color: var(--text-tertiary);
   }
 }
 
-.submit-button {
+.submit-btn {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  background: var(--color-primary);
   color: white;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  
+  &:hover:not(:disabled) {
+    background: var(--color-primary-dark, #e55a1c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 102, 32, 0.3);
+  }
   
   &:disabled {
-    background-color: #ccc !important;
+    opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
-    
-    &:hover {
-      transform: none;
-    }
-  }
-  
-  &:not(:disabled):hover {
-    filter: brightness(1.1);
+    transform: none !important;
+    box-shadow: none !important;
   }
 }
 
-.cancel-button {
-  background-color: #f8f9fa;
-  color: #6c757d;
-  border: 1px solid #dee2e6;
-  
-  &:hover {
-    background-color: #e9ecef;
-    color: #495057;
-  }
-}
-
-/* Animaciones */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .input-container {
-    padding: 0.75rem;
+// Responsive adjustments
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.5rem;
   }
   
-  .action-buttons {
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .modal-footer {
     flex-direction: column;
   }
   
-  .submit-button, .cancel-button {
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-button {
-    font-size: 0.75rem !important;
-    padding: 1rem 1.5rem !important;
-  }
-  
-  .code-input {
-    font-size: 0.875rem;
+  .modal-title {
+    font-size: 1.125rem;
   }
 }

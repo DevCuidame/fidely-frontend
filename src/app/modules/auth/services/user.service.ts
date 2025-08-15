@@ -67,15 +67,7 @@ export class UserService {
     this.userSubject.next(normalizedUser);
 
     // Guardar en StorageService
-    this.storageService.setItem('user', normalizedUser).subscribe(
-      () => {
-        console.log('Usuario guardado exitosamente en storage');
-      },
-      (error) => {
-        console.warn('Error al guardar usuario en StorageService:', error);
-        // El usuario ya está actualizado en memoria, continuar sin fallback
-      }
-    );
+    this.storageService.setItem('user', normalizedUser).subscribe();
   }
 
   /**
@@ -154,9 +146,9 @@ export class UserService {
                 );
 
                 // El usuario ya está actualizado en memoria, continuar sin fallback
-                 console.error(
-                   'No se pudo guardar usuario en storage, pero continúa en memoria'
-                 );
+                console.error(
+                  'No se pudo guardar usuario en storage, pero continúa en memoria'
+                );
 
                 return of(userData); // Aún así, devolver datos al llamador
               })
@@ -209,7 +201,7 @@ export class UserService {
       () => {
         console.log('Usuario con datos de salud guardado exitosamente');
       },
-      error => {
+      (error) => {
         console.warn('Error al guardar usuario con datos de salud:', error);
         // El usuario ya está actualizado en memoria, continuar sin fallback
       }
@@ -276,10 +268,9 @@ export class UserService {
     this.userSubject.next(null);
     this.storageService.removeItem('user').subscribe(
       () => {
-        console.log('Usuario eliminado exitosamente del storage');
         window.location.href = '/auth/login';
       },
-      error => {
+      (error) => {
         console.warn('Error al eliminar usuario del almacenamiento:', error);
         window.location.href = '/auth/login';
       }

@@ -1,0 +1,178 @@
+<div
+  class="modal-overlay"
+  *ngIf="isVisible()"
+  (click)="onBackdropClick($event)"
+>
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">
+        <fa-icon [icon]="faGift" class="title-icon"></fa-icon>
+        Entrega de Premio
+      </h2>
+      <button class="close-button" (click)="closeModal()">
+        <fa-icon [icon]="faTimes" class="close-icon"></fa-icon>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="modal-content">
+      <!-- Sección de búsqueda de código -->
+      <div class="search-section">
+        <h4 class="section-title">Código de Premio</h4>
+        <div class="search-container">
+          <input
+            type="text"
+            class="code-input"
+            placeholder="Ingrese el código del premio"
+            [(ngModel)]="rewardCode"
+            (keyup.enter)="onSearchCode()"
+            [disabled]="isLoading()"
+          />
+          <button
+            class="search-button"
+            (click)="onSearchCode()"
+            [disabled]="!rewardCode() || isLoading()"
+          >
+            <fa-icon [icon]="faSearch" *ngIf="!isLoading()"></fa-icon>
+            <span *ngIf="isLoading()" class="loading-spinner"></span>
+          </button>
+        </div>
+
+        <!-- Error message -->
+        <div class="error-message" *ngIf="error()">
+          {{ error() }}
+        </div>
+      </div>
+
+      <!-- Información del premio encontrado -->
+      <div class="reward-info-section" *ngIf="milestoneData()">
+        <!-- Información del negocio -->
+        <div class="business-info">
+          <div class="business-logo" *ngIf="milestoneData()!.businessLogo">
+            <img
+              [src]="milestoneData()!.businessLogo"
+              [alt]="milestoneData()!.businessName"
+            />
+          </div>
+          <div class="business-details">
+            <h3 class="business-name">
+              <fa-icon [icon]="faStore" class="icon"></fa-icon>
+              {{ milestoneData()!.businessName }}
+            </h3>
+          </div>
+        </div>
+
+        <!-- Información del cliente -->
+        <div class="customer-info">
+          <h4 class="section-title">
+            <fa-icon [icon]="faUser" class="icon"></fa-icon>
+            Cliente
+          </h4>
+          <div class="customer-details">
+            <p><strong>Nombre:</strong> {{ userFullName() }}</p>
+            <p><strong>Email:</strong> {{ milestoneData()!.user.email }}</p>
+            <p><strong>Teléfono:</strong> {{ milestoneData()!.user.phone }}</p>
+            <p>
+              <strong>Identificación:</strong>
+              {{ milestoneData()!.user.identification_type }}
+              {{ milestoneData()!.user.identification_number }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Estado del código -->
+        <div class="code-status-section">
+          <div
+            class="status-badge"
+            [class.valid]="!milestoneData()!.isUsed && !isExpired()"
+            [class.used]="milestoneData()!.isUsed"
+            [class.expired]="isExpired()"
+          >
+            {{
+              milestoneData()!.isUsed
+                ? "CÓDIGO USADO"
+                : isExpired()
+                ? "CÓDIGO EXPIRADO"
+                : "CÓDIGO VÁLIDO"
+            }}
+          </div>
+          <div class="expiration-info">
+            <fa-icon [icon]="faCalendarAlt" class="icon"></fa-icon>
+            <span>Expira: {{ formattedExpirationDate() }}</span>
+          </div>
+        </div>
+
+        <!-- Premio disponible -->
+        <div
+          class="reward-section"
+          *ngIf="
+            milestoneData()!.availableRewards &&
+            milestoneData()!.availableRewards.length > 0
+          "
+        >
+          <h4 class="section-title">
+            <fa-icon [icon]="faGift" class="icon"></fa-icon>
+            Premio a Entregar
+          </h4>
+
+          <div
+            class="reward-card"
+            *ngFor="
+              let reward of milestoneData()!.availableRewards;
+              let first = first
+            "
+            [class.selected]="selectedReward()?.id === reward.id"
+            [class.disabled]="milestoneData()!.isUsed || isExpired()"
+            (click)="
+              !milestoneData()!.isUsed && !isExpired() && onSelectReward(reward)
+            "
+          >
+            <div class="reward-image" *ngIf="reward.imageUrl">
+              <img [src]="reward.imageUrl" [alt]="reward.name" />
+            </div>
+            <div class="reward-details">
+              <h5 class="reward-name">{{ reward.name }}</h5>
+              <p class="reward-description">{{ reward.description }}</p>
+              <div class="reward-meta">
+                <span class="points">{{ reward.pointsRequired }} puntos</span>
+                <!-- <span class="type">{{ reward.rewardType }}</span> -->
+              </div>
+            </div>
+            <div
+              class="selection-check"
+              *ngIf="selectedReward()?.id === reward.id"
+            >
+              <fa-icon [icon]="faGift"></fa-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- No hay premios disponibles -->
+        <div
+          class="no-rewards"
+          *ngIf="
+            !milestoneData()!.availableRewards ||
+            milestoneData()!.availableRewards.length === 0
+          "
+        >
+          <p>No hay premios disponibles para este código.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer con Acciones -->
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button
+        class="btn btn-primary"
+        [disabled]="!canDeliverReward()"
+        (click)="onConfirmDelivery()"
+        *ngIf="milestoneData() && selectedReward()"
+      >
+        <fa-icon [icon]="faGift" class="btn-icon"></fa-icon>
+        Entregar Premio
+      </button>
+    </div>
+  </div>
+</div>

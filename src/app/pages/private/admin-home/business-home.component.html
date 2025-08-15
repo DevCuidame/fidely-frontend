@@ -1,0 +1,77 @@
+<div class="admin-home">
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Hero Section para Coffee Shop -->
+    <div class="coffee-hero">
+      <app-hero-section
+        [backgroundImage]="bannerUrl() || 'assets/images/coffee-shop-bg.jpg'"
+        [title]="businessName() || 'Cargando...'"
+        [subtitle]="businessType() || 'Cargando información del negocio...'"
+        [logoUrl]="logoUrl()"
+        [isLoading]="isLoadingBusiness()"
+      >
+      </app-hero-section>
+    </div>
+
+    <!-- Client Search Section -->
+    <div class="search-section">
+      <h2 class="section-title">BUSCAR CLIENTE</h2>
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="No. de documento del cliente"
+          aria-label="Buscar cliente"
+          [value]="searchDocumentNumber()"
+          (input)="onSearchInputChange($any($event.target).value)"
+          (keydown.enter)="onSearchCustomer()"
+          [disabled]="isLoadingCustomerSearch()"
+        />
+        <button 
+          class="search-button"
+          (click)="onSearchCustomer()"
+          [disabled]="!searchDocumentNumber().trim() || isLoadingCustomerSearch()"
+        >
+          {{ isLoadingCustomerSearch() ? 'BUSCANDO...' : 'BUSCAR' }}
+        </button>
+      </div>
+      
+      <!-- Error message -->
+      @if (customerSearchError()) {
+        <div class="error-message">
+          {{ customerSearchError() }}
+        </div>
+      }
+      
+      <!-- Clear search button -->
+      @if (hasFoundCustomer() || customerSearchError()) {
+        <button class="clear-search-button" (click)="onClearCustomerSearch()">
+          Limpiar búsqueda
+        </button>
+      }
+    </div>
+
+    <!-- Sección del cliente -->
+    @if (hasFoundCustomer()) {
+      <div class="customer-section">
+        <!-- Customer Card Component -->
+        <div class="customer-card-container">
+          <app-customer-card 
+          [userInfo]="customerCardData()!"
+          (stampCard)="onStampCard($event)"
+          (deliverReward)="onDeliverReward()"
+          (transactionCompleted)="onTransactionCompleted()"
+        ></app-customer-card>
+        </div>
+
+        <!-- Los botones de acción ahora están en el customer-card component -->
+      </div>
+    }
+  </main>
+
+  <!-- Modal de Entrega de Premios -->
+  <app-reward-delivery-modal
+    #rewardModal
+    (rewardDelivered)="onRewardDelivered()"
+  ></app-reward-delivery-modal>
+</div>
