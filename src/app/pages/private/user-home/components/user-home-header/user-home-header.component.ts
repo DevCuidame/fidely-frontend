@@ -32,7 +32,7 @@ export class UserHomeHeaderComponent implements OnInit{
 
   // Settings state
   showSettings = false;
-  statusBarHeight = 0;
+  statusBarHeight = 30;
 
   // Computed properties
   displayTitle = computed(() => {
@@ -59,11 +59,11 @@ export class UserHomeHeaderComponent implements OnInit{
   hasNotifications = computed(() => this.unreadNotifications > 0);
 
   ngOnInit(): void {
-  if (window.visualViewport) {
-      const fullHeight = screen.height;
-      const visualHeight = window.visualViewport.height;
-      this.statusBarHeight = fullHeight - visualHeight;
-    }
+  // if (window.visualViewport) {
+  //     const fullHeight = screen.height;
+  //     const visualHeight = window.visualViewport.height;
+  //     this.statusBarHeight = fullHeight - visualHeight;
+  //   }
   }
 
 

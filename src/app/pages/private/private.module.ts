@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../core/guards/auth.guard';
+import { UserGuard } from '../../core/guards/user.guard';
 import { AdminGuard } from '../../core/guards/admin.guard';
 import { AuthInterceptor } from '../../core/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -21,7 +22,7 @@ const routes: Routes = [
   {
     path: '',
     component: UserHomeComponent,
-    canActivate: [AuthGuard],
+    canActivate: [UserGuard],
     children: [
       {
         path: '',
@@ -31,27 +32,27 @@ const routes: Routes = [
       {
         path: 'inicio',
         component: HomeComponent,
-        canActivate: [AuthGuard],
+        canActivate: [UserGuard],
       },
       {
         path: 'my-stamps',
         component: MyStampsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [UserGuard],
       },
       {
         path: 'redeem',
         component: RedeemComponent,
-        canActivate: [AuthGuard],
+        canActivate: [UserGuard],
       },
       {
         path: 'profile',
         component: UpdateProfileComponent,
-        canActivate: [AuthGuard],
+        canActivate: [UserGuard],
       },
       {
         path: 'change-password',
         component: ChangePasswordComponent,
-        canActivate: [AuthGuard],
+        canActivate: [UserGuard],
       },
       {
         path: 'delete-account',
@@ -74,6 +75,7 @@ const routes: Routes = [
   ],
   providers: [
     AuthGuard,
+    UserGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

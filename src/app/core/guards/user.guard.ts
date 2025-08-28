@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { map, take, catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class BusinessGuard implements CanActivate {
+export class UserGuard implements CanActivate {
   private authService: AuthService | null = null;
 
   constructor(
@@ -30,15 +30,15 @@ export class BusinessGuard implements CanActivate {
           return of(this.router.createUrlTree(['/auth/login']));
         }
         
-        // Verificar si el usuario tiene rol business usando observable
+        // Verificar si el usuario tiene rol user (no business)
         return this.getAuthService().getUserData().pipe(
           map(user => {
-            if (user && user.role === 'business') {
-              // Si es business, permitir acceso
+            if (user && user.role === 'user') {
+              // Si es user, permitir acceso
               return true;
-            } else if (user && user.role === 'user') {
-              // Si es user, redirigir a rutas de usuario
-              return this.router.createUrlTree(['/user']);
+            } else if (user && user.role === 'business') {
+              // Si es business, redirigir a business dashboard
+              return this.router.createUrlTree(['/business']);
             } else {
               // Si no tiene rol válido, redirigir al login
               return this.router.createUrlTree(['/auth/login']);

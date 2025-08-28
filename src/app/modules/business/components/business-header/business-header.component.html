@@ -1,5 +1,21 @@
 <header class="admin-header">
   <div class="header-container">
+    <!-- Sección Izquierda: Avatar y Saludo -->
+    <div class="header-left">
+      <div class="user-avatar" (click)="onUserImageClick()">
+        <img
+          [src]="userProfileImage()"
+          [alt]="userFullName()"
+          class="avatar-image"
+        />
+      </div>
+      <div class="user-greeting">
+        <div class="greeting-hello">¡Hola,</div>
+        <h2 class="greeting-name">{{ userData()?.first_name || "Admin" }}!</h2>
+      </div>
+    </div>
+
+    <!-- Sección Central: Logo -->
     <div class="logo-section">
       <img
         src="assets/logo/fidely-logo_white.png"
@@ -7,6 +23,8 @@
         class="fidely-logo"
       />
     </div>
+
+    <!-- Sección Derecha: Navegación -->
     <nav class="navigation">
       <a (click)="navigateToHome()" class="nav-link">INICIO</a>
       <a (click)="navigateToPromos()" class="nav-link">CONFIGURAR PROMOS</a>
@@ -15,3 +33,12 @@
     </nav>
   </div>
 </header>
+
+<!-- Componente de Ajustes -->
+<app-user-settings
+  [isVisible]="showSettings()"
+  [userData]="userData()"
+  (close)="onSettingsClose()"
+  (logout)="onLogout()"
+>
+</app-user-settings>

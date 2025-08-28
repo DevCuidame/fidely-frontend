@@ -14,11 +14,57 @@
     height: 60px;
   }
 
-  .logo-section {
+  // Sección Izquierda: Avatar y Saludo
+  .header-left {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex: 1;
+
+    .user-avatar {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      .avatar-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .user-greeting {
+      color: white;
+
+      .greeting-hello {
+        font-size: 0.9rem;
+        font-weight: 400;
+        margin-bottom: 0.2rem;
+        opacity: 0.9;
+      }
+
+      .greeting-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1;
+      }
+    }
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     color: white;
+    flex: 1;
 
     .fidely-logo {
       width: 250px;
@@ -31,6 +77,8 @@
     display: flex;
     gap: 2.5rem;
     align-items: center;
+    justify-content: flex-end;
+    flex: 1;
 
     .nav-link {
       color: white;
@@ -80,24 +128,38 @@
       padding: 0.5rem 0;
     }
 
-    .logo-section {
+    .header-left {
       justify-content: center;
+      order: 1;
 
-      .fidely-logo {
+      .user-avatar .avatar-image {
         width: 40px;
         height: 40px;
       }
 
-      .logo-text {
-        font-size: 1.5rem;
-      }
+      .user-greeting {
+        .greeting-hello {
+          font-size: 0.8rem;
+        }
 
-      .logo-subtitle {
-        font-size: 0.7rem;
+        .greeting-name {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .logo-section {
+      order: 2;
+      justify-content: center;
+
+      .fidely-logo {
+        width: 180px;
+        height: 70px;
       }
     }
 
     .navigation {
+      order: 3;
       gap: 1.5rem;
       flex-wrap: wrap;
       justify-content: center;
@@ -112,13 +174,27 @@
 
 @media (max-width: 480px) {
   .admin-header {
-    .logo-section {
-      .logo-text {
-        font-size: 1.25rem;
+    .header-left {
+      .user-avatar .avatar-image {
+        width: 35px;
+        height: 35px;
       }
 
-      .logo-subtitle {
-        font-size: 0.65rem;
+      .user-greeting {
+        .greeting-hello {
+          font-size: 0.7rem;
+        }
+
+        .greeting-name {
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .logo-section {
+      .fidely-logo {
+        width: 150px;
+        height: 60px;
       }
     }
 

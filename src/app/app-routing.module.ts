@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard, AutoRedirectGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
+import { UserGuard } from './core/guards/user.guard';
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 
 const routes: Routes = [
@@ -19,7 +20,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () =>
       import('./pages/private/private.module').then((m) => m.PrivateModule),
-    canActivate: [AuthGuard],
+    canActivate: [UserGuard],
   },
   {
     path: 'reset-password',
@@ -51,7 +52,7 @@ const routes: Routes = [
       import(
         './modules/user/pages/delete-account/delete-account.component'
       ).then((m) => m.DeleteAccountComponent),
-    canActivate: [AuthGuard],
+    canActivate: [UserGuard],
   },
 
   {
@@ -74,6 +75,7 @@ const routes: Routes = [
       import('./pages/private/private.module').then(
         (m) => m.PrivateModule
       ),
+    canActivate: [UserGuard],
   },
 
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
