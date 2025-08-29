@@ -1,0 +1,74 @@
+<div class="modal-backdrop" 
+     *ngIf="isOpen()" 
+     (click)="onBackdropClick($event)">
+  
+  <div class="modal-container" *ngIf="business">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <button class="close-button" (click)="onClose()">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+
+    <!-- Business Image -->
+    <div class="business-image-container">
+      <img [src]="getBusinessImage()" 
+           [alt]="business.business_name" 
+           class="business-image">
+      <div class="image-overlay"></div>
+    </div>
+
+    <!-- Modal Content -->
+    <div class="modal-content">
+      <!-- Business Name and Type -->
+      <div class="business-header">
+        <h2 class="business-name">{{ business.business_name }}</h2>
+        <div class="business-type" *ngIf="business.business_type">
+          <fa-icon [icon]="faBuilding"></fa-icon>
+          <span>{{ business.business_type }}</span>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="info-section" *ngIf="hasContactInfo()">
+        <h3 class="section-title">Contacto</h3>
+        <div class="info-grid">
+          <div class="info-item" *ngIf="business.phone">
+            <fa-icon [icon]="faPhone"></fa-icon>
+            <span>{{ formatPhone(business.phone) }}</span>
+          </div>
+          <div class="info-item" *ngIf="business.email">
+            <fa-icon [icon]="faEnvelope"></fa-icon>
+            <span>{{ business.email }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Information -->
+      <div class="info-section" *ngIf="hasLocationInfo()">
+        <h3 class="section-title">Ubicación</h3>
+        <div class="location-info">
+          <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+          <div class="location-text">
+            <div *ngIf="business.address_line1" class="address">{{ business.address_line1 }}</div>
+            <div *ngIf="business.city_name || business.department_name" class="city-department">
+              <span *ngIf="business.city_name">{{ business.city_name }}</span>
+              <span *ngIf="business.city_name && business.department_name">, </span>
+              <span *ngIf="business.department_name">{{ business.department_name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="info-section" *ngIf="hasGallery()">
+        <h3 class="section-title">Galería</h3>
+        <div class="gallery-grid">
+          <div class="gallery-item" *ngFor="let image of business.gallery_images">
+            <img [src]="image" [alt]="business.business_name" class="gallery-image">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

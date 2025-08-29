@@ -9,7 +9,7 @@
     <div class="stamp-card-wrapper" 
          [style.transform]="'translateX(' + getTranslateX() + 'px)'"
          *ngIf="currentStamp()">
-      <div class="stamp-card fade-in">
+      <div class="stamp-card fade-in" (click)="onStampClick()">
          <!-- Left Content -->
         <div class="stamp-content">
           <div class="stamp-message">

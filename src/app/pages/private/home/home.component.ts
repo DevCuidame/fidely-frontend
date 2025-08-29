@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
   // Computed signal que usa directamente BusinessRegistryData
   allies = computed<IBusinessResponse[]>(() => {
     const businesses = this.businessService.approvedBusinesses();
-    console.log('HomeComponent - allies computed:', businesses);
     return businesses;
   });
 
@@ -83,7 +82,6 @@ export class HomeComponent implements OnInit {
   ]);
   
   ngOnInit() {
-    console.log('HomeComponent - ngOnInit called');
     this.businessService.loadApprovedBusinesses();
     this.userPointsService.loadUserPoints();
   }

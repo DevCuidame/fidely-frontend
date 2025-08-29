@@ -50,12 +50,13 @@
           <div class="form-group">
             <label for="purchaseAmount" class="form-label">Valor de la compra (COP)</label>
             <input
-              type="number"
+              type="text"
               id="purchaseAmount"
               class="form-input"
               placeholder="Ej: 15000"
               [(ngModel)]="purchaseAmount"
-              min="1"
+              (input)="onPurchaseAmountInput($event)"
+              (keypress)="onNumberKeypress($event)"
               autofocus
             />
           </div>
@@ -86,16 +87,16 @@
       
       <!-- Footer del modal -->
       <div class="modal-footer">
-        <button class="cancel-btn" (click)="onCancel()">
-          Cancelar
-        </button>
         <button 
-          class="submit-btn"
+        class="submit-btn"
           (click)="onSubmitCode()"
           [disabled]="!isFormValid()"
         >
-          {{ simpleMode ? 'Enviar' : 'Sellar Visita' }}
-        </button>
+        {{ simpleMode ? 'Enviar' : 'Sellar Visita' }}
+      </button>
+      <button class="cancel-btn" (click)="onCancel()">
+        Cancelar
+      </button>
       </div>
     </div>
   </div>

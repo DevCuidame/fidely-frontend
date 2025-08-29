@@ -1,0 +1,126 @@
+<form [formGroup]="basicInfoForm" class="basic-info-form">
+  <div class="form-section">
+    <h3 class="section-title">Información básica</h3>
+    
+    <!-- Nombre del negocio -->
+    <div class="input-group">
+      <label for="business_name" class="input-label">Nombre del negocio *</label>
+      <div class="input-container">
+        <input
+          id="business_name"
+          type="text"
+          formControlName="business_name"
+          class="custom-input"
+          [class.error]="isFieldInvalid('business_name')"
+          placeholder="Ingrese el nombre de su negocio"
+        />
+      </div>
+      @if (isFieldInvalid('business_name')) {
+        <p class="error-text">{{ getFieldError('business_name') }}</p>
+      }
+    </div>
+    
+    <!-- Tipo de negocio -->
+    <div class="input-group">
+      <label for="business_type" class="input-label">Tipo de negocio *</label>
+      <div class="input-container">
+        <select
+          id="business_type"
+          formControlName="business_type"
+          class="custom-input"
+          [class.error]="isFieldInvalid('business_type')"
+        >
+          <option value="" disabled>Seleccione el tipo de negocio</option>
+          @for (type of businessTypes(); track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+      @if (isFieldInvalid('business_type')) {
+        <p class="error-text">{{ getFieldError('business_type') }}</p>
+      }
+    </div>
+    
+    <!-- NIT -->
+    <div class="input-group">
+      <label for="tax_id" class="input-label">NIT *</label>
+      <div class="input-container">
+        <input
+          id="tax_id"
+          type="text"
+          formControlName="tax_id"
+          class="custom-input"
+          [class.error]="isFieldInvalid('tax_id')"
+          placeholder="Ej: 123456789-0"
+        />
+      </div>
+      @if (isFieldInvalid('tax_id')) {
+        <p class="error-text">{{ getFieldError('tax_id') }}</p>
+      }
+    </div>
+    
+    <!-- Correo electrónico -->
+    <div class="input-group">
+      <label for="email" class="input-label">Correo electrónico *</label>
+      <div class="input-container">
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="custom-input"
+          [class.error]="isFieldInvalid('email')"
+          placeholder="correo@ejemplo.com"
+        />
+      </div>
+      @if (isFieldInvalid('email')) {
+        <p class="error-text">{{ getFieldError('email') }}</p>
+      }
+    </div>
+    
+    <!-- Contraseña -->
+    <div class="input-group">
+      <label for="password_hash" class="input-label">Contraseña *</label>
+      <div class="input-container password-container">
+        <input
+          id="password_hash"
+          [type]="passwordVisible() ? 'text' : 'password'"
+          formControlName="password_hash"
+          class="custom-input"
+          [class.error]="isFieldInvalid('password_hash')"
+          placeholder="Ingrese su contraseña"
+        />
+        <i 
+          [class]="passwordVisible() ? 'fas fa-eye-slash' : 'fas fa-eye'"
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+        ></i>
+      </div>
+      @if (isFieldInvalid('password_hash')) {
+        <p class="error-text">{{ getFieldError('password_hash') }}</p>
+      }
+    </div>
+    
+    <!-- Confirmar contraseña -->
+    <div class="input-group">
+      <label for="confirmPassword" class="input-label">Confirmar contraseña *</label>
+      <div class="input-container password-container">
+        <input
+          id="confirmPassword"
+          [type]="confirmPasswordVisible() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          class="custom-input"
+          [class.error]="isFieldInvalid('confirmPassword')"
+          placeholder="Confirme su contraseña"
+        />
+        <i 
+          [class]="confirmPasswordVisible() ? 'fas fa-eye-slash' : 'fas fa-eye'"
+          class="toggle-password"
+          (click)="toggleConfirmPasswordVisibility()"
+        ></i>
+      </div>
+      @if (isFieldInvalid('confirmPassword')) {
+        <p class="error-text">{{ getFieldError('confirmPassword') }}</p>
+      }
+    </div>
+  </div>
+</form>

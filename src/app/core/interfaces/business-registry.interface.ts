@@ -58,17 +58,10 @@ export interface IBusinessResponse {
   logo_url?: string;
   banner_url?: string;
   gallery_images?: string[];
-  owner: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-  };
-  business_configuration?: {
-    points_per_peso: number;
-    minimum_purchase_amount: number;
-    maximum_points_per_transaction: number;
-  };
+   city_name?: string;
+  department_name?: string;
+  latitude?: number;
+  longitude?: number;
   stats?: IBusinessStats;
 }
 

@@ -1,0 +1,133 @@
+<form [formGroup]="contactInfoForm" class="contact-info-form">
+  <div class="form-section">
+    <h3 class="section-title">Información de contacto</h3>
+    
+    <!-- Teléfono -->
+    <div class="input-group">
+      <label for="phone" class="input-label">Teléfono *</label>
+      <div class="input-container">
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          class="custom-input"
+          [class.error]="isFieldInvalid('phone')"
+          placeholder="3001234567"
+          maxlength="10"
+        />
+      </div>
+      @if (isFieldInvalid('phone')) {
+        <p class="error-text">{{ getFieldError('phone') }}</p>
+      }
+    </div>
+    
+    <!-- Sitio web -->
+    <div class="input-group">
+      <label for="website_url" class="input-label">Sitio web (opcional)</label>
+      <div class="input-container">
+        <input
+          id="website_url"
+          type="url"
+          formControlName="website_url"
+          class="custom-input"
+          [class.error]="isFieldInvalid('website_url')"
+          placeholder="https://www.ejemplo.com"
+        />
+      </div>
+      @if (isFieldInvalid('website_url')) {
+        <p class="error-text">{{ getFieldError('website_url') }}</p>
+      }
+    </div>
+    
+    <!-- Banner -->
+    <div class="input-group">
+      <label class="input-label">Banner del negocio (opcional)</label>
+      <div class="image-upload-container">
+        @if (selectedImage()) {
+          <div class="image-preview">
+            <img [src]="selectedImage()" alt="Banner preview" />
+            <button type="button" class="remove-image-btn" (click)="removeImage()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        } @else {
+          <div class="upload-placeholder" (click)="triggerFileInput()">
+            <div class="upload-content">
+              <i class="fas fa-image upload-icon"></i>
+              <p class="upload-text">Subir banner</p>
+              <p class="upload-hint">JPG, PNG (máx. 5MB)</p>
+            </div>
+          </div>
+        }
+        <input
+          #fileInput
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          style="display: none;"
+        />
+      </div>
+    </div>
+    
+    <!-- Dirección -->
+    <div class="input-group">
+      <label for="address_line1" class="input-label">Dirección *</label>
+      <div class="input-container">
+        <input
+          id="address_line1"
+          type="text"
+          formControlName="address_line1"
+          class="custom-input"
+          [class.error]="isFieldInvalid('address_line1')"
+          placeholder="Calle 123 # 45-67"
+        />
+      </div>
+      @if (isFieldInvalid('address_line1')) {
+        <p class="error-text">{{ getFieldError('address_line1') }}</p>
+      }
+    </div>
+    
+    <!-- Departamento -->
+    <div class="input-group">
+      <label for="department" class="input-label">Departamento *</label>
+      <div class="input-container">
+        <select
+          id="department"
+          formControlName="department"
+          class="custom-input"
+          [class.error]="isFieldInvalid('department')"
+        >
+          <option value="" disabled>Seleccione un departamento</option>
+          @for (department of departments(); track department.id) {
+            <option [value]="department.id">{{ department.name }}</option>
+          }
+        </select>
+      </div>
+      @if (isFieldInvalid('department')) {
+        <p class="error-text">{{ getFieldError('department') }}</p>
+      }
+    </div>
+    
+    <!-- Ciudad -->
+    <div class="input-group">
+      <label for="city_id" class="input-label">Ciudad *</label>
+      <div class="input-container">
+        <select
+          id="city_id"
+          formControlName="city_id"
+          class="custom-input"
+          [class.error]="isFieldInvalid('city_id')"
+          [disabled]="cities().length === 0"
+        >
+          <option value="" disabled>Seleccione una ciudad</option>
+          @for (city of cities(); track city.id) {
+            <option [value]="city.id">{{ city.name }}</option>
+          }
+        </select>
+      </div>
+      @if (isFieldInvalid('city_id')) {
+        <p class="error-text">{{ getFieldError('city_id') }}</p>
+      }
+    </div>
+  </div>
+</form>

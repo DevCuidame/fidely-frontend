@@ -1,7 +1,9 @@
-import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, computed, signal, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, computed, signal, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { IUserBusinessPointsBalance } from 'src/app/core/interfaces/user-business-points.interface';
+import { StampNavigationService } from 'src/app/core/services/stamp-navigation.service';
 @Component({
   selector: 'app-stamps-carousel',
   standalone: true,
@@ -17,6 +19,10 @@ export class StampsCarouselComponent implements OnInit, OnDestroy, OnChanges {
   // Convert stamps to signal for reactive computed properties
   private stampsSignal = signal<IUserBusinessPointsBalance[]>([]);
 
+  // Inject services
+  private router = inject(Router);
+  private stampNavigationService = inject(StampNavigationService);
+  
   constructor(private elementRef: ElementRef) {}
   currentIndex = signal(0);
   private autoPlayTimer: any = null;
@@ -77,6 +83,21 @@ export class StampsCarouselComponent implements OnInit, OnDestroy, OnChanges {
         stampCard.classList.remove('fade-out');
         stampCard.classList.add('fade-in');
       }, 150); // Half of the transition duration
+    }
+  }
+
+  /**
+   * Maneja el click en un stamp del carousel
+   * Navega a my-stamps y establece el stamp seleccionado
+   */
+  onStampClick(): void {
+    const currentStamp = this.currentStamp();
+    if (currentStamp) {
+      // Establecer el stamp seleccionado en el servicio
+      this.stampNavigationService.setSelectedStamp(currentStamp);
+      
+      // Navegar a my-stamps
+      this.router.navigate(['/user/my-stamps']);
     }
   }
 

@@ -12,10 +12,12 @@ import { Platform } from '@ionic/angular';
   imports: [CommonModule, IonicModule, RouterModule, TabBarComponent],
   template: `
     <ion-content [scrollY]="true" class="auth-content">
-      <div class="auth-container">
+      <div class="auth-container" [class.business-register-page]="currentRoute.includes('/business-register')" [class.register-page]="currentRoute.includes('/register') && !currentRoute.includes('/business-register')">
         <!-- Desktop Left Side -->
-        <div class="desktop-left-panel">
-        </div>
+        @if (!currentRoute.includes('/business-register')) {
+          <div class="desktop-left-panel">
+          </div>
+        }
 
         <!-- Auth Card -->
         <div class="auth-card-wrapper">
@@ -71,6 +73,18 @@ import { Platform } from '@ionic/angular';
                 </p>
               }
             </div>
+            
+            <!-- Botón Registra tu negocio solo en login -->
+            @if (currentRoute.includes('/login')) {
+              <div class="business-register-section">
+                <button 
+                  type="button" 
+                  class="business-register-btn"
+                  (click)="navigateToBusinessRegister()">
+                  Registra tu negocio
+                </button>
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -159,5 +173,9 @@ export class AuthLayoutComponent implements OnInit, OnDestroy {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+
+  navigateToBusinessRegister(): void {
+    this.router.navigate(['/auth/business-register']);
   }
 }

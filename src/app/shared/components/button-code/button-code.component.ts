@@ -28,7 +28,7 @@ export class ButtonCodeComponent {
   showInput = signal(false);
   
   // Signals para los valores del formulario
-  purchaseAmount = signal<number>(0);
+  purchaseAmount = signal<string>('');
   description = signal<string>('');
   invoiceNumber = signal<string>('');
   simpleCode = signal<string>(''); // Para modo simple
@@ -47,7 +47,7 @@ export class ButtonCodeComponent {
         this.onSimpleCodeSubmit.emit(this.simpleCode().trim());
       } else {
         this.onCodeSubmit.emit({
-          purchaseAmount: this.purchaseAmount(),
+          purchaseAmount: Number(this.purchaseAmount()),
           description: this.description().trim(),
           invoiceNumber: this.invoiceNumber().trim()
         });
@@ -56,14 +56,36 @@ export class ButtonCodeComponent {
     }
   }
 
-  // Método para validar el formulario
+  // Método para validar si el formulario es válido
   isFormValid(): boolean {
     if (this.simpleMode) {
       return this.simpleCode().trim().length > 0;
     }
-    return this.purchaseAmount() > 0 && 
+    const amount = this.purchaseAmount().trim();
+    return amount.length > 0 && Number(amount) > 0 && !isNaN(Number(amount)) &&
            this.description().trim().length > 0 && 
            this.invoiceNumber().trim().length > 0;
+  }
+
+  // Método para validar entrada de solo números
+  onNumberKeypress(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Permitir solo números (48-57), backspace (8), delete (46), tab (9), enter (13)
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
+  }
+
+  // Método para manejar la entrada del monto de compra
+  onPurchaseAmountInput(event: any): void {
+    const value = event.target.value;
+    // Remover cualquier carácter que no sea número
+    const numericValue = value.replace(/[^0-9]/g, '');
+    this.purchaseAmount.set(numericValue);
+    // Actualizar el valor del input si fue modificado
+    if (value !== numericValue) {
+      event.target.value = numericValue;
+    }
   }
   
   // Método para cancelar y volver al estado inicial
@@ -74,7 +96,7 @@ export class ButtonCodeComponent {
   // Método para resetear el componente
   private resetComponent(): void {
     this.showInput.set(false);
-    this.purchaseAmount.set(0);
+    this.purchaseAmount.set('');
     this.description.set('');
     this.invoiceNumber.set('');
     this.simpleCode.set('');

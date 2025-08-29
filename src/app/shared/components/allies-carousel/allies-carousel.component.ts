@@ -2,11 +2,12 @@ import { Component, Input, OnInit, OnDestroy, computed, signal, OnChanges, Simpl
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { BusinessRegistryData, BusinessStatus, IBusinessResponse } from 'src/app/core/interfaces/business-registry.interface';
+import { BusinessModalComponent } from '../business-modal/business-modal.component';
 
 @Component({
   selector: 'app-allies-carousel',
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, BusinessModalComponent],
   templateUrl: './allies-carousel.component.html',
   styleUrls: ['./allies-carousel.component.scss']
 })
@@ -15,6 +16,10 @@ export class AlliesCarouselComponent implements OnInit, OnDestroy, OnChanges {
   
   // Signal para manejar los allies reactivamente
   private alliesSignal = signal<IBusinessResponse[]>([]);
+  
+  // Modal state
+  selectedBusiness = signal<IBusinessResponse | null>(null);
+  isModalOpen = signal(false);
 
   // Computed properties
   totalAliados = computed(() => {
@@ -33,7 +38,6 @@ export class AlliesCarouselComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['allies'] && changes['allies'].currentValue) {
       this.alliesSignal.set(changes['allies'].currentValue);
-      console.log('Allies updated in carousel:', changes['allies'].currentValue);
     }
   }
 
@@ -42,8 +46,13 @@ export class AlliesCarouselComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onAliadoClick(allies: IBusinessResponse) {
-    console.log('Aliado seleccionado:', allies);
-    // Aquí se puede implementar la navegación o acción específica
+    this.selectedBusiness.set(allies);
+    this.isModalOpen.set(true);
+  }
+
+  onCloseModal() {
+    this.isModalOpen.set(false);
+    this.selectedBusiness.set(null);
   }
 
   trackByAliadoId(index: number, allies: IBusinessResponse): number {

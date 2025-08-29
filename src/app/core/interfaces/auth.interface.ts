@@ -8,6 +8,8 @@ export interface RegisterData {
   identification_number: string;        // Antes identification_number
   phone: string;
   email: string;
+  birth_date?: Date;
+  gender: string;
   password_hash: string;
   city_id: number;         // ID de la ciudad (numérico)
   address: string;

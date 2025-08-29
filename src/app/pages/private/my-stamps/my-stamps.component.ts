@@ -1,10 +1,11 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faStamp } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { UserPointsService } from '../../../core/services/user-points.service';
 import { StampCardComponent } from '../../../shared/components/stamp-card/stamp-card.component';
+import { StampNavigationService } from '../../../core/services/stamp-navigation.service';
 
 @Component({
   selector: 'app-my-stamps',
@@ -20,6 +21,7 @@ export class MyStampsComponent implements OnInit {
   // Inject services
   private authService = inject(AuthService);
   private userPointsService = inject(UserPointsService);
+  private stampNavigationService = inject(StampNavigationService);
   
   // Service signals
   userData = computed(() => this.authService.currentUser());
@@ -29,6 +31,9 @@ export class MyStampsComponent implements OnInit {
   
   // Accordion state - track which card is expanded
   expandedCardId = signal<string | null>(null);
+  
+  // Signal para el stamp seleccionado desde el carousel
+  selectedStampFromCarousel = computed(() => this.stampNavigationService.selectedStamp());
   
   // Computed properties for stamp data using real user points
   totalAvailablePoints = computed(() => this.userPointsService.totalAvailablePoints());
@@ -45,6 +50,22 @@ export class MyStampsComponent implements OnInit {
       imagen: balance.promotionalImage || 'assets/images/default-business.png'
     }));
   });
+  
+  constructor() {
+    // Effect para manejar la expansión automática cuando se selecciona un stamp desde el carousel
+    effect(() => {
+      const selectedStamp = this.selectedStampFromCarousel();
+      if (selectedStamp) {
+        // Expandir automáticamente la tarjeta correspondiente
+         this.expandedCardId.set(selectedStamp.businessId.toString());
+        
+        // Limpiar el stamp seleccionado después de procesarlo
+        setTimeout(() => {
+          this.stampNavigationService.clearSelectedStamp();
+        }, 100);
+      }
+    });
+  }
   
   // Handle card expansion toggle
   onCardExpansionToggle(cardId: string) {

@@ -1,0 +1,19 @@
+<div class="step-indicator">
+  <div class="steps-container">
+    @for (step of steps(); track step.number) {
+      <div class="step-item" [class.active]="step.isActive" [class.completed]="step.isCompleted" (click)="onStepClick(step.number)">
+        <div class="step-circle">
+          @if (step.isCompleted) {
+            <i class="fas fa-check"></i>
+          } @else {
+            <span class="step-number">{{ step.number }}</span>
+          }
+        </div>
+        <div class="step-label">{{ step.label }}</div>
+        @if (step.number < totalSteps) {
+          <div class="step-connector" [class.completed]="step.isCompleted"></div>
+        }
+      </div>
+    }
+  </div>
+</div>

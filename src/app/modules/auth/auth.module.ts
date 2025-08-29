@@ -37,6 +37,11 @@ const routes: Routes = [
         canActivate: [AutoRedirectGuard]
       },
       {
+        path: 'business-register',
+        loadComponent: () => import('./pages/business-register/business-register.component').then(m => m.BusinessRegisterComponent),
+        canActivate: [AutoRedirectGuard]
+      },
+      {
         path: '',
         redirectTo: 'login',
         pathMatch: 'full'

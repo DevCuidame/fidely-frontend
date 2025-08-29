@@ -30,4 +30,11 @@
     <h4>No hay aliados disponibles</h4>
     <p>Próximamente tendremos más aliados para ti</p>
   </div>
+
+  <!-- Business Modal -->
+  <app-business-modal
+    [business]="selectedBusiness()"
+    [isOpen]="isModalOpen"
+    (closeModal)="onCloseModal()">
+  </app-business-modal>
 </div>

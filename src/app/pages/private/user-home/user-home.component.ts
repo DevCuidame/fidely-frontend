@@ -1,15 +1,16 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell, faUser, faHome, faGift, faStamp } from '@fortawesome/free-solid-svg-icons';
-import { Router, RouterOutlet, ActivatedRoute } from '@angular/router';
+import { Router, RouterOutlet, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserHomeHeaderComponent } from './components/user-home-header/user-home-header.component';
 import { UserHomeTabBarComponent, TabType } from './components/user-home-tab-bar/user-home-tab-bar.component';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { BusinessService } from 'src/app/core/services/business.service';
 import { UserPointsService } from 'src/app/core/services/user-points.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-home',
@@ -18,7 +19,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './user-home.component.html',
   styleUrls: ['./user-home.component.scss']
 })
-export class UserHomeComponent implements OnInit {
+export class UserHomeComponent implements OnInit, OnDestroy {
   // Font Awesome icons
   faBell = faBell;
   faUser = faUser;
@@ -47,6 +48,9 @@ export class UserHomeComponent implements OnInit {
   // Navigation signals
   activeTab = signal<TabType>('inicio');
   
+  // Subscription for router events
+  private routerSubscription?: Subscription;
+  
   // Computed properties
   displayTitle = computed(() => {
     const custom = this.customTitle();
@@ -69,6 +73,22 @@ export class UserHomeComponent implements OnInit {
     
     // Set initial active tab based on current route
     this.updateActiveTabFromRoute();
+    
+    // Subscribe to router events to update active tab when navigation occurs
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        this.updateActiveTabFromRoute();
+      });
+  }
+  
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
   
   private updateActiveTabFromRoute() {

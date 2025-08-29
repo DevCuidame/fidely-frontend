@@ -1,0 +1,204 @@
+.business-register-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    .main-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      font-size: 1rem;
+      color: #6B7280;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+  
+  .step-indicator-container {
+    margin-bottom: 2.5rem;
+  }
+  
+  .form-container {
+    background-color: var(--color-background);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-border);
+  }
+  
+  .navigation-container {
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      
+      .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 48px;
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        
+        i {
+          font-size: 0.875rem;
+        }
+        
+        &.btn-primary {
+          background-color: var(--color-primary);
+          color: white;
+          
+          &:hover:not(:disabled) {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(229, 71, 14, 0.3);
+          }
+          
+          &:active:not(:disabled) {
+            transform: translateY(0);
+          }
+          
+          &.loading {
+            background-color: var(--color-primary-dark);
+            
+            i {
+              animation: spin 1s linear infinite;
+            }
+          }
+        }
+        
+        &.btn-secondary {
+          background-color: var(--color-background-secondary);
+          color: var(--color-text-secondary);
+          border: 1px solid var(--color-border);
+          
+          &:hover:not(:disabled) {
+            background-color: var(--color-background-tertiary);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-dark);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .business-register-container {
+    padding: 1rem 0.75rem;
+    
+    .register-header {
+      margin-bottom: 1.5rem;
+      
+      .main-title {
+        font-size: 1.75rem;
+      }
+      
+      .subtitle {
+        font-size: 0.875rem;
+      }
+    }
+    
+    .step-indicator-container {
+      margin-bottom: 2rem;
+    }
+    
+    .form-container {
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+    
+    .navigation-container {
+      .button-group {
+        flex-direction: column;
+        
+        .btn {
+          width: 100%;
+          justify-content: center;
+          padding: 0.875rem 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .business-register-container {
+    padding: 0.75rem 0.5rem;
+    
+    .register-header {
+      .main-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .form-container {
+      padding: 1.25rem;
+    }
+  }
+}
+
+// Animation keyframes
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Focus styles for accessibility
+.business-register-container {
+  .navigation-container {
+    .button-group {
+      .btn {
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(229, 71, 14, 0.2);
+        }
+        
+        &.btn-secondary:focus {
+          box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.2);
+        }
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .business-register-container {
+    .navigation-container {
+      display: none;
+    }
+    
+    .step-indicator-container {
+      display: none;
+    }
+  }
+}
