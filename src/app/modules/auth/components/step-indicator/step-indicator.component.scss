@@ -4,9 +4,10 @@
   
   .steps-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     position: relative;
+    gap: 2rem;
     
     @media (max-width: 768px) {
       flex-direction: column;
@@ -19,7 +20,6 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    flex: 1;
     
     @media (max-width: 768px) {
       flex-direction: row;
@@ -28,58 +28,57 @@
     }
     
     .step-circle {
-      width: 40px;
-      height: 40px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--color-light-gray);
-      border: 2px solid var(--color-medium-gray);
-      color: var(--color-dark-gray);
+      background-color: #E0E0E0;
+      border: none;
+      color: white;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 10px;
       transition: all 0.3s ease;
       z-index: 2;
       
       @media (max-width: 768px) {
         margin-right: 1rem;
+        width: 16px;
+        height: 16px;
       }
       
       .step-number {
-        font-size: 14px;
-        font-weight: 600;
+        display: none;
       }
       
       i {
-        font-size: 16px;
+        display: none;
       }
     }
     
     .step-label {
-      margin-top: 0.5rem;
-      font-size: 12px;
-      color: var(--color-dark-gray);
-      text-align: center;
-      font-weight: 500;
-      max-width: 120px;
-      line-height: 1.2;
+      display: none;
       
       @media (max-width: 768px) {
+        display: block;
         margin-top: 0;
         text-align: left;
         max-width: none;
         flex: 1;
+        font-size: 14px;
+        color: var(--color-dark-gray);
+        font-weight: 500;
       }
     }
     
     .step-connector {
       position: absolute;
-      top: 20px;
-      left: 50%;
-      width: calc(100% - 40px);
-      height: 2px;
-      background-color: var(--color-light-gray);
+      top: 6px;
+      left: 12px;
+      width: 2rem;
+      height: 1px;
+      background-color: #E0E0E0;
       z-index: 1;
       transition: background-color 0.3s ease;
       
@@ -88,20 +87,19 @@
       }
       
       &.completed {
-        background-color: var(--color-primary-dark);
+        background-color: var(--color-primary);
       }
     }
     
     // Estado activo
     &.active {
       .step-circle {
-        background-color: var(--color-primary-dark);
-        border-color: var(--color-primary-dark);
-        color: white;
+        background-color: var(--color-primary);
+        transform: scale(1.2);
       }
       
       .step-label {
-        color: var(--color-primary-dark);
+        color: var(--color-primary);
         font-weight: 600;
       }
     }
@@ -109,13 +107,11 @@
     // Estado completado
     &.completed {
       .step-circle {
-        background-color: var(--color-primary-dark);
-        border-color: var(--color-primary-dark);
-        color: white;
+        background-color: var(--color-primary);
       }
       
       .step-label {
-        color: var(--color-primary-dark);
+        color: var(--color-primary);
         font-weight: 600;
       }
     }
@@ -131,11 +127,11 @@
       transform: translateY(-50%);
       width: 1px;
       height: 30px;
-      background-color: var(--color-light-gray);
+      background-color: #E0E0E0;
     }
     
     .step-item.completed:not(:last-child)::after {
-      background-color: var(--color-primary-dark);
+      background-color: var(--color-primary);
     }
   }
 }

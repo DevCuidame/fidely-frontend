@@ -96,20 +96,40 @@ export class UserInfoStepComponent implements OnInit {
         first_name: userData.first_name || '',
         last_name: userData.last_name || '',
         identification_type: userData.identification_type || '',
-        identification_number: userData.identification_number || ''
+        identification_number: userData.identification_number || '',
+        gender: userData.gender || '',
+        birth_date: userData.birth_date || ''
       });
     }
   }
   
   private saveFormData() {
+    if (!this.userInfoForm) {
+      return;
+    }
+    
+    const formValue = this.userInfoForm.value;
+ 
+    
     if (this.userInfoForm.valid) {
-      const formValue = this.userInfoForm.value;
       
       this.businessRegistryService.updateUserData({
         first_name: formValue.first_name,
         last_name: formValue.last_name,
         identification_type: formValue.identification_type,
-        identification_number: formValue.identification_number
+        identification_number: formValue.identification_number,
+        gender: formValue.gender,
+        birth_date: formValue.birth_date
+      });
+    } else {
+      // Guardar datos parciales para no perder información
+      this.businessRegistryService.updateUserData({
+        first_name: formValue.first_name || '',
+        last_name: formValue.last_name || '',
+        identification_type: formValue.identification_type || '',
+        identification_number: formValue.identification_number || '',
+        gender: formValue.gender || '',
+        birth_date: formValue.birth_date || ''
       });
     }
   }

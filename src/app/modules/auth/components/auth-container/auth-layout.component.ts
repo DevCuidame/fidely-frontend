@@ -22,6 +22,8 @@ import { Platform } from '@ionic/angular';
         <!-- Auth Card -->
         <div class="auth-card-wrapper">
           <div class="card">
+        @if (!currentRoute.includes('/business-register')) {
+            
             <div class="card-header">
 
               <div class="brand-section">
@@ -52,6 +54,8 @@ import { Platform } from '@ionic/angular';
                 }
               </p>
             </div>
+
+              }
 
             <div class="card-content">
               <router-outlet></router-outlet>

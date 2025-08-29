@@ -1,69 +1,81 @@
-<div class="business-register-container">
-  <!-- Header -->
-  <div class="register-header">
-    <h1 class="main-title">Registra tu negocio</h1>
-    <p class="subtitle">Completa el formulario para registrar tu negocio en Fidely</p>
+<div class="business-register-layout">
+  <!-- Left Panel with Logo -->
+  <div class="left-panel">
+    <div class="logo-container">
+      <img src="assets/logo/logo_fidely.png" alt="Fidely" class="fidely-logo">
+    </div>
   </div>
   
-  <!-- Step Indicator -->
-  <div class="step-indicator-container">
-    <app-step-indicator 
-      [currentStep]="currentStep()" 
-      [totalSteps]="totalSteps()"
-      (stepClick)="onStepClick($event)"
-    ></app-step-indicator>
-  </div>
-  
-  <!-- Form Content -->
-  <div class="form-container">
-    @switch (currentStep()) {
-      @case (1) {
-        <app-basic-info-step></app-basic-info-step>
-      }
-      @case (2) {
-        <app-contact-info-step></app-contact-info-step>
-      }
-      @case (3) {
-        <app-user-info-step></app-user-info-step>
-      }
-      @case (4) {
-        <app-confirmation-step></app-confirmation-step>
-      }
-    }
-  </div>
-  
-  <!-- Navigation Buttons -->
-  <div class="navigation-container">
-    <div class="button-group">
-      @if (!isFirstStep()) {
-        <button 
-          type="button" 
-          class="btn btn-secondary"
-          (click)="onPreviousStep()"
-          [disabled]="isSubmitting()"
-        >
-          <i class="fas fa-arrow-left"></i>
-          Anterior
-        </button>
-      }
+  <!-- Right Panel with Form -->
+  <div class="right-panel">
+    <div class="form-card">
+      <!-- Header -->
+      <div class="register-header">
+        <h1 class="main-title">Registra tu negocio</h1>
+        <p class="subtitle">Completa el formulario para registrar tu empresa en nuestro sistema</p>
+      </div>
       
-      <button 
-        type="button" 
-        class="btn btn-primary"
-        (click)="onNextStep()"
-        [disabled]="!canProceedToNext() || isSubmitting()"
-        [class.loading]="isSubmitting()"
-      >
-        @if (isSubmitting()) {
-          <i class="fas fa-spinner fa-spin"></i>
-          Guardando...
-        } @else {
-          {{ buttonText() }}
-          @if (!isLastStep()) {
-            <i class="fas fa-arrow-right"></i>
+      <!-- Step Indicator -->
+      <div class="step-indicator-container">
+        <app-step-indicator 
+          [currentStep]="currentStep()" 
+          [totalSteps]="totalSteps()"
+          (stepClick)="onStepClick($event)"
+        ></app-step-indicator>
+      </div>
+      
+      <!-- Form Content -->
+      <div class="form-content">
+        @switch (currentStep()) {
+          @case (1) {
+            <app-basic-info-step></app-basic-info-step>
+          }
+          @case (2) {
+            <app-contact-info-step></app-contact-info-step>
+          }
+          @case (3) {
+            <app-user-info-step></app-user-info-step>
+          }
+          @case (4) {
+            <app-confirmation-step></app-confirmation-step>
           }
         }
-      </button>
+      </div>
+      
+      <!-- Navigation Buttons -->
+      <div class="navigation-container">
+        <div class="button-group">
+          @if (!isFirstStep()) {
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="onPreviousStep()"
+              [disabled]="isSubmitting()"
+            >
+              <i class="fas fa-arrow-left"></i>
+              Anterior
+            </button>
+          }
+          
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            (click)="onNextStep()"
+            [disabled]="!canProceedToNext() || isSubmitting()"
+            [class.loading]="isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              <i class="fas fa-spinner fa-spin"></i>
+              Guardando...
+            } @else {
+              {{ buttonText() }}
+              @if (!isLastStep()) {
+                <i class="fas fa-arrow-right"></i>
+              }
+            }
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

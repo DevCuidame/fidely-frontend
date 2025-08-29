@@ -2,121 +2,123 @@
   <div class="form-section">
     <h3 class="section-title">Información del usuario</h3>
     
-    <!-- Nombres -->
-    <div class="input-group">
-      <label for="first_name" class="input-label">Nombres *</label>
-      <div class="input-container">
-        <input
-          id="first_name"
-          type="text"
-          formControlName="first_name"
-          class="custom-input"
-          [class.error]="isFieldInvalid('first_name')"
-          placeholder="Ingrese sus nombres"
-          maxlength="50"
-        />
+    <!-- Nombres y Apellidos -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="first_name" class="input-label">Nombres *</label>
+        <div class="input-container">
+          <input
+            id="first_name"
+            type="text"
+            formControlName="first_name"
+            class="custom-input"
+            [class.error]="isFieldInvalid('first_name')"
+            placeholder="Ingrese sus nombres"
+            maxlength="50"
+          />
+        </div>
+        @if (isFieldInvalid('first_name')) {
+          <p class="error-text">{{ getFieldError('first_name') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('first_name')) {
-        <p class="error-text">{{ getFieldError('first_name') }}</p>
-      }
+      
+      <div class="input-group">
+        <label for="last_name" class="input-label">Apellidos *</label>
+        <div class="input-container">
+          <input
+            id="last_name"
+            type="text"
+            formControlName="last_name"
+            class="custom-input"
+            [class.error]="isFieldInvalid('last_name')"
+            placeholder="Ingrese sus apellidos"
+            maxlength="50"
+          />
+        </div>
+        @if (isFieldInvalid('last_name')) {
+          <p class="error-text">{{ getFieldError('last_name') }}</p>
+        }
+      </div>
     </div>
     
-    <!-- Apellidos -->
-    <div class="input-group">
-      <label for="last_name" class="input-label">Apellidos *</label>
-      <div class="input-container">
-        <input
-          id="last_name"
-          type="text"
-          formControlName="last_name"
-          class="custom-input"
-          [class.error]="isFieldInvalid('last_name')"
-          placeholder="Ingrese sus apellidos"
-          maxlength="50"
-        />
+    <!-- Tipo y Número de identificación -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="identification_type" class="input-label">Tipo de identificación *</label>
+        <div class="input-container">
+          <select
+            id="identification_type"
+            formControlName="identification_type"
+            class="custom-input"
+            [class.error]="isFieldInvalid('identification_type')"
+          >
+            <option value="" disabled>Seleccione el tipo de identificación</option>
+            @for (type of identificationTypes(); track type.value) {
+              <option [value]="type.value">{{ type.label }}</option>
+            }
+          </select>
+        </div>
+        @if (isFieldInvalid('identification_type')) {
+          <p class="error-text">{{ getFieldError('identification_type') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('last_name')) {
-        <p class="error-text">{{ getFieldError('last_name') }}</p>
-      }
+      
+      <div class="input-group">
+        <label for="identification_number" class="input-label">Número de identificación *</label>
+        <div class="input-container">
+          <input
+            id="identification_number"
+            type="text"
+            formControlName="identification_number"
+            class="custom-input"
+            [class.error]="isFieldInvalid('identification_number')"
+            placeholder="Ingrese su número de identificación"
+            maxlength="20"
+          />
+        </div>
+        @if (isFieldInvalid('identification_number')) {
+          <p class="error-text">{{ getFieldError('identification_number') }}</p>
+        }
+      </div>
     </div>
     
-    <!-- Tipo de identificación -->
-    <div class="input-group">
-      <label for="identification_type" class="input-label">Tipo de identificación *</label>
-      <div class="input-container">
-        <select
-          id="identification_type"
-          formControlName="identification_type"
-          class="custom-input"
-          [class.error]="isFieldInvalid('identification_type')"
-        >
-          <option value="" disabled>Seleccione el tipo de identificación</option>
-          @for (type of identificationTypes(); track type.value) {
-            <option [value]="type.value">{{ type.label }}</option>
-          }
-        </select>
+    <!-- Género y Fecha de nacimiento -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="gender" class="input-label">Género *</label>
+        <div class="input-container">
+          <select
+            id="gender"
+            formControlName="gender"
+            class="custom-input"
+            [class.error]="isFieldInvalid('gender')"
+          >
+            <option value="" disabled>Seleccione su género</option>
+            @for (gender of genderOptions(); track gender.value) {
+              <option [value]="gender.value">{{ gender.label }}</option>
+            }
+          </select>
+        </div>
+        @if (isFieldInvalid('gender')) {
+          <p class="error-text">{{ getFieldError('gender') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('identification_type')) {
-        <p class="error-text">{{ getFieldError('identification_type') }}</p>
-      }
-    </div>
-    
-    <!-- Número de identificación -->
-    <div class="input-group">
-      <label for="identification_number" class="input-label">Número de identificación *</label>
-      <div class="input-container">
-        <input
-          id="identification_number"
-          type="text"
-          formControlName="identification_number"
-          class="custom-input"
-          [class.error]="isFieldInvalid('identification_number')"
-          placeholder="Ingrese su número de identificación"
-          maxlength="20"
-        />
+      
+      <div class="input-group">
+        <label for="birth_date" class="input-label">Fecha de nacimiento *</label>
+        <div class="input-container">
+          <input
+            id="birth_date"
+            type="date"
+            formControlName="birth_date"
+            class="custom-input"
+            [class.error]="isFieldInvalid('birth_date')"
+          />
+        </div>
+        @if (isFieldInvalid('birth_date')) {
+          <p class="error-text">{{ getFieldError('birth_date') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('identification_number')) {
-        <p class="error-text">{{ getFieldError('identification_number') }}</p>
-      }
-    </div>
-    
-    <!-- Género -->
-    <div class="input-group">
-      <label for="gender" class="input-label">Género *</label>
-      <div class="input-container">
-        <select
-          id="gender"
-          formControlName="gender"
-          class="custom-input"
-          [class.error]="isFieldInvalid('gender')"
-        >
-          <option value="" disabled>Seleccione su género</option>
-          @for (gender of genderOptions(); track gender.value) {
-            <option [value]="gender.value">{{ gender.label }}</option>
-          }
-        </select>
-      </div>
-      @if (isFieldInvalid('gender')) {
-        <p class="error-text">{{ getFieldError('gender') }}</p>
-      }
-    </div>
-    
-    <!-- Fecha de nacimiento -->
-    <div class="input-group">
-      <label for="birth_date" class="input-label">Fecha de nacimiento *</label>
-      <div class="input-container">
-        <input
-          id="birth_date"
-          type="date"
-          formControlName="birth_date"
-          class="custom-input"
-          [class.error]="isFieldInvalid('birth_date')"
-          [max]="getMaxDate()"
-        />
-      </div>
-      @if (isFieldInvalid('birth_date')) {
-        <p class="error-text">{{ getFieldError('birth_date') }}</p>
-      }
     </div>
   </div>
 </form>

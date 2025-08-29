@@ -20,15 +20,13 @@ export class BasicInfoStepComponent implements OnInit {
   
   businessTypes = signal<string[]>([
     'Restaurante',
-    'Tienda de ropa',
-    'Supermercado',
-    'Farmacia',
-    'Peluquería',
-    'Gimnasio',
     'Cafetería',
     'Panadería',
-    'Ferretería',
-    'Librería',
+    'Heladería',
+    'Pizzería',
+    'Comida rápida',
+    'Bar',
+    'Pastelería',
     'Otro'
   ]);
   
@@ -66,14 +64,19 @@ export class BasicInfoStepComponent implements OnInit {
   private passwordMatchValidator(form: FormGroup) {
     const password = form.get('password_hash');
     const confirmPassword = form.get('confirmPassword');
-    
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ mismatch: true });
-      return { mismatch: true };
-    }
-    
-    if (confirmPassword?.hasError('mismatch')) {
-      confirmPassword.setErrors(null);
+    // Solo validar si ambos campos tienen valores
+    if (password?.value && confirmPassword?.value) {
+      if (password.value !== confirmPassword.value) {
+        confirmPassword.setErrors({ mismatch: true });
+        return { mismatch: true };
+      } else {
+        // Limpiar errores de mismatch si las contraseñas coinciden
+        if (confirmPassword.hasError('mismatch')) {
+          const errors = { ...confirmPassword.errors };
+          delete errors['mismatch'];
+          confirmPassword.setErrors(Object.keys(errors).length ? errors : null);
+        }
+      }
     }
     
     return null;
@@ -88,7 +91,7 @@ export class BasicInfoStepComponent implements OnInit {
         business_name: businessData.business_name || '',
         business_type: businessData.business_type || '',
         tax_id: businessData.tax_id || '',
-        email: userData.email || '',
+        email: businessData.email || '',
         password_hash: userData.password_hash || ''
       });
     }
@@ -98,19 +101,20 @@ export class BasicInfoStepComponent implements OnInit {
     if (this.basicInfoForm.valid) {
       const formValue = this.basicInfoForm.value;
       
+      
       // Actualizar datos del negocio
       this.businessRegistryService.updateBusinessData({
         business_name: formValue.business_name,
         business_type: formValue.business_type,
-        tax_id: formValue.tax_id
+        tax_id: formValue.tax_id,
+        email: formValue.email
       });
       
       // Actualizar datos del usuario
       this.businessRegistryService.updateUserData({
-        email: formValue.email,
         password_hash: formValue.password_hash
       });
-    }
+    } 
   }
   
   togglePasswordVisibility() {

@@ -1,4 +1,4 @@
-import { Component, Input, signal, computed, Output, EventEmitter } from '@angular/core';
+import { Component, input, signal, computed, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,14 +8,22 @@ import { CommonModule } from '@angular/common';
   templateUrl: './step-indicator.component.html',
   styleUrls: ['./step-indicator.component.scss']
 })
-export class StepIndicatorComponent {
-  @Input() currentStep: number = 1;
-  @Input() totalSteps: number = 4;
+export class StepIndicatorComponent implements OnInit, OnChanges {
+  currentStep = input<number>(1);
+  totalSteps = input<number>(4);
+  
   @Output() stepClick = new EventEmitter<number>();
   
+  ngOnInit() {
+  }
+  
+  ngOnChanges() {
+  }
+  
   steps = computed(() => {
-    const total = this.totalSteps;
-    const current = this.currentStep;
+    const total = this.totalSteps();
+    const current = this.currentStep();
+    
     
     return Array.from({ length: total }, (_, index) => ({
       number: index + 1,

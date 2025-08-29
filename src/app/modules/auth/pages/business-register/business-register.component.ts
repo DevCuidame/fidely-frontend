@@ -90,6 +90,9 @@ export class BusinessRegisterComponent implements OnInit {
       this.businessRegistryService.submitBusinessRegistration().subscribe({
         next: async (result) => {
           if (result.success) {
+            this.isSubmitting.set(false);
+            await this.loadingService.hideLoading();
+            
             await this.alertService.showSuccessAlert(
               'Tu negocio ha sido registrado correctamente. Recibirás una confirmación por correo electrónico.'
             );
@@ -104,26 +107,33 @@ export class BusinessRegisterComponent implements OnInit {
         },
         error: async (error: any) => {
           console.error('Error submitting registration:', error);
-          await this.alertService.showErrorAlert(
-            error.message || 'Ocurrió un error al registrar tu negocio. Por favor, inténtalo de nuevo.'
-          );
+          // Resetear el estado inmediatamente para liberar la UI
+          this.isSubmitting.set(false);
+          await this.loadingService.hideLoading();
+          
+          // Mostrar el error después de resetear el estado
+          const errorMessage = error.userMessage || error.error?.message || error.message || 'Ocurrió un error al registrar tu negocio. Por favor, inténtalo de nuevo.';
+          await this.alertService.showErrorAlert(errorMessage);
         },
         complete: () => {
-          this.isSubmitting.set(false);
-          this.loadingService.hideLoading();
+          // Solo resetear si no se ha reseteado ya en el error
+          if (this.isSubmitting()) {
+            this.isSubmitting.set(false);
+            this.loadingService.hideLoading();
+          }
         }
       });
     } catch (error: any) {
       console.error('Error submitting registration:', error);
-      await this.alertService.showErrorAlert(
-        error.message || 'Ocurrió un error al registrar tu negocio. Por favor, inténtalo de nuevo.'
-      );
+      const errorMessage = error.userMessage || error.error?.message || error.message || 'Ocurrió un error al registrar tu negocio. Por favor, inténtalo de nuevo.';
+      await this.alertService.showErrorAlert(errorMessage);
       this.isSubmitting.set(false);
       await this.loadingService.hideLoading();
     }
   }
   
   onStepClick(step: number) {
+    
     // Permitir navegar solo a pasos anteriores o al paso actual
     if (step <= this.currentStep()) {
       this.businessRegistryService.goToStep(step);

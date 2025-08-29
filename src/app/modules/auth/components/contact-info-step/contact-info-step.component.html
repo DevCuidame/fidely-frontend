@@ -2,41 +2,42 @@
   <div class="form-section">
     <h3 class="section-title">Información de contacto</h3>
     
-    <!-- Teléfono -->
-    <div class="input-group">
-      <label for="phone" class="input-label">Teléfono *</label>
-      <div class="input-container">
-        <input
-          id="phone"
-          type="tel"
-          formControlName="phone"
-          class="custom-input"
-          [class.error]="isFieldInvalid('phone')"
-          placeholder="3001234567"
-          maxlength="10"
-        />
+    <!-- Teléfono y Sitio web -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="phone" class="input-label">Teléfono *</label>
+        <div class="input-container">
+          <input
+            id="phone"
+            type="tel"
+            formControlName="phone"
+            class="custom-input"
+            [class.error]="isFieldInvalid('phone')"
+            placeholder="3001234567"
+            maxlength="10"
+          />
+        </div>
+        @if (isFieldInvalid('phone')) {
+          <p class="error-text">{{ getFieldError('phone') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('phone')) {
-        <p class="error-text">{{ getFieldError('phone') }}</p>
-      }
-    </div>
-    
-    <!-- Sitio web -->
-    <div class="input-group">
-      <label for="website_url" class="input-label">Sitio web (opcional)</label>
-      <div class="input-container">
-        <input
-          id="website_url"
-          type="url"
-          formControlName="website_url"
-          class="custom-input"
-          [class.error]="isFieldInvalid('website_url')"
-          placeholder="https://www.ejemplo.com"
-        />
+      
+      <div class="input-group">
+        <label for="website_url" class="input-label">Sitio web (opcional)</label>
+        <div class="input-container">
+          <input
+            id="website_url"
+            type="url"
+            formControlName="website_url"
+            class="custom-input"
+            [class.error]="isFieldInvalid('website_url')"
+            placeholder="https://www.ejemplo.com"
+          />
+        </div>
+        @if (isFieldInvalid('website_url')) {
+          <p class="error-text">{{ getFieldError('website_url') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('website_url')) {
-        <p class="error-text">{{ getFieldError('website_url') }}</p>
-      }
     </div>
     
     <!-- Banner -->
@@ -87,47 +88,50 @@
       }
     </div>
     
-    <!-- Departamento -->
-    <div class="input-group">
-      <label for="department" class="input-label">Departamento *</label>
-      <div class="input-container">
-        <select
-          id="department"
-          formControlName="department"
-          class="custom-input"
-          [class.error]="isFieldInvalid('department')"
-        >
-          <option value="" disabled>Seleccione un departamento</option>
-          @for (department of departments(); track department.id) {
-            <option [value]="department.id">{{ department.name }}</option>
-          }
-        </select>
+    <!-- Departamento y Ciudad -->
+    <div class="input-row">
+      <div class="input-group">
+        <label for="department" class="input-label">Departamento *</label>
+        <div class="input-container">
+          <select
+            id="department"
+            formControlName="department"
+            class="custom-input"
+            [class.error]="isFieldInvalid('department')"
+            (change)="onDepartmentChange($event)"
+          >
+            <option value="" disabled>Seleccione un departamento</option>
+            @for (department of departments(); track department.id) {
+              <option [value]="department.id">{{ department.name }}</option>
+            }
+          </select>
+        </div>
+        @if (isFieldInvalid('department')) {
+          <p class="error-text">{{ getFieldError('department') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('department')) {
-        <p class="error-text">{{ getFieldError('department') }}</p>
-      }
-    </div>
-    
-    <!-- Ciudad -->
-    <div class="input-group">
-      <label for="city_id" class="input-label">Ciudad *</label>
-      <div class="input-container">
-        <select
-          id="city_id"
-          formControlName="city_id"
-          class="custom-input"
-          [class.error]="isFieldInvalid('city_id')"
-          [disabled]="cities().length === 0"
-        >
-          <option value="" disabled>Seleccione una ciudad</option>
-          @for (city of cities(); track city.id) {
-            <option [value]="city.id">{{ city.name }}</option>
-          }
-        </select>
+      
+      <div class="input-group">
+        <label for="city_id" class="input-label">Ciudad *</label>
+        <div class="input-container">
+          <select
+            id="city_id"
+            formControlName="city_id"
+            class="custom-input"
+            [class.error]="isFieldInvalid('city_id')"
+            [disabled]="cities().length === 0"
+            (change)="onCityChange($event)"
+          >
+            <option value="" disabled>Seleccione una ciudad</option>
+            @for (city of cities(); track city.id) {
+              <option [value]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+        @if (isFieldInvalid('city_id')) {
+          <p class="error-text">{{ getFieldError('city_id') }}</p>
+        }
       </div>
-      @if (isFieldInvalid('city_id')) {
-        <p class="error-text">{{ getFieldError('city_id') }}</p>
-      }
     </div>
   </div>
 </form>

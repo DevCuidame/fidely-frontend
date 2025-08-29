@@ -9,6 +9,8 @@ export interface RegisterData {
   phone: string;
   email: string;
   birth_date?: Date;
+  city_name?: string;
+  department_name?: string;
   gender: string;
   password_hash: string;
   city_id: number;         // ID de la ciudad (numérico)

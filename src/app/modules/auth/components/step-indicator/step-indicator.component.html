@@ -10,7 +10,7 @@
           }
         </div>
         <div class="step-label">{{ step.label }}</div>
-        @if (step.number < totalSteps) {
+        @if (step.number < totalSteps()) {
           <div class="step-connector" [class.completed]="step.isCompleted"></div>
         }
       </div>

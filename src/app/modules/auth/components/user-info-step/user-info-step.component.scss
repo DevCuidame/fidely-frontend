@@ -1,27 +1,42 @@
 .user-info-form {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   
   .form-section {
-    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     
     .section-title {
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--color-text-primary);
-      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+      margin-bottom: 10px;
       text-align: center;
     }
   }
   
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+    
+    .input-group {
+      flex: 1;
+    }
+  }
+  
   .input-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     
     .input-label {
       display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--color-text-secondary);
-      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-secondary);
     }
     
     .input-container {
@@ -29,22 +44,24 @@
       
       .custom-input {
         width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid var(--color-border);
-        border-radius: 8px;
+        padding: 10px 15px;
+        background: var(--color-smooth_light);
+        border: 2px solid var(--color-secondary);
+        border-radius: 12px;
         font-size: 1rem;
-        background-color: var(--color-background);
         color: var(--color-text-primary);
         transition: all 0.3s ease;
         
         &:focus {
           outline: none;
           border-color: var(--color-primary);
-          box-shadow: 0 0 0 3px rgba(229, 71, 14, 0.1);
+          background-color: var(--color-background);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         &.error {
           border-color: var(--color-danger);
+          box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
           
           &:focus {
             border-color: var(--color-danger);
@@ -53,13 +70,31 @@
         }
         
         &::placeholder {
-          color: var(--color-text-tertiary);
+          color: var(--color-text-secondary);
+          opacity: 0.7;
         }
         
         &:disabled {
           background-color: var(--color-background-secondary);
           color: var(--color-text-tertiary);
           cursor: not-allowed;
+        }
+      }
+      
+      select.custom-input {
+        cursor: pointer;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="%23666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+        padding-right: 45px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        
+        option {
+          background: var(--color-background);
+          color: var(--color-text-primary);
         }
         
         // Estilos específicos para input de fecha
@@ -105,8 +140,6 @@
     .error-text {
       color: var(--color-danger);
       font-size: 0.75rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0;
     }
   }
 }
@@ -114,21 +147,40 @@
 // Responsive adjustments
 @media (max-width: 768px) {
   .user-info-form {
+    gap: 12px;
+    
     .form-section {
+      gap: 12px;
+      
       .section-title {
         font-size: 1.125rem;
       }
     }
     
+    .input-row {
+      gap: 12px;
+    }
+    
     .input-group {
-      margin-bottom: 1.25rem;
-      
       .input-container {
         .custom-input {
-          padding: 0.625rem 0.875rem;
-          font-size: 0.9375rem;
+          padding: 10px 12px;
+          font-size: 0.9rem;
+        }
+        
+        select.custom-input {
+          padding-right: 40px;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .user-info-form {
+    .input-row {
+      flex-direction: column;
+      gap: 12px;
     }
   }
 }

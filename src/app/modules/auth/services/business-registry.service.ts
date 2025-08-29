@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BusinessRegistryData } from 'src/app/core/interfaces/business-registry.interface';
 import { RegisterData } from 'src/app/core/interfaces/auth.interface';
@@ -39,8 +39,17 @@ export class BusinessRegistryService {
   }
   
   goToStep(step: number): void {
+    console.log('🚀 goToStep ejecutado:', {
+      targetStep: step,
+      currentStep: this.currentStep(),
+      isValidStep: step >= 1 && step <= 4
+    });
+    
     if (step >= 1 && step <= 4) {
       this.currentStep.set(step);
+      console.log('✅ Paso actualizado a:', this.currentStep());
+    } else {
+      console.log('❌ Paso inválido:', step);
     }
   }
   
@@ -67,6 +76,8 @@ export class BusinessRegistryService {
   
   // Método para validar paso actual
   isStepValid(step: number): boolean {
+    console.log(`🔍 Validando paso ${step}`);
+    
     switch (step) {
       case 1:
         return this.isBasicInfoValid();
@@ -84,20 +95,52 @@ export class BusinessRegistryService {
   private isBasicInfoValid(): boolean {
     const business = this.businessData();
     const user = this.userData();
-    return !!(business.business_name && business.business_type && business.tax_id && 
-             user.email && user.password_hash);
+    const isValid = !!(business.business_name && business.business_type && business.tax_id && 
+             business.email && user.password_hash);
+    
+    console.log('🔍 Validando Basic Info:', {
+      business_name: business.business_name,
+      business_type: business.business_type,
+      tax_id: business.tax_id,
+      email: business.email,
+      password_hash: user.password_hash ? '***' : undefined,
+      isValid
+    });
+    
+    return isValid;
   }
   
   private isContactInfoValid(): boolean {
     const business = this.businessData();
     const user = this.userData();
-    return !!(business.phone && business.address_line1 && user.city_id);
+    const isValid = !!(business.phone && business.address_line1 && user.city_id);
+    
+    console.log('🔍 Validando Contact Info:', {
+      phone: business.phone,
+      address_line1: business.address_line1,
+      city_id: user.city_id,
+      isValid
+    });
+    
+    return isValid;
   }
   
   private isUserInfoValid(): boolean {
     const user = this.userData();
-    return !!(user.first_name && user.last_name && user.identification_type && 
-             user.identification_number);
+    const isValid = !!(user.first_name && user.last_name && user.identification_type && 
+             user.identification_number && user.gender && user.birth_date);
+    
+    console.log('🔍 Validando User Info:', {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      identification_type: user.identification_type,
+      identification_number: user.identification_number,
+      gender: user.gender,
+      birth_date: user.birth_date,
+      isValid
+    });
+    
+    return isValid;
   }
   
   // Método para enviar el registro al backend
@@ -114,18 +157,33 @@ export class BusinessRegistryService {
       bannerImage: this.bannerImage() || undefined
     };
     
-    // Por ahora solo mostrar en consola como solicita el usuario
     console.log('Datos de registro de negocio:', registrationData);
+    console.log('BusinessData actual:', this.businessData());
+    console.log('UserData actual:', this.userData());
+    console.log('BannerImage actual:', this.bannerImage());
     
-    // Simular respuesta exitosa
-    return new Observable(observer => {
-      setTimeout(() => {
-        observer.next({ success: true, message: 'Registro exitoso' });
-        observer.complete();
-      }, 2000);
-    });
-    
-    // Cuando se implemente el backend real:
-    // return this.http.post(`${this.apiUrl}/business/register`, registrationData);
+    // Llamada real al endpoint de registro
+    const url = `${this.apiUrl}api/businesses/register-user-business`;
+    return this.http.post(url, registrationData).pipe(
+      catchError(error => {
+        console.error('Error en el registro:', error);
+        
+        let errorMessage = 'Error al registrar el negocio';
+        
+        if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        } else if (error.status === 409) {
+          errorMessage = 'Ya existe un usuario con estos datos';
+        } else if (error.status === 400) {
+          errorMessage = 'Datos inválidos. Por favor verifica la información';
+        } else if (error.status === 500) {
+          errorMessage = 'Error interno del servidor. Inténtalo más tarde';
+        } else if (error.status === 0) {
+          errorMessage = 'No se pudo conectar con el servidor';
+        }
+        
+        return throwError(() => ({ ...error, userMessage: errorMessage }));
+      })
+    );
   }
 }

@@ -91,6 +91,7 @@ export class ContactInfoStepComponent implements OnInit {
     const userData = this.businessRegistryService.userData();
     const bannerImage = this.businessRegistryService.bannerImage();
     
+    
     if (businessData || userData) {
       this.contactInfoForm.patchValue({
         phone: businessData.phone || '',
@@ -99,8 +100,28 @@ export class ContactInfoStepComponent implements OnInit {
         city_id: userData.city_id || null
       });
       
-      // Cargar departamento si hay ciudad seleccionada
-      if (userData.city_id) {
+      // Si hay nombres guardados, buscar y seleccionar el departamento correspondiente
+      if (userData.department_name && userData.city_name) {
+        this.loadDepartments();
+        
+        // Esperar a que se carguen los departamentos y luego seleccionar
+        this.locationService.departments$.subscribe(departments => {
+          const department = departments.find(d => d.name === userData.department_name);
+          if (department) {
+            this.contactInfoForm.patchValue({ department: department.id });
+            this.loadCities(department.id);
+            
+            // Esperar a que se carguen las ciudades y luego seleccionar
+            this.locationService.cities$.subscribe(cities => {
+              const city = cities.find(c => c.name === userData.city_name);
+              if (city) {
+                this.contactInfoForm.patchValue({ city_id: city.id });
+              }
+            });
+          }
+        });
+      } else if (userData.city_id) {
+        // Fallback: cargar por ID si no hay nombres
         this.loadDepartmentByCity(userData.city_id);
       }
     }
@@ -111,27 +132,55 @@ export class ContactInfoStepComponent implements OnInit {
   }
   
   private loadDepartmentByCity(cityId: number) {
-    // Note: getDepartmentByCity method doesn't exist in LocationService
-    // This functionality would need to be implemented in the service
-    console.log('Loading department for city:', cityId);
+  }
+  
+  onDepartmentChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const departmentId = parseInt(target.value);
+    
+    if (departmentId) {
+      // Cargar ciudades del departamento seleccionado
+      this.loadCities(departmentId);
+      
+      // Limpiar la selección de ciudad
+      this.contactInfoForm.patchValue({ city_id: '' });
+      
+      // Guardar datos automáticamente
+      this.saveFormData();
+    }
+  }
+  
+  onCityChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const cityId = target.value;
+    
+    if (cityId) {
+      // Guardar datos automáticamente cuando se selecciona una ciudad
+      this.saveFormData();
+    }
   }
   
   private saveFormData() {
-    if (this.contactInfoForm.valid) {
-      const formValue = this.contactInfoForm.value;
-      
-      // Actualizar datos del negocio
-      this.businessRegistryService.updateBusinessData({
-        phone: formValue.phone,
-        website_url: formValue.website_url,
-        address_line1: formValue.address_line1
-      });
-      
-      // Actualizar datos del usuario
-      this.businessRegistryService.updateUserData({
-        city_id: formValue.city_id
-      });
-    }
+    const formValue = this.contactInfoForm.value;
+    
+    // Encontrar el nombre de la ciudad y departamento seleccionados
+    const selectedCity = this.cities().find(city => city.id == formValue.city_id);
+    const selectedDepartment = this.departments().find(dept => dept.id == formValue.department);
+    
+    // Actualizar datos del negocio
+    this.businessRegistryService.updateBusinessData({
+      phone: formValue.phone || '',
+      website_url: formValue.website_url || '',
+      address_line1: formValue.address_line1 || ''
+    });
+    
+    // Actualizar datos del usuario con nombres de ciudad y departamento
+    this.businessRegistryService.updateUserData({
+      city_id: formValue.city_id || '',
+      city_name: selectedCity?.name || '',
+      department_name: selectedDepartment?.name || '',
+      address: formValue.address_line1 || ''
+    });
   }
   
   onFileSelected(event: Event) {
