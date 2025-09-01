@@ -1,76 +1,32 @@
-.button-code-container {
-  position: relative;
-}
-
-.main-button {
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 300px;
-  
-  &:hover:not(.disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  &:active:not(.disabled) {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  &.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  }
-}
-
-// Modal styles
-.modal-overlay {
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
   padding: 1rem;
-  animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  background: var(--card-background);
+.modal-container {
+  background: white;
   border-radius: 16px;
   width: 100%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
 }
 
-@keyframes slideUp {
+@keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(-50px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -101,6 +57,21 @@
       font-weight: 700;
       margin: 0;
       letter-spacing: 0.5px;
+    }
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 }
@@ -139,6 +110,43 @@
     &:invalid {
       border-color: #dc3545;
     }
+
+    &.reward-input {
+      border-style: dashed;
+      border-width: 2px;
+      background: #f8f9fa;
+    }
+
+    // Estilos específicos para input de tipo date
+    &[type="date"] {
+      position: relative;
+      color-scheme: light;
+      
+      &::-webkit-calendar-picker-indicator {
+        color: var(--color-primary);
+        opacity: 1;
+        cursor: pointer;
+        filter: invert(0.3) sepia(1) saturate(3) hue-rotate(175deg);
+      }
+
+      &::-webkit-datetime-edit {
+        color: var(--color-primary-dark);
+      }
+
+      &::-webkit-datetime-edit-fields-wrapper {
+        color: var(--color-primary-dark);
+      }
+
+      &::-webkit-datetime-edit-text {
+        color: var(--color-primary-dark);
+      }
+
+      &::-webkit-datetime-edit-month-field,
+      &::-webkit-datetime-edit-day-field,
+      &::-webkit-datetime-edit-year-field {
+        color: var(--color-primary-dark);
+      }
+    }
   }
 
   .error-message {
@@ -149,32 +157,30 @@
   }
 }
 
-.form-label {
-  display: block;
-  font-weight: 600;
-  color: var(--color-primary-dark);
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
+.deal-summary {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
 
-.form-input {
-  width: 100%;
-  padding: 0.875rem;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: white;
-  color: var(--color-primary-dark);
-  
-  &:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+  h3 {
+    color: var(--color-primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
   }
-  
-  &::placeholder {
-    color: #6c757d;
+
+  .summary-text {
+    color: var(--color-primary);
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+
+    strong {
+      color: var(--color-primary-dark);
+      font-weight: 700;
+    }
   }
 }
 
@@ -182,7 +188,6 @@
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
-  padding: 0 2rem 2rem 2rem;
 
   button {
     flex: 1;
@@ -225,30 +230,63 @@
   }
 }
 
-// Responsive adjustments
-@media (max-width: 480px) {
-  .modal-overlay {
+// Responsive design
+@media (max-width: 768px) {
+  .modal-backdrop {
     padding: 0.5rem;
   }
-  
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+
+  .modal-container {
+    max-width: 100%;
+    margin: 0;
   }
-  
+
+  .modal-header {
+    padding: 1rem;
+
+    .header-content {
+      .modal-title {
+        font-size: 1.1rem;
+      }
+
+      .header-icon {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
   .action-buttons {
     flex-direction: column;
     gap: 0.75rem;
-    padding: 1.5rem;
 
     button {
       padding: 0.875rem 1rem;
     }
   }
-  
-  .modal-title {
-    font-size: 1.125rem;
+
+  .deal-summary {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    .header-content {
+      .modal-title {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
   }
 }

@@ -82,25 +82,15 @@ export class BusinessHomeComponent implements OnInit {
       this.isLoadingBusiness.set(loading);
       
       if (loading) {
-        console.log('Cargando datos del negocio...');
       } else if (error) {
-        console.error('Error al cargar el negocio:', error);
         this.toastService.error('Error al cargar los datos del negocio');
       } else if (businessData) {
-        console.log('=== DATOS DEL NEGOCIO DEL USUARIO LOGUEADO ===');
-        console.log('Datos completos:', businessData);
         
         // Actualizar los signals con los datos del negocio
         this.businessName.set(businessData.business_name || '');
         this.businessType.set(businessData.business_type || '');
         this.bannerUrl.set(businessData.banner_url || '');
         this.logoUrl.set(businessData.logo_url || '');
-        
-        console.log('Nombre del negocio:', businessData.business_name);
-        console.log('Tipo de negocio:', businessData.business_type);
-        console.log('Banner URL:', businessData.banner_url);
-        console.log('Logo URL:', businessData.logo_url);
-        console.log('=== FIN DATOS DEL NEGOCIO ===');
         
         // Cargar catálogo de premios cuando se obtiene el negocio
         this.businessService.loadRewardCatalog(businessData.id);
@@ -151,13 +141,11 @@ export class BusinessHomeComponent implements OnInit {
   
   // Handle stamp card action with form data
   onStampCard(formData: {purchaseAmount: number, description: string, invoiceNumber: string}): void {
-    console.log('Sellar tarjeta de visita con datos:', formData);
     // La lógica de creación de transacción se maneja en customer-card.component.ts
   }
   
   // Handle transaction completed event
   onTransactionCompleted(): void {
-    console.log('Transacción completada exitosamente');
     this.toastService.success('¡Transacción completada exitosamente!');
     // Resetear el estado completo después de sellar
     this.resetCompleteState();
@@ -169,7 +157,6 @@ export class BusinessHomeComponent implements OnInit {
     this.searchDocumentNumber.set('');
     // Limpiar cliente encontrado
     this.businessService.clearCustomerSearch();
-    console.log('Estado reseteado completamente');
   }
   
   /**

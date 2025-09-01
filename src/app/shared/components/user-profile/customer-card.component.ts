@@ -1,8 +1,11 @@
-import { Component, Input, Output, EventEmitter, signal, computed, OnInit, OnChanges, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, computed, OnInit, OnChanges, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 import { ButtonCodeComponent } from '../button-code/button-code.component';
 import { TransactionService, CreateTransactionRequest } from '../../../core/services/transaction.service';
 import { BusinessService } from '../../../core/services/business.service';
+import { DealModalComponent } from '../../../modules/business/components/deal-modal/deal-modal.component';
 
 interface UserStamp {
   id: number;
@@ -22,7 +25,7 @@ interface UserInfo {
 @Component({
   selector: 'app-customer-card',
   standalone: true,
-  imports: [CommonModule, ButtonCodeComponent],
+  imports: [CommonModule, ButtonCodeComponent, FontAwesomeModule, DealModalComponent],
   templateUrl: './customer-card.component.html',
   styleUrls: ['./customer-card.component.scss']
 })
@@ -38,6 +41,11 @@ export class CustomerCardComponent implements OnInit, OnChanges {
   @Output() stampCard = new EventEmitter<{purchaseAmount: number, description: string, invoiceNumber: string}>();
   @Output() deliverReward = new EventEmitter<void>();
   @Output() transactionCompleted = new EventEmitter<void>();
+  
+  @ViewChild('dealModal') dealModal!: DealModalComponent;
+
+  // Font Awesome icons
+  faHandshake = faHandshake;
   
   // Signals para las stamps - se generan basadas en totalStamps
   stamps = signal<UserStamp[]>([]);
@@ -112,6 +120,22 @@ export class CustomerCardComponent implements OnInit, OnChanges {
   
   onDeliverReward() {
     this.deliverReward.emit();
+  }
+
+  onMakeDeal() {
+    console.log('Opening deal modal for customer:', this.userInfo);
+    this.dealModal.show();
+  }
+
+  onDealCreated() {
+    console.log('Deal created successfully');
+    // Aquí se puede agregar lógica adicional después de crear el deal
+    // Por ejemplo, actualizar la lista de deals del cliente
+  }
+
+  onDealModalClosed() {
+    console.log('Deal modal closed');
+    // Aquí se puede agregar lógica adicional cuando se cierre el modal
   }
   
   constructor() {}

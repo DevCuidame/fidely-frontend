@@ -1,15 +1,20 @@
 import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faStamp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-button-code',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './button-code.component.html',
   styleUrls: ['./button-code.component.scss']
 })
 export class ButtonCodeComponent {
+  // FontAwesome icon
+  faStamp = faStamp;
+  
   @Input() label: string = 'Botón';
   @Input() placeholder: string = 'Ingrese el código';
   @Input() buttonColor: string = '#ff6620';

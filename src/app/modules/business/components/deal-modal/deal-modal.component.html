@@ -1,0 +1,91 @@
+<div class="modal-backdrop" *ngIf="isOpen()" (click)="onBackdropClick($event)">
+  <div class="modal-container">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="header-content">
+        <fa-icon [icon]="faHandshake" class="header-icon"></fa-icon>
+        <h2 class="modal-title">HAGAMOS UN TRATO</h2>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form [formGroup]="dealForm" (ngSubmit)="onSubmit()">
+        <!-- Número de sellos -->
+        <div class="form-group">
+          <label for="stamps">Número de sellos</label>
+          <input
+            type="text"
+            id="stamps"
+            formControlName="stamps"
+            class="form-input"
+            placeholder="Ingrese número de sellos"
+            (input)="onStampsInput($event)"
+          />
+          <div class="error-message" *ngIf="dealForm.get('stamps')?.invalid && dealForm.get('stamps')?.touched">
+            Debe ingresar un número entre 1 y 10
+          </div>
+        </div>
+
+        <!-- Vigencia -->
+        <div class="form-group">
+          <label for="expiryDate">Vigencia</label>
+          <input
+            type="date"
+            id="expiryDate"
+            formControlName="expiryDate"
+            class="form-input"
+            [min]="minDate()"
+          />
+          <div class="error-message" *ngIf="dealForm.get('expiryDate')?.invalid && dealForm.get('expiryDate')?.touched">
+            Debe seleccionar una fecha válida
+          </div>
+        </div>
+
+        <!-- Resumen del trato -->
+        <div class="deal-summary" *ngIf="showSummary()">
+          <h3>Resumen del trato</h3>
+          <p class="summary-text">
+            Al aceptar, el cliente se compromete a completar 
+            <strong>{{ dealForm.get('stamps')?.value }}</strong> sellos en los próximos 
+            <strong>{{ calculateDays() }}</strong> días, a cambio el cliente recibirá:
+          </p>
+          
+          <!-- Premio personalizado -->
+          <div class="form-group">
+            <input
+              type="text"
+              formControlName="customReward"
+              class="form-input reward-input"
+              placeholder="Describa el premio que recibirá el cliente"
+            />
+            <div class="error-message" *ngIf="dealForm.get('customReward')?.invalid && dealForm.get('customReward')?.touched">
+              Debe describir el premio
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button
+            type="submit"
+            class="accept-button"
+            [disabled]="dealForm.invalid || isLoading()"
+          >
+            <span *ngIf="!isLoading()">Aceptar</span>
+            <span *ngIf="isLoading()">Creando...</span>
+          </button>
+          
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="onClose()"
+            [disabled]="isLoading()"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
