@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHandshake, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { DealService, CreateDealRequest } from '../../services/deal.service';
 import { BusinessService } from '../../../../core/services/business.service';
+import { ToastService } from '../../../../core/services/toast/toast.service';
 import { RewardSourceType } from '../../../../core/interfaces/deal.interface';
 
 @Component({
@@ -23,6 +24,7 @@ export class DealModalComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private dealService = inject(DealService);
   private businessService = inject(BusinessService);
+  private toastService = inject(ToastService);
 
   // Signals
   private _isOpen = signal<boolean>(false);
@@ -149,7 +151,7 @@ export class DealModalComponent implements OnInit {
     const searchedCustomer = this.businessService.searchedCustomer();
 
     if (!userBusiness || !searchedCustomer) {
-      console.error('Faltan datos del negocio o cliente');
+      this.toastService.error('Faltan datos del negocio o cliente');
       return;
     }
 
@@ -172,16 +174,16 @@ export class DealModalComponent implements OnInit {
       next: (response) => {
         this._isLoading.set(false);
         if (response.success) {
-          console.log('Deal creado exitosamente:', response.data);
+          this.toastService.success('¡Deal creado exitosamente!');
           this.dealCreated.emit();
           this.onClose();
         } else {
-          console.error('Error al crear deal:', response.message);
+          this.toastService.success(`Error al crear deal: ${response.message}`);
         }
       },
       error: (error) => {
         this._isLoading.set(false);
-        console.error('Error al crear deal:', error);
+        this.toastService.success('Error al crear deal. Por favor, inténtelo de nuevo.');
       }
     });
   }

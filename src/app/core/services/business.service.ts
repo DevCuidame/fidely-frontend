@@ -233,6 +233,7 @@ export class BusinessService {
       })
     ).subscribe({
       next: (response) => {
+        console.log("🚀 ~ BusinessService ~ searchCustomer ~ response:", response)
         if (response.success && response.data) {
           this._searchedCustomer.set(response.data);
           this._customerSearchError.set(null);

@@ -20,6 +20,15 @@ interface UserInfo {
   totalStamps?: number;
   avatar?: string;
   profile_image_url?: string;
+  business_points?: {
+    business_id: number;
+    total_points: number;
+    available_points: number;
+    lifetime_points: number;
+    required_points: number;
+    has_active_deal: boolean;
+    last_transaction_date?: Date;
+  };
 }
 
 @Component({
@@ -41,6 +50,7 @@ export class CustomerCardComponent implements OnInit, OnChanges {
   @Output() stampCard = new EventEmitter<{purchaseAmount: number, description: string, invoiceNumber: string}>();
   @Output() deliverReward = new EventEmitter<void>();
   @Output() transactionCompleted = new EventEmitter<void>();
+  @Output() dealCreated = new EventEmitter<void>();
   
   @ViewChild('dealModal') dealModal!: DealModalComponent;
 
@@ -51,10 +61,22 @@ export class CustomerCardComponent implements OnInit, OnChanges {
   stamps = signal<UserStamp[]>([]);
   
   // Computed property para verificar si el premio está disponible
-  isPrizeAvailable = computed(() => this.userInfo.totalStamps! >= 10);
+  isPrizeAvailable = computed(() => {
+    const businessPoints = this.userInfo.business_points;
+    if (!businessPoints || !businessPoints.has_active_deal) return false;
+    return businessPoints.available_points >= businessPoints.required_points;
+  });
   
   // Computed property para verificar si el botón de sellar debe estar desactivado
-  isStampButtonDisabled = computed(() => this.userInfo.totalStamps! >= 10);
+  isStampButtonDisabled = computed(() => {
+    const businessPoints = this.userInfo.business_points;
+    if (!businessPoints || !businessPoints.has_active_deal) return true; // Desactivar si no hay deal activo
+    return businessPoints.available_points >= businessPoints.required_points;
+  });
+
+  isDealButtonDisabled = computed(() => {
+    return this.userInfo.business_points?.has_active_deal || false;
+  });
   
   ngOnInit() {
     this.updateStamps();
@@ -65,13 +87,15 @@ export class CustomerCardComponent implements OnInit, OnChanges {
   }
   
   private updateStamps() {
-    const totalStamps = this.userInfo.totalStamps || 0;
+    const businessPoints = this.userInfo.business_points;
+    const currentVisits = businessPoints?.available_points || 0;
+    const requiredVisits = businessPoints?.required_points || 10;
     const stampsArray: UserStamp[] = [];
     
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= requiredVisits; i++) {
       stampsArray.push({
         id: i,
-        collected: i <= totalStamps
+        collected: i <= currentVisits
       });
     }
     
@@ -129,8 +153,8 @@ export class CustomerCardComponent implements OnInit, OnChanges {
 
   onDealCreated() {
     console.log('Deal created successfully');
-    // Aquí se puede agregar lógica adicional después de crear el deal
-    // Por ejemplo, actualizar la lista de deals del cliente
+    // Emitir evento para notificar al componente padre
+    this.dealCreated.emit();
   }
 
   onDealModalClosed() {

@@ -67,7 +67,8 @@ export class BusinessHomeComponent implements OnInit {
       memberSince: 'Cliente registrado',
       totalStamps: customer.business_points?.available_points || 0,
       avatar: undefined,
-      profile_image_url: customer.profile_image_url
+      profile_image_url: customer.profile_image_url,
+      business_points: customer.business_points
     };
   });
   
@@ -148,6 +149,13 @@ export class BusinessHomeComponent implements OnInit {
   onTransactionCompleted(): void {
     this.toastService.success('¡Transacción completada exitosamente!');
     // Resetear el estado completo después de sellar
+    this.resetCompleteState();
+  }
+
+  // Handle deal created event
+  onDealCreated(): void {
+    this.toastService.success('¡Deal creado exitosamente!');
+    // Resetear el estado completo después de crear deal
     this.resetCompleteState();
   }
   

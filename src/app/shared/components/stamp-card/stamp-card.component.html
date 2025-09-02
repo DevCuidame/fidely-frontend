@@ -1,8 +1,9 @@
 <div class="stamp-card-container">
   <!-- Main Card (Image Background) -->
   <div class="stamp-card" 
-       [style.background-image]="'url(' + backgroundImage + ')'" 
-       (click)="toggleExpansion()">
+       [style.background-image]="'url(' + backgroundImage + ')'"
+       [style.cursor]="hasActiveDeal ? 'pointer' : 'default'"
+       (click)="hasActiveDeal ? toggleExpansion() : null">
     
     <!-- Card Overlay -->
     <div class="card-overlay"></div>
@@ -12,13 +13,13 @@
     </div>
     
     <!-- Counter (Bottom Right) -->
-    <div class="stamp-counter">
-      <span class="counter-text">Has conseguido {{ collectedStamps }} sellos de {{ totalStamps }} sellos</span>
+    <div class="stamp-counter" [class.no-deal]="!hasActiveDeal">
+      <span class="counter-text">{{ counterMessage }}</span>
     </div>
   </div>
   
-  <!-- Expandable Stamps Section -->
-  <div class="stamps-section" [class.expanded]="expandedState">
+  <!-- Expandable Stamps Section (only when there's an active deal) -->
+  <div *ngIf="hasActiveDeal" class="stamps-section" [class.expanded]="expandedState">
     <div class="stamps-container">
       <!-- Top Row (5 stamps) -->
       <div class="stamps-row top-row">

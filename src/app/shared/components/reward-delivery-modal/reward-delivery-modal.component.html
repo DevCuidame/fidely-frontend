@@ -1,5 +1,5 @@
 <div
-  class="modal-overlay"
+  class="modal-backdrop"
   *ngIf="isVisible()"
   (click)="onBackdropClick($event)"
 >
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Content -->
-    <div class="modal-content">
+    <div class="modal-body">
       <!-- Sección de búsqueda de código -->
       <div class="search-section">
         <h4 class="section-title">Código de Premio</h4>
@@ -47,22 +47,7 @@
 
       <!-- Información del premio encontrado -->
       <div class="reward-info-section" *ngIf="milestoneData()">
-        <!-- Información del negocio -->
-        <div class="business-info">
-          <div class="business-logo" *ngIf="milestoneData()!.businessLogo">
-            <img
-              [src]="milestoneData()!.businessLogo"
-              [alt]="milestoneData()!.businessName"
-            />
-          </div>
-          <div class="business-details">
-            <h3 class="business-name">
-              <fa-icon [icon]="faStore" class="icon"></fa-icon>
-              {{ milestoneData()!.businessName }}
-            </h3>
-          </div>
-        </div>
-
+    
         <!-- Información del cliente -->
         <div class="customer-info">
           <h4 class="section-title">
@@ -160,10 +145,9 @@
     </div>
 
     <!-- Footer con Acciones -->
-    <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+    <div class="action-buttons">
       <button
-        class="btn btn-primary"
+        class="accept-button"
         [disabled]="!canDeliverReward()"
         (click)="onConfirmDelivery()"
         *ngIf="milestoneData() && selectedReward()"
@@ -171,6 +155,7 @@
         <fa-icon [icon]="faGift" class="btn-icon"></fa-icon>
         Entregar Premio
       </button>
+      <button class="cancel-button" (click)="closeModal()">Cancelar</button>
     </div>
   </div>
 </div>

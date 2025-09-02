@@ -19,7 +19,7 @@
             id="stamps"
             formControlName="stamps"
             class="form-input"
-            placeholder="Ingrese número de sellos"
+            placeholder="Ingrese número de sellos (1-10)"
             (input)="onStampsInput($event)"
           />
           <div class="error-message" *ngIf="dealForm.get('stamps')?.invalid && dealForm.get('stamps')?.touched">
@@ -72,8 +72,8 @@
             class="accept-button"
             [disabled]="dealForm.invalid || isLoading()"
           >
-            <span *ngIf="!isLoading()">Aceptar</span>
-            <span *ngIf="isLoading()">Creando...</span>
+            <span *ngIf="!isLoading()">ACEPTAR</span>
+            <span *ngIf="isLoading()">CREANDO...</span>
           </button>
           
           <button
@@ -82,7 +82,7 @@
             (click)="onClose()"
             [disabled]="isLoading()"
           >
-            Cancelar
+            CANCELAR
           </button>
         </div>
       </form>

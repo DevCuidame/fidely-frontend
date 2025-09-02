@@ -52,11 +52,16 @@ export class StampsCarouselComponent implements OnInit, OnDestroy, OnChanges {
     const stamp = this.currentStamp();
     if (!stamp) return 'Sin sellos';
     
-    const progress = stamp.availablePoints / 10;
+    // Check if there's an active deal
+    if (!stamp.has_active_deal) {
+      return '¡Haz un trato con este negocio!';
+    }
+    
+    const progress = stamp.availablePoints / stamp.required_points;
     
     if (progress >= 1) {
       return '¡Has completado la meta!';
-    }    else if (progress >= 0.8) {
+    } else if (progress >= 0.8) {
       return '¡Casi lo logras!';
     } else if (progress >= 0.5) {
       return 'Estás cerca de la meta';

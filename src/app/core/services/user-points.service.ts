@@ -87,6 +87,8 @@ export class UserPointsService {
               availablePoints: 0,
               lifetimePoints: 0,
               pendingPoints: 0,
+              has_active_deal: false,
+              required_points: 0,
               redeemedPoints: 0
             },
             businessBalances: [],
@@ -98,7 +100,6 @@ export class UserPointsService {
       })
     );
   }
-
   /**
    * Obtiene el balance de puntos para un negocio específico
    */

@@ -1,5 +1,5 @@
-import { User } from "./auth.interface";
-import { BusinessRegistryData } from "./business-registry.interface";
+import { User } from './auth.interface';
+import { BusinessRegistryData } from './business-registry.interface';
 
 export interface IUserBusinessPoints {
   id: number;
@@ -13,7 +13,7 @@ export interface IUserBusinessPoints {
   promotional_image?: string;
   created_at: Date;
   updated_at: Date;
-  
+
   user?: User;
   business?: BusinessRegistryData;
 }
@@ -29,6 +29,8 @@ export interface IUserBusinessPointsBalance {
   lastTransactionDate?: Date;
   // Agregar imagen promocional
   promotionalImage?: string;
+  has_active_deal: boolean;
+  required_points: number;
 }
 
 export interface IGlobalPointsBalance {

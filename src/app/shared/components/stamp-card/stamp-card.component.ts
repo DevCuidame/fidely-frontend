@@ -23,6 +23,7 @@ export class StampCardComponent implements OnChanges {
   @Input() title: string = 'Mis Sellos';
   @Input() cardId: string = '';
   @Input() isExpanded: boolean = false;
+  @Input() hasActiveDeal: boolean = true;
   
   @Output() expansionToggle = new EventEmitter<string>();
   
@@ -72,7 +73,15 @@ export class StampCardComponent implements OnChanges {
   get bottomRowStamps(): StampData[] {
     return this.stamps.slice(5, 10);
   }
-  
+
+  // Get counter message based on active deal status
+  get counterMessage(): string {
+    if (!this.hasActiveDeal) {
+      return '¡Vista y haz un trato con este negocio!';
+    }
+    return `Has conseguido ${this.collectedStamps} sellos de ${this.totalStamps} sellos`;
+  }
+
   toggleExpansion() {
     this.expansionToggle.emit(this.cardId);
   }

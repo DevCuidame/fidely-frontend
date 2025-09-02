@@ -10,25 +10,37 @@
     <!-- <p class="customer-status">Cliente frecuente</p> -->
   </div>
   
-  <div class="stamps-container">
-    <div class="stamp" 
-         *ngFor="let stamp of stamps()" 
-         [class.collected]="stamp.collected">
-      <img [src]="'assets/logo/fidely-logo.png'" 
-           [alt]="'Sello ' + stamp.id" 
-           [class.grayscale]="!stamp.collected" />
-    </div>
-  </div>
-  
-  <!-- Stamp Counter -->
-  <div class="stamp-counter">
-    <span class="counter-text">{{ userInfo.totalStamps }}/10 sellos</span>
-  </div>
+  @if (userInfo.business_points?.has_active_deal) {
+     <div class="stamps-container">
+       <div class="stamp"
+            *ngFor="let stamp of stamps()"
+            [class.collected]="stamp.collected">
+         <img [src]="'assets/logo/fidely-logo.png'"
+              [alt]="'Sello ' + stamp.id"
+              [class.grayscale]="!stamp.collected" />
+       </div>
+     </div>
+
+     <!-- Stamp Counter -->
+     <div class="stamp-counter">
+       <span class="counter-text">
+         {{ userInfo.business_points!.available_points }}/{{ userInfo.business_points!.required_points }} sellos
+       </span>
+     </div>
+   } @else {
+     <!-- No Active Deal Message -->
+     <div class="no-deal-message">
+       <p class="message-text">Para que el cliente pueda acumular sellos, primero debe hacer un trato.</p>
+       <p class="message-subtitle">Haga clic en "Hagamos un trato" para comenzar.</p>
+     </div>
+   }
   
   <!-- Prize Info -->
     <div class="prize-info">
-      @if (userInfo.totalStamps! < 10) {
-        <p class="info-text">Debe de completar 10 sellos para reclamar un premio</p>
+      @if (!userInfo.business_points?.has_active_deal) {
+        <p class="info-text">No hay deal activo. Cree un deal para comenzar a sellar.</p>
+      } @else if ((userInfo.business_points!.available_points || 0) < userInfo.business_points!.required_points) {
+        <p class="info-text">Debe completar {{ userInfo.business_points!.required_points }} sellos para reclamar el premio.</p>
       } @else {
         <p class="info-text success">¡Premio disponible!</p>
       }
@@ -76,15 +88,16 @@
 <div class="deal-button-container">
   <button
     class="deal-button"
+    [disabled]="isDealButtonDisabled()"
     (click)="onMakeDeal()"
     [ngStyle]="{
-      'background-color': 'var(--color-primary-dark)',
-      'color': 'var(--text-quaternary)',
+      'background-color': isDealButtonDisabled() ? '#cccccc' : 'var(--color-primary-dark)',
+      'color': isDealButtonDisabled() ? '#666666' : 'var(--text-quaternary)',
       'font-size': '0.875rem',
       'padding': '1.5rem 2rem',
       'border-radius': '12px',
       'border': 'none',
-      'cursor': 'pointer',
+      'cursor': isDealButtonDisabled() ? 'not-allowed' : 'pointer',
       'width': '100%',
       'font-weight': 'bold',
       'transition': 'all 0.3s ease',

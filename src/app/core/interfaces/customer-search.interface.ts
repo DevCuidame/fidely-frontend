@@ -12,6 +12,8 @@ export interface CustomerSearchResponseDto {
     total_points: number;
     available_points: number;
     lifetime_points: number;
+    required_points: number;
+    has_active_deal: boolean;
     last_transaction_date?: Date;
   };
 }

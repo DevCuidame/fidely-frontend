@@ -15,6 +15,7 @@
     [collectedStamps]="sello.progreso"
     [title]="sello.nombre"
     [isExpanded]="isCardExpanded(sello.id.toString())"
+    [hasActiveDeal]="sello.hasActiveDeal"
     (expansionToggle)="onCardExpansionToggle($event)">
   </app-stamp-card>
 </div>

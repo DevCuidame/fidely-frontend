@@ -46,8 +46,9 @@ export class MyStampsComponent implements OnInit {
       id: balance.businessId,
       nombre: balance.businessName || 'Negocio',
       progreso: balance.availablePoints,
-      objetivo: 10, // Default objective if not set
-      imagen: balance.promotionalImage || 'assets/images/default-business.png'
+      objetivo: balance.required_points, 
+      imagen: balance.promotionalImage || 'assets/images/default-business.png',
+      hasActiveDeal: balance.has_active_deal
     }));
   });
   

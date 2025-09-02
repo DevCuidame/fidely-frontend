@@ -53,7 +53,7 @@ export class DealService {
       status: DealStatus.ACTIVE
     };
 
-    return this.http.post<CreateDealResponse>(`${this.apiUrl}api/transactions/deals/create`, payload)
+    return this.http.post<CreateDealResponse>(`${this.apiUrl}api/transactions/create-deal`, payload)
       .pipe(
         tap(response => {
           this._loading.set(false);

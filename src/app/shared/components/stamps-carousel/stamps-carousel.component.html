@@ -15,8 +15,11 @@
           <div class="stamp-message">
             <h3>{{ getProgressMessage() }}</h3>
           </div>
-          <div class="stamp-progress">
-            <span class="progress-count">{{ currentStamp().availablePoints }}/10 Sellos</span>
+          <div class="stamp-progress" *ngIf="currentStamp().has_active_deal">
+            <span class="progress-count">{{ currentStamp().availablePoints }}/{{ currentStamp().required_points }}</span>
+          </div>
+          <div class="no-deal-message" *ngIf="!currentStamp().has_active_deal">
+            <p>Visita este negocio para comenzar a acumular sellos</p>
           </div>
         </div>
         
