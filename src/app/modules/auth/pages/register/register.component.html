@@ -10,34 +10,6 @@
   (ngSubmit)="register()"
   class="animate-slide-up auth-form"
 >
-  <!-- Image Upload -->
-  <div class="image-upload-container">
-    <div class="image-circle" (click)="selectImage()">
-      <img
-        *ngIf="selectedImage"
-        [src]="registerForm.get('imagebs64')?.value"
-        alt="User Image"
-      />
-      <div *ngIf="!selectedImage" class="upload-placeholder">
-        <ion-icon name="person-outline"></ion-icon>
-      </div>
-      <div class="small-circle">
-        <ion-icon class="camera-icon" name="camera"></ion-icon>
-      </div>
-    </div>
-    <input
-      type="file"
-      id="imageInput"
-      (change)="onImageSelected($event)"
-      hidden
-      accept="image/*"
-    />
-    <p class="upload-text">Haz clic para subir tu foto</p>
-    <p class="error-text" *ngIf="getErrorMessage('imagebs64')">
-      {{ getErrorMessage("imagebs64") }}
-    </p>
-  </div>
-
   <!-- Personal Information Section -->
   <div class="form-section">
     <h3 class="section-title">Información Personal</h3>

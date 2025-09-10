@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
     password:
       'La contraseña debe contener entre 8 y 50 caracteres, una mayúscula y un número.',
     confirmPassword: 'Las contraseñas no coinciden.',
-    imagebs64: 'Debe subir una imagen de perfil.',
+
   };
 
   constructor(
@@ -120,7 +120,7 @@ export class RegisterComponent implements OnInit {
         ],
         confirmPassword: ['', [Validators.required]],
         pubname: [''],
-        imagebs64: ['', Validators.required],
+        imagebs64: [''],
         privacy_policy: [false, Validators.requiredTrue],
       },
       { validator: this.passwordMatchValidator }
@@ -261,18 +261,6 @@ export class RegisterComponent implements OnInit {
   }
 
   async register() {
-    if (!this.selectedImage) {
-      const alert = await this.alertCtrl.create({
-        header: 'Falta imagen',
-        message: 'Por favor, carga una imagen antes de continuar.',
-        cssClass: 'custom-alert error-alert',
-        backdropDismiss: false,
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
-    }
-
     if (this.registerForm.valid) {
       this.loadingService.showLoading('Registrando...');
       const { confirmPassword, department, privacy_policy, ...formData } =

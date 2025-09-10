@@ -3,11 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  url: 'http://localhost:4000/',
-  wsUrl: 'ws://localhost:4000/ws',
-  // url: 'https://fidely.cuidame.tech/',
-  // wsUrl: 'wss://fidely.cuidame.tech/ws',
-  production: false,
+  // url: 'http://localhost:4000/',
+  // wsUrl: 'ws://localhost:4000/ws',
+  url: 'https://fidely.cuidame.tech/',
+  wsUrl: 'wss://fidely.cuidame.tech/ws',
+  production: true,
 };
 
 /*
