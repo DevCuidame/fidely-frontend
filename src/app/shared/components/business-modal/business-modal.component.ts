@@ -90,6 +90,6 @@ export class BusinessModalComponent {
     if (this.business?.logo_url) {
       return this.business.logo_url;
     }
-    return 'assets/images/default-business.svg';
+    return 'assets/images/no_available.png';
   }
 }

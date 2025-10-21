@@ -94,8 +94,8 @@ export class RegisterComponent implements OnInit {
         identification_number: ['', [Validators.required, Validators.maxLength(20)]],
         address: ['', [Validators.required, Validators.maxLength(200)]],
         city_id: [null, Validators.required],
-        department: [null, Validators.required], // Solo para UI, no se envia
-        gender: ['', Validators.required],
+        department: [null, Validators.required], 
+        gender: [''],
         birth_date: ['', Validators.required],
         phone: [
           '',
