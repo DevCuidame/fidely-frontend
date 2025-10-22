@@ -387,19 +387,19 @@ export class DeleteAccountComponent implements OnInit {
 
   async contactWhatsapp() {
     const whatsappUrl =
-      'whatsapp://send?phone=573007306645&text=Hola, tengo dudas sobre eliminar mi cuenta en Cuídame.';
+      'whatsapp://send?phone=573007306645&text=Hola, tengo dudas sobre eliminar mi cuenta en Fidely.';
     window.location.href = whatsappUrl;
 
     setTimeout(() => {
       window.open(
-        'https://web.whatsapp.com/send?phone=573007306645&text=Hola, tengo dudas sobre eliminar mi cuenta en Cuídame.',
+        'https://web.whatsapp.com/send?phone=573007306645&text=Hola, tengo dudas sobre eliminar mi cuenta en Fidely.',
         '_blank'
       );
     }, 500);
   }
 
   contactEmail() {
-    const email = 'cuidame@esmart-tek.com';
+    const email = 'lvinazco@cuidame.com';
     const subject = 'Consulta sobre eliminación de cuenta';
     const emailUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
     window.location.href = emailUrl;

@@ -42,7 +42,8 @@
     
     <!-- Banner -->
     <div class="input-group">
-      <label class="input-label">Banner del negocio (opcional)</label>
+      <label class="input-label">Banner del negocio *</label>
+      <p class="input-hint">Sube un banner en proporción 3:1. Tamaños recomendados: 1920x640 o 1600x533.</p>
       <div class="image-upload-container">
         @if (selectedImage()) {
           <div class="image-preview">
@@ -51,6 +52,13 @@
               <i class="fas fa-times"></i>
             </button>
           </div>
+          @if (dimensionWarning()) {
+            <p class="warning-text">{{ dimensionWarning() }}</p>
+          } @else {
+            @if (imageWidth() && imageHeight()) {
+              <p class="success-text">Imagen seleccionada: {{ imageWidth() }}x{{ imageHeight() }} (aprox. {{ (imageWidth()! / imageHeight()!).toFixed(2) }}:1)</p>
+            }
+          }
         } @else {
           <div class="upload-placeholder" (click)="triggerFileInput()">
             <div class="upload-content">
@@ -59,6 +67,7 @@
               <p class="upload-hint">JPG, PNG (máx. 5MB)</p>
             </div>
           </div>
+          <p class="error-text">El banner del negocio es obligatorio</p>
         }
         <input
           #fileInput

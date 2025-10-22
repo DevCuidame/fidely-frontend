@@ -22,6 +22,26 @@ export class ContactInfoStepComponent implements OnInit {
   departments = signal<any[]>([]);
   cities = signal<any[]>([]);
   selectedImage = signal<string | null>(null);
+  imageWidth = signal<number | null>(null);
+  imageHeight = signal<number | null>(null);
+
+  // Advertencia de dimensiones basada en mínimos y proporción 3:1
+  dimensionWarning = computed(() => {
+    const w = this.imageWidth();
+    const h = this.imageHeight();
+    if (!w || !h) return '';
+    const minW = 1024;
+    const minH = 341;
+    const ratio = w / h;
+    const ratioTolerance = 0.15; // ~5% margen
+    if (w < minW || h < minH) {
+      return 'La imagen es menor al mínimo aceptable (1024x341).';
+    }
+    if (Math.abs(ratio - 3) > ratioTolerance) {
+      return 'Tu imagen no tiene proporción 3:1; se recomienda 1920x640 o 1600x533.';
+    }
+    return '';
+  });
   
   // Computed para validar si el formulario es válido
   isFormValid = computed(() => {
@@ -45,7 +65,8 @@ export class ContactInfoStepComponent implements OnInit {
       website_url: ['', [Validators.pattern('^https?:\/\/.+')]],
       address_line1: ['', [Validators.required, Validators.maxLength(200)]],
       department: [null, [Validators.required]],
-      city_id: [null, [Validators.required]]
+      city_id: [null, [Validators.required]],
+      banner: ['', [Validators.required]]
     });
     
     // Suscribirse a cambios del formulario
@@ -128,6 +149,10 @@ export class ContactInfoStepComponent implements OnInit {
     
     if (bannerImage) {
       this.selectedImage.set(bannerImage);
+      this.contactInfoForm.get('banner')?.setValue(bannerImage);
+      // No tenemos dimensiones previas guardadas; se calcularán con nueva selección
+    } else {
+      this.contactInfoForm.get('banner')?.setValue('');
     }
   }
   
@@ -203,8 +228,17 @@ export class ContactInfoStepComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target?.result as string;
+        // Calcular dimensiones
+        const img = new Image();
+        img.onload = () => {
+          this.imageWidth.set(img.width);
+          this.imageHeight.set(img.height);
+        };
+        img.src = result;
+        
         this.selectedImage.set(result);
         this.businessRegistryService.updateBannerImage(result);
+        this.contactInfoForm.get('banner')?.setValue(result);
       };
       reader.readAsDataURL(file);
     }
@@ -216,7 +250,10 @@ export class ContactInfoStepComponent implements OnInit {
   
   removeImage() {
     this.selectedImage.set(null);
+    this.imageWidth.set(null);
+    this.imageHeight.set(null);
     this.businessRegistryService.updateBannerImage('');
+    this.contactInfoForm.get('banner')?.setValue('');
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }

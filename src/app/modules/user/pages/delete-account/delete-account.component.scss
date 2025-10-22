@@ -1,15 +1,12 @@
 /* ===== DELETE ACCOUNT COMPONENT STYLES ===== */
 
-ion-content{
-  --background: var(--background-color);
-  
-  // Hide scrollbar
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-  }
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--background-color);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .delete-account-container {

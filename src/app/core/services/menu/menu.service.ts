@@ -221,14 +221,39 @@ export class MenuService {
         order: 21,
         section: 'profile'
       },
+      // Opciones de soporte
+      {
+        id: 'whatsapp',
+        label: 'WhatsApp',
+        icon: 'logo-whatsapp',
+        visible: true,
+        order: 25,
+        section: 'support'
+      },
+      {
+        id: 'email',
+        label: 'Correo Electrónico',
+        icon: 'mail-outline',
+        visible: true,
+        order: 26,
+        section: 'support'
+      },
       // Opciones peligrosas
       {
         id: 'delete-account',
         label: 'Eliminar Cuenta',
         icon: 'trash-outline',
-        route: '/home/delete-account',
-        visible: !this.isAdmin(user), // Los admins no pueden eliminar su cuenta
+        route: (user && (user.role === 'Business' || user.role === 'business')) ? '/business/delete-account' : '/home/delete-account',
+        visible: !this.isAdmin(user as User),
         order: 30,
+        section: 'danger'
+      },
+      {
+        id: 'logout',
+        label: 'Cerrar sesión',
+        icon: 'log-out-outline',
+        visible: true,
+        order: 31,
         section: 'danger'
       }
     ];

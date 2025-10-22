@@ -39,18 +39,9 @@ export class BusinessRegistryService {
   }
   
   goToStep(step: number): void {
-    console.log('🚀 goToStep ejecutado:', {
-      targetStep: step,
-      currentStep: this.currentStep(),
-      isValidStep: step >= 1 && step <= 4
-    });
-    
     if (step >= 1 && step <= 4) {
       this.currentStep.set(step);
-      console.log('✅ Paso actualizado a:', this.currentStep());
-    } else {
-      console.log('❌ Paso inválido:', step);
-    }
+    } 
   }
   
   // Métodos para actualizar datos
@@ -76,7 +67,6 @@ export class BusinessRegistryService {
   
   // Método para validar paso actual
   isStepValid(step: number): boolean {
-    console.log(`🔍 Validando paso ${step}`);
     
     switch (step) {
       case 1:
@@ -98,29 +88,14 @@ export class BusinessRegistryService {
     const isValid = !!(business.business_name && business.business_type && business.tax_id && 
              business.email && user.password_hash);
     
-    console.log('🔍 Validando Basic Info:', {
-      business_name: business.business_name,
-      business_type: business.business_type,
-      tax_id: business.tax_id,
-      email: business.email,
-      password_hash: user.password_hash ? '***' : undefined,
-      isValid
-    });
-    
     return isValid;
   }
   
   private isContactInfoValid(): boolean {
     const business = this.businessData();
     const user = this.userData();
-    const isValid = !!(business.phone && business.address_line1 && user.city_id);
-    
-    console.log('🔍 Validando Contact Info:', {
-      phone: business.phone,
-      address_line1: business.address_line1,
-      city_id: user.city_id,
-      isValid
-    });
+    const banner = this.bannerImage();
+    const isValid = !!(business.phone && business.address_line1 && user.city_id && banner);
     
     return isValid;
   }
@@ -129,17 +104,6 @@ export class BusinessRegistryService {
     const user = this.userData();
     const isValid = !!(user.first_name && user.last_name && user.identification_type && 
              user.identification_number && user.gender && user.birth_date);
-    
-    console.log('🔍 Validando User Info:', {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      identification_type: user.identification_type,
-      identification_number: user.identification_number,
-      gender: user.gender,
-      birth_date: user.birth_date,
-      isValid
-    });
-    
     return isValid;
   }
   
@@ -156,11 +120,6 @@ export class BusinessRegistryService {
       userData: this.userData() as RegisterData,
       bannerImage: this.bannerImage() || undefined
     };
-    
-    console.log('Datos de registro de negocio:', registrationData);
-    console.log('BusinessData actual:', this.businessData());
-    console.log('UserData actual:', this.userData());
-    console.log('BannerImage actual:', this.bannerImage());
     
     // Llamada real al endpoint de registro
     const url = `${this.apiUrl}api/businesses/register-user-business`;

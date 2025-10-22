@@ -45,7 +45,9 @@ export class UserSettingsComponent {
   }
 
   goToDeleteAccount() {
-    this.router.navigate(['/home/delete-account']);
+    const role = this.userData?.role?.toLowerCase?.();
+    const target = role === 'business' ? '/business/delete-account' : '/home/delete-account';
+    this.router.navigate([target]);
     this.close.emit(); // Close the settings modal after navigation
   }
 }
