@@ -82,28 +82,8 @@
       </div>
     </div>
     
-    <!-- Género y Fecha de nacimiento -->
+    <!-- Fecha de nacimiento -->
     <div class="input-row">
-      <!-- <div class="input-group">
-        <label for="gender" class="input-label">Género *</label>
-        <div class="input-container">
-          <select
-            id="gender"
-            formControlName="gender"
-            class="custom-input"
-            [class.error]="isFieldInvalid('gender')"
-          >
-            <option value="" disabled>Seleccione su género</option>
-            @for (gender of genderOptions(); track gender.value) {
-              <option [value]="gender.value">{{ gender.label }}</option>
-            }
-          </select>
-        </div>
-        @if (isFieldInvalid('gender')) {
-          <p class="error-text">{{ getFieldError('gender') }}</p>
-        }
-      </div>
-       -->
       <div class="input-group">
         <label for="birth_date" class="input-label">Fecha de nacimiento *</label>
         <div class="input-container">
@@ -113,6 +93,7 @@
             formControlName="birth_date"
             class="custom-input"
             [class.error]="isFieldInvalid('birth_date')"
+            [attr.max]="getMaxDate()"
           />
         </div>
         @if (isFieldInvalid('birth_date')) {

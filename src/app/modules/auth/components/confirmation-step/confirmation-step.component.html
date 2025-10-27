@@ -4,6 +4,18 @@
     <p class="section-subtitle">Revisa todos los datos antes de registrar tu negocio</p>
   </div>
   
+  @if (!isDataComplete() && logoImage()) {
+    <div class="standalone-logo-preview">
+      <img [src]="logoImage()" alt="Logo del negocio" />
+    </div>
+  }
+  
+  @if (!isDataComplete() && bannerImage()) {
+    <div class="standalone-banner-preview">
+      <img [src]="bannerImage()" alt="Banner del negocio" />
+    </div>
+  }
+  
   @if (isDataComplete()) {
     <div class="summary-sections">
       <!-- Información básica del negocio -->
@@ -29,6 +41,14 @@
             <span class="label">Correo electrónico:</span>
             <span class="value">{{ businessData().email }}</span>
           </div>
+          @if (logoImage()) {
+            <div class="summary-item logo-item">
+              <span class="label">Logo:</span>
+              <div class="logo-preview">
+                <img [src]="logoImage()" alt="Logo del negocio" />
+              </div>
+            </div>
+          }
         </div>
       </div>
       
@@ -90,9 +110,6 @@
           <div class="summary-item">
             <span class="label">Número de identificación:</span>
             <span class="value">{{ userData().identification_number }}</span>
-          </div><div class="summary-item">
-            <span class="label">Género:</span>
-            <span class="value">{{ getGenderLabel(userData().gender || '') }}</span>
           </div>
           <div class="summary-item">
             <span class="label">Fecha de nacimiento:</span>

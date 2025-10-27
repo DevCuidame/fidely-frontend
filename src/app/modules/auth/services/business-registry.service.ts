@@ -8,7 +8,9 @@ import { RegisterData } from 'src/app/core/interfaces/auth.interface';
 export interface BusinessRegistrationRequest {
   businessData: Partial<BusinessRegistryData>;
   userData: RegisterData;
-  bannerImage?: string;
+  logo_base64?: string;
+  banner_base64?: string;
+  gallery_images_base64?: string;
 }
 
 @Injectable({
@@ -22,6 +24,7 @@ export class BusinessRegistryService {
   businessData = signal<Partial<BusinessRegistryData>>({});
   userData = signal<Partial<RegisterData>>({});
   bannerImage = signal<string | null>(null);
+  logoImage = signal<string | null>(null);
   
   constructor(private http: HttpClient) {}
   
@@ -57,12 +60,17 @@ export class BusinessRegistryService {
     this.bannerImage.set(image);
   }
   
+  updateLogoImage(image: string): void {
+    this.logoImage.set(image);
+  }
+  
   // Método para resetear el formulario
   resetForm(): void {
     this.currentStep.set(1);
     this.businessData.set({});
     this.userData.set({});
     this.bannerImage.set(null);
+    this.logoImage.set(null);
   }
   
   // Método para validar paso actual
@@ -103,7 +111,7 @@ export class BusinessRegistryService {
   private isUserInfoValid(): boolean {
     const user = this.userData();
     const isValid = !!(user.first_name && user.last_name && user.identification_type && 
-             user.identification_number && user.gender && user.birth_date);
+             user.identification_number && user.birth_date);
     return isValid;
   }
   
@@ -118,7 +126,8 @@ export class BusinessRegistryService {
         features_enabled: {}
       },
       userData: this.userData() as RegisterData,
-      bannerImage: this.bannerImage() || undefined
+      banner_base64: this.bannerImage() || undefined,
+      logo_base64: this.logoImage() || undefined
     };
     
     // Llamada real al endpoint de registro

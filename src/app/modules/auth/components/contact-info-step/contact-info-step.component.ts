@@ -13,6 +13,7 @@ import { LocationService } from '../../services/location.service';
 })
 export class ContactInfoStepComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('logoFileInput') logoFileInput!: ElementRef<HTMLInputElement>;
   
   private fb = inject(FormBuilder);
   private businessRegistryService = inject(BusinessRegistryService);
@@ -24,6 +25,11 @@ export class ContactInfoStepComponent implements OnInit {
   selectedImage = signal<string | null>(null);
   imageWidth = signal<number | null>(null);
   imageHeight = signal<number | null>(null);
+  // Logo
+  selectedLogo = signal<string | null>(null);
+  logoWidth = signal<number | null>(null);
+  logoHeight = signal<number | null>(null);
+  logoTransparency = signal<boolean | null>(null);
 
   // Advertencia de dimensiones basada en mínimos y proporción 3:1
   dimensionWarning = computed(() => {
@@ -66,7 +72,8 @@ export class ContactInfoStepComponent implements OnInit {
       address_line1: ['', [Validators.required, Validators.maxLength(200)]],
       department: [null, [Validators.required]],
       city_id: [null, [Validators.required]],
-      banner: ['', [Validators.required]]
+      banner: ['', [Validators.required]],
+      logo: ['']
     });
     
     // Suscribirse a cambios del formulario
@@ -111,6 +118,7 @@ export class ContactInfoStepComponent implements OnInit {
     const businessData = this.businessRegistryService.businessData();
     const userData = this.businessRegistryService.userData();
     const bannerImage = this.businessRegistryService.bannerImage();
+    const logoImage = this.businessRegistryService.logoImage();
     
     
     if (businessData || userData) {
@@ -153,6 +161,13 @@ export class ContactInfoStepComponent implements OnInit {
       // No tenemos dimensiones previas guardadas; se calcularán con nueva selección
     } else {
       this.contactInfoForm.get('banner')?.setValue('');
+    }
+    
+    if (logoImage) {
+      this.selectedLogo.set(logoImage);
+      this.contactInfoForm.get('logo')?.setValue(logoImage);
+    } else {
+      this.contactInfoForm.get('logo')?.setValue('');
     }
   }
   
@@ -257,6 +272,99 @@ export class ContactInfoStepComponent implements OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
+  }
+  
+  // --- Logo management ---
+  triggerLogoFileInput() {
+    this.logoFileInput.nativeElement.click();
+  }
+  
+  async onLogoSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      
+      // Validar tipo de archivo: solo PNG
+      if (file.type !== 'image/png') {
+        alert('El logo debe ser un archivo PNG.');
+        return;
+      }
+      
+      // Validar tamaño (máximo 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('El logo es demasiado grande. Máximo 2MB.');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const result = e.target?.result as string;
+        // Calcular dimensiones
+        const img = new Image();
+        img.onload = async () => {
+          this.logoWidth.set(img.width);
+          this.logoHeight.set(img.height);
+        };
+        img.src = result;
+        
+        // Detectar transparencia (canal alpha)
+        try {
+          const hasTransparency = await this.detectTransparency(result);
+          this.logoTransparency.set(hasTransparency);
+        } catch {
+          this.logoTransparency.set(null);
+        }
+        
+        this.selectedLogo.set(result);
+        this.businessRegistryService.updateLogoImage(result);
+        this.contactInfoForm.get('logo')?.setValue(result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  removeLogo() {
+    this.selectedLogo.set(null);
+    this.logoWidth.set(null);
+    this.logoHeight.set(null);
+    this.logoTransparency.set(null);
+    this.businessRegistryService.updateLogoImage('');
+    this.contactInfoForm.get('logo')?.setValue('');
+    if (this.logoFileInput) {
+      this.logoFileInput.nativeElement.value = '';
+    }
+  }
+  
+  private async detectTransparency(dataUrl: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          const w = img.width;
+          const h = img.height;
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) { reject('ctx'); return; }
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, w, h);
+          const pixels = imageData.data;
+          // Revisar alfa en pasos para rendimiento
+          const step = Math.max(4, Math.floor((w * h) / 50000) * 4);
+          for (let i = 3; i < pixels.length; i += step) {
+            const alpha = pixels[i];
+            if (alpha < 255) { resolve(true); return; }
+          }
+          resolve(false);
+        } catch (e) {
+          reject(e);
+        }
+      };
+      img.onerror = () => reject('error');
+      img.src = dataUrl;
+    });
   }
   
   getFieldError(fieldName: string): string {

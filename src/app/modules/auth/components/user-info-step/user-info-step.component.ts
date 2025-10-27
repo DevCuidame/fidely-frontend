@@ -25,12 +25,6 @@ export class UserInfoStepComponent implements OnInit {
     { value: 'NIT', label: 'NIT' }
   ]);
   
-  genderOptions = signal([
-    { value: 'M', label: 'Masculino' },
-    { value: 'F', label: 'Femenino' },
-    { value: 'O', label: 'Otro' },
-    { value: 'N', label: 'Prefiero no decir' }
-  ]);
   
   // Computed para validar si el formulario es válido
   isFormValid = computed(() => {
@@ -48,13 +42,13 @@ export class UserInfoStepComponent implements OnInit {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
-        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$')
+        Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$')
       ]],
       last_name: ['', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
-        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$')
+        Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$')
       ]],
       identification_type: ['', [Validators.required]],
       identification_number: ['', [
@@ -63,7 +57,7 @@ export class UserInfoStepComponent implements OnInit {
         Validators.maxLength(20),
         Validators.pattern('^[0-9]+$')
       ]],
-      gender: ['', [Validators.required]],
+      // género eliminado
       birth_date: ['', [Validators.required, this.ageValidator]]
     });
     
@@ -91,16 +85,15 @@ export class UserInfoStepComponent implements OnInit {
   private loadExistingData() {
     const userData = this.businessRegistryService.userData();
     
-    if (userData) {
-      this.userInfoForm.patchValue({
-        first_name: userData.first_name || '',
-        last_name: userData.last_name || '',
-        identification_type: userData.identification_type || '',
-        identification_number: userData.identification_number || '',
-        gender: userData.gender || '',
-        birth_date: userData.birth_date || ''
-      });
-    }
+      if (userData) {
+        this.userInfoForm.patchValue({
+          first_name: userData.first_name || '',
+          last_name: userData.last_name || '',
+          identification_type: userData.identification_type || '',
+          identification_number: userData.identification_number || '',
+          birth_date: userData.birth_date || ''
+        });
+      }
   }
   
   private saveFormData() {
@@ -118,7 +111,6 @@ export class UserInfoStepComponent implements OnInit {
         last_name: formValue.last_name,
         identification_type: formValue.identification_type,
         identification_number: formValue.identification_number,
-        gender: formValue.gender,
         birth_date: formValue.birth_date
       });
     } else {
@@ -128,7 +120,6 @@ export class UserInfoStepComponent implements OnInit {
         last_name: formValue.last_name || '',
         identification_type: formValue.identification_type || '',
         identification_number: formValue.identification_number || '',
-        gender: formValue.gender || '',
         birth_date: formValue.birth_date || ''
       });
     }
@@ -141,13 +132,13 @@ export class UserInfoStepComponent implements OnInit {
       return 'Este campo es obligatorio';
     }
     
-    if (field?.hasError('minLength')) {
-      const minLength = field.errors?.['minLength'].requiredLength;
+    if (field?.hasError('minlength')) {
+      const minLength = field.errors?.['minlength'].requiredLength;
       return `Mínimo ${minLength} caracteres`;
     }
     
-    if (field?.hasError('maxLength')) {
-      const maxLength = field.errors?.['maxLength'].requiredLength;
+    if (field?.hasError('maxlength')) {
+      const maxLength = field.errors?.['maxlength'].requiredLength;
       return `Máximo ${maxLength} caracteres`;
     }
     

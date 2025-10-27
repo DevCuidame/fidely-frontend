@@ -78,6 +78,43 @@
         />
       </div>
     </div>
+
+    <!-- Logo -->
+    <div class="input-group">
+      <label class="input-label">Logo del negocio (PNG con fondo transparente)</label>
+      <p class="input-hint">Formato PNG con fondo transparente. Tamaño recomendado: 512x512. Máx. 2MB.</p>
+      <div class="logo-upload-container">
+        @if (selectedLogo()) {
+          <div class="logo-preview">
+            <img [src]="selectedLogo()" alt="Logo preview" />
+            <button type="button" class="remove-image-btn" (click)="removeLogo()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          @if (logoWidth() && logoHeight()) {
+            <p class="success-text">Logo: {{ logoWidth() }}x{{ logoHeight() }}</p>
+          }
+          @if (logoTransparency() === false) {
+            <p class="warning-text">Tu logo no parece tener fondo transparente. Te recomendamos usar PNG con transparencia.</p>
+          }
+        } @else {
+          <div class="upload-placeholder" (click)="triggerLogoFileInput()">
+            <div class="upload-content">
+              <i class="fas fa-file-image upload-icon"></i>
+              <p class="upload-text">Subir logo (PNG)</p>
+              <p class="upload-hint">Solo PNG, máximo 2MB</p>
+            </div>
+          </div>
+        }
+        <input
+          #logoFileInput
+          type="file"
+          accept="image/png"
+          (change)="onLogoSelected($event)"
+          style="display: none;"
+        />
+      </div>
+    </div>
     
     <!-- Dirección -->
     <div class="input-group">

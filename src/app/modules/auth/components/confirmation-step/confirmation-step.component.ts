@@ -17,6 +17,7 @@ export class ConfirmationStepComponent implements OnInit {
   businessData = this.businessRegistryService.businessData;
   userData = this.businessRegistryService.userData;
   bannerImage = this.businessRegistryService.bannerImage;
+  logoImage = this.businessRegistryService.logoImage;
   
   cityName = signal<string>('');
   departmentName = signal<string>('');
@@ -43,10 +44,6 @@ export class ConfirmationStepComponent implements OnInit {
     const business = this.businessData();
     const user = this.userData();
     
-    console.log('🔍 Verificando datos completos:');
-    console.log('📊 Business data:', business);
-    console.log('👤 User data:', user);
-    
     const businessComplete = !!(business.business_name && 
                                business.business_type && 
                                business.tax_id && 
@@ -58,31 +55,9 @@ export class ConfirmationStepComponent implements OnInit {
                            user.last_name && 
                            user.identification_type && 
                            user.identification_number && 
-                           user.gender && 
                            user.birth_date);
     
-    console.log('✅ Business complete:', businessComplete);
-    console.log('✅ User complete:', userComplete);
-    console.log('📋 Missing business fields:', {
-      business_name: !business.business_name,
-      business_type: !business.business_type,
-      tax_id: !business.tax_id,
-      email: !business.email,
-      phone: !business.phone,
-      address_line1: !business.address_line1
-    });
-    console.log('📋 Missing user fields:', {
-      first_name: !user.first_name,
-      last_name: !user.last_name,
-      identification_type: !user.identification_type,
-      identification_number: !user.identification_number,
-      gender: !user.gender,
-      birth_date: !user.birth_date
-    });
-    
     const isComplete = businessComplete && userComplete;
-    console.log('🎯 Final result - Data complete:', isComplete);
-    
     return isComplete;
   });
   
@@ -95,11 +70,9 @@ export class ConfirmationStepComponent implements OnInit {
     
     // Usar nombres guardados directamente
     if (userData.city_name && userData.department_name) {
-      console.log('📍 Mostrando nombres guardados:', userData.city_name, userData.department_name);
       this.cityName.set(userData.city_name);
       this.departmentName.set(userData.department_name);
     } else {
-      console.log('⚠️ No hay nombres de ciudad y departamento guardados');
       this.cityName.set('Ciudad no especificada');
       this.departmentName.set('Departamento no especificado');
     }
